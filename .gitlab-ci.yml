@@ -1,0 +1,18 @@
+image: ruby:2.3
+
+variables:
+  JEKYLL_ENV: production
+
+pages:
+  script:
+  - gem install jekyll
+  - gem install jekyll-sitemap
+  - gem install jekyll-gist
+  - gem install jekyll-feed
+
+  - jekyll build -d public
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
