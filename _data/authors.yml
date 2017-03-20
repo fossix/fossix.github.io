@@ -8,7 +8,7 @@ sab:
   avatar: bio-photo-2.jpg
   twitter: shabinesh
   google:
-    plus: shabinesh
+    plus: +shabinesh
 
 santosh:
   name: Santosh Sivaraj
@@ -18,5 +18,10 @@ santosh:
   avatar: bio-photo-2.jpg
   twitter: sanhere
   google:
-    plus: santosh.sivaraj
+    plus: +santosh.sivaraj
 
+preetam.mn:
+  name: Preetam MN
+
+ashishn:
+  name: Ashish Namdev
