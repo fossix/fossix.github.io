@@ -5,7 +5,7 @@ locale: en_US
 description: Back to the community
 logo: site-logo.png
 search: true
-url: ""
+url: "http://www.fossix.org"
 
 # Jekyll configuration
 
