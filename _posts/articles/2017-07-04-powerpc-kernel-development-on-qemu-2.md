@@ -27,14 +27,15 @@ also need a more full fledged distribution to do more. A few usecases might be
   - Benchmark a code path
   
 To achieve this we can simply boot a cross-compiled kernel with a image
-installed with distro image. But that doesn't seem to work.
+installed with distro image. But that will not work, since we the `initrd`
+should have the required modules to mount filesystems and other
+functionalities. So our tiny `initrd` won't be of any help here.
 
 ```console
-$ ~/dev/repos/qemu/ppc64-softmmu/qemu-system-ppc64 -M pseries -m 2048 \
- -smp cores=2 -nodefaults -nographic -serial pty -monitor stdio \
- -drive file=ppc.img,if=virtio -s -net nic,model=virtio \
- -net user,hostfwd=tcp::2222-:22 -kernel ~/dev/repos/kernels/linux/vmlinux \
- -append "root=/dev/vda"
+$ qemu-system-ppc64 -M pseries -m 2048 -smp cores=2 -nodefaults \
+ -nographic -serial pty -monitor stdio -drive file=ppc.img,if=virtio \
+ -s -net nic,model=virtio -net user,hostfwd=tcp::2222-:22 \
+ -kernel vmlinux -initrd initrd.img -append "root=/dev/vda5"
 ```
 
 The alternative is to compile the kernel and install it from inside the qemu
