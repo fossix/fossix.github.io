@@ -10,7 +10,7 @@ image:
   creditlink: http://wegraphics.net/downloads/free-ultimate-blurred-background-pack/
 comments: true
 share: true
-modified: 2017-06-22T11:59:05+05:30
+modified: 2017-07-05T12:26:46+05:30
 author: santosh
 ---
 
@@ -19,7 +19,7 @@ author: santosh
 Using qemu from the standard installation does not seem to work. Always gives a
 illegal instruction error and the kernel panics.
 
-```consoleell
+```console
 $ git clone git://git.qemu-project.org/qemu.git
 $ cd qemu
 $ ./configure --target-list=ppc64-softmmu
@@ -180,3 +180,5 @@ $ qemu-system-ppc64 -M pseries -m 2048 -smp cores=2 -nodefaults -nographic \
 ```
 
 ..and we are done!.
+
+[Part 2](/articles/powerpc-kernel-development-on-qemu-2/) talks more about kernel development on qemu
