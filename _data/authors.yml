@@ -5,7 +5,7 @@ sab:
   web: shabinesh.github.io
   email: shabi@fossix.org
   bio: "Test"
-  avatar: bio-photo-2.jpg
+  picture: images/bio-photo.jpg
   twitter: shabinesh
   google:
     plus: +shabinesh
@@ -15,10 +15,18 @@ santosh:
   web: santosh.github.io
   email: santosh@fossix.org
   bio: "Crazy penguin fan"
-  avatar: bio-photo-2.jpg
+  picture: images/bio-photo.jpg
   twitter: sanhere
   google:
     plus: +santosh.sivaraj
+
+  links:
+    - title: Twitter
+      url: https://twitter.com/sanhere
+      icon: fab fa-twitter-square
+    - title: GitHub
+      url: https://github.com/santoshs
+      icon: fab fa-github-square
 
 preetam.mn:
   name: Preetam MN

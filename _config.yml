@@ -3,12 +3,14 @@
 title: Fossix
 locale: en_US
 description: Back to the community
-logo: site-logo.png
+logo: images/site-logo.png
 search: true
 url: "http://fossix.org"
 
-#remote_theme: "mmistakes/so-simple-theme"
 theme: jekyll-theme-so-simple
+
+read_time: true
+words_per_minute: 200
 
 # Jekyll configuration
 
@@ -18,10 +20,10 @@ highlighter: rouge
 sass:
   sass_dir: _sass
   style: compressed
-plugins_dir:
+plugins:
   - jekyll-sitemap
   - jekyll-gist
-#  - jekyll-feed
+  - jekyll-feed
 
 kramdown:
   input: GFM
@@ -38,7 +40,7 @@ exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.
 
 
 # Site owner
-owner:
+author:
   name: Fossix
   avatar: bio-photo.jpg
   email: admin@fossix.org
@@ -52,3 +54,14 @@ owner:
     ad-client:
     ad-slot:
   bing-verify:
+
+footer_links:
+  - title: Twitter
+    url: https://twitter.com/fossix
+    icon: fab fa-twitter-square
+  - title: GitHub
+    url: https://github.com/fossix
+    icon: fab fa-github-square
+  - title: Feed
+    url: atom.xml
+    icon: fas fa-rss-square
