@@ -7,6 +7,9 @@ logo: site-logo.png
 search: true
 url: "http://fossix.org"
 
+#remote_theme: "mmistakes/so-simple-theme"
+theme: jekyll-theme-so-simple
+
 # Jekyll configuration
 
 permalink:   /:categories/:title/
