@@ -5,7 +5,7 @@ locale: en_US
 description: Back to the community
 logo: site-logo.png
 search: true
-url: "http://www.fossix.org"
+url: "http://fossix.org"
 
 # Jekyll configuration
 
@@ -15,7 +15,7 @@ highlighter: rouge
 sass:
   sass_dir: _sass
   style: compressed
-plugins:
+plugins_dir:
   - jekyll-sitemap
   - jekyll-gist
 #  - jekyll-feed
@@ -43,7 +43,7 @@ owner:
   twitter: fossix
   github: fossix
   google:
-    plus: +fossix
+    plus: fossix
     analytics: UA-10436185-1
     verify:
     ad-client:

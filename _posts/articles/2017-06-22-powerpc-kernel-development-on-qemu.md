@@ -4,10 +4,6 @@ title: Kernel development using qemu
 excerpt: "Hack, build, boot kernel on a powerpc using qemu"
 categories: articles
 tags: [kernel, boot, fedora, powerpc, linux]
-image:
-  feature: so-simple-sample-image-5.jpg
-  credit: WeGraphics
-  creditlink: http://wegraphics.net/downloads/free-ultimate-blurred-background-pack/
 comments: true
 share: true
 modified: 2017-07-05T12:26:46+05:30

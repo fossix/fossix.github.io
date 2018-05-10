@@ -4,10 +4,6 @@ title: More kernel development using qemu
 excerpt: "Building and booting a full distro kernel on qemu for powerpc"
 categories: articles
 tags: [kernel, boot, fedora, powerpc, linux, nfs, compilation]
-image:
-  feature: so-simple-sample-image-5.jpg
-  credit: WeGraphics
-  creditlink: http://wegraphics.net/downloads/free-ultimate-blurred-background-pack/
 comments: true
 share: true
 modified: 2017-07-22T11:59:05+05:30
