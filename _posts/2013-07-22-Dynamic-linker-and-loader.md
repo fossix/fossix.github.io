@@ -45,7 +45,7 @@ libc.so.6 => /lib64/libc.so.6 (0x0000003cece00000)
 
 The output shows that our tiny executable uses the services of four different
 shared libraries. {The `linux-vdso.so` library will be explained elsewhere in this
-series). The `libm.so` is the match library that we linked in while compiling out
+series). The `libm.so` is the math library that we linked in while compiling out
 program code. The next is the standard C library. The last library is the
 dynamic loader which will help during the start of the program execution to use
 other library functions that we are linked with. This section will describe the
