@@ -7,7 +7,7 @@ logo: images/site-logo.png
 search: true
 url: "http://fossix.org"
 
-theme: jekyll-theme-so-simple
+remote_theme: "mmistakes/so-simple-theme"
 
 read_time: true
 words_per_minute: 200
