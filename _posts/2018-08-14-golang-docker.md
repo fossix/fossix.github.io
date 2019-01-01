@@ -1,13 +1,12 @@
 ---
 layout: post
-title:  "dockerize go programs"
+title:  "Dockerize go programs"
+excerpt: "How to run program in a Docker"
 date:   2018-08-14 11:29:17 +0530
 categories: golang
 tags: [golang, docker]
 author: sab
 ---
-
-again this is for my self reference:
 
 Assume this is the production grade program we need to dockerize and run. 
 

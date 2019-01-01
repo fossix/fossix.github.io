@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  "Go's Reflection    "
+title:  "Go's Reflection"
+excerpt: "Using the reflect package"
 date:   2017-03-08 11:39:17 +0530
 categories: golang
 tags: [go, golang]
@@ -9,11 +10,11 @@ author: sab
 
 # Go's reflection
 
-## Summary
-- Reflection is used by the Go program to inspect types at runtime
-- Some understanding of Go's `interface{}` is required before proceeding.
+Reflection is used by the Go program to inspect types at runtime. Some
+understanding of Go's `interface{}` is required before proceeding.
 
-Consider a hypothetical requirement to build a validation for structures. In usual case I would prefer a `if-else` statement.
+Consider a hypothetical requirement to build a validation for structures. In
+usual case I would prefer a `if-else` statement.
 
 ```go
 type Employee struct {
@@ -36,9 +37,15 @@ if e.Age < 18 {
 }
 ...
 ```
-This is prefectly fine until the only resource in you web application is Employee. Life is never made so simple even you wish it could be, If there are many such struct, aka json contracts that need to be validated a simpler approach is beneficial. Fortunately, Go's standard library comes with a package `reflect`, we need a generic validator for all common actions.
 
-So our hypothetical validator will implement a `validator()` function. Which takes in a interface{} and spews out a interface{} and errors if necessary. 
+This is prefectly fine until the only resource in you web application is
+Employee. Life is never made so simple even you wish it could be, If there are
+many such struct, aka json contracts that need to be validated a simpler
+approach is beneficial. Fortunately, Go's standard library comes with a package
+`reflect`, we need a generic validator for all common actions.
+
+So our hypothetical validator will implement a `validator()` function. Which
+takes in a interface{} and spews out a interface{} and errors if necessary.
 
 ```go
 func main() {
@@ -50,11 +57,18 @@ func validator(e interface{}) []error {
 }
 ```
 
-So the meat of the validator function is to convert the interface to a validation object and verify validity of data. since I don't know what is the type of the input; here comes [reflection](https://en.wikipedia.org/wiki/Reflection_(computer_programming)). 
+So the meat of the validator function is to convert the interface to a
+validation object and verify validity of data. since I don't know what is the
+type of the input; here comes
+[reflection](https://en.wikipedia.org/wiki/Reflection_(computer_programming)).
 
-Inorder to convert a interface to a reflection object; We need to know there are two kinds of reflection objects: `Type` & `Value`; functions `reflect.TypeOf()`, `reflect.ValueOf()` return `Type` and `Value` respectively. `Type` represents the Go's type. 
+Inorder to convert a interface to a reflection object; We need to know there are
+two kinds of reflection objects: `Type` & `Value`; functions `reflect.TypeOf()`,
+`reflect.ValueOf()` return `Type` and `Value` respectively. `Type` represents
+the Go's type.
 
-First, Our challenge will be to go over each field in the struct. This can be done with the following:
+First, Our challenge will be to go over each field in the struct. This can be
+done with the following:
 
 ```go
 func validator(e interface{}) []error {
@@ -65,7 +79,13 @@ func validator(e interface{}) []error {
     return nil
 }
 ```
-Here `Field()` method of the Type object return a `StructField` instance, which in turn has a reference to the Type of the field. Now that our first part of our problem is complete, second part of the problem is to identify what kind of validation should be applied to what kind of data. In our case we will need a string validator and number validator. We can use a custom struct tag which will give inputs to our validator. 
+
+Here `Field()` method of the Type object return a `StructField` instance, which
+in turn has a reference to the Type of the field. Now that our first part of our
+problem is complete, second part of the problem is to identify what kind of
+validation should be applied to what kind of data. In our case we will need a
+string validator and number validator. We can use a custom struct tag which will
+give inputs to our validator.
 
 ```go
 type Employee struct {
@@ -109,7 +129,12 @@ func (s numberValidator) validate(x reflect.Value) error {
 	return nil
 }
 ```
-`v` here is converted back to `interface{}` type so that it can be converted back to it real underlying type. To select one of these validators, our validator function should use the validate tag's type information. Our validator function should be extended as following.
+
+`v` here is converted back to `interface{}` type so that it can be converted
+back to it real underlying type. To select one of these validators, our
+validator function should use the validate tag's type information. Our validator
+function should be extended as following.
+
 ```go
 func validator(e interface{}) []error {
 	v := reflect.ValueOf(e)
@@ -136,7 +161,6 @@ func validator(e interface{}) []error {
 	}
 	return nil
 }
-
 ```
 
-### Tip: Read this [https://blog.golang.org/laws-of-reflection](https://blog.golang.org/laws-of-reflection)
+Tip: Read this [https://blog.golang.org/laws-of-reflection](https://blog.golang.org/laws-of-reflection)

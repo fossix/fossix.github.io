@@ -1,15 +1,15 @@
 ---
 layout: post
 title:  "Concurrency notes"
+excerpt: "Make two go goutines wait on each other"
 date:   2018-11-14 11:29:17 +0530
 categories: golang
 tags: [golang, concurrency]
 author: sab
 ---
 
-### deadlock
+## Deadlock
 
-make two go goutines wait on each other
 
 ```go
 package main
@@ -63,10 +63,9 @@ So the answer is yes.
 ### Other issues on concurrent code
 
 #### Livelocking
- todo
+todo
 
-#### Starvation A greedy process might take more time required. But
+#### Starvation
+A greedy process might take more time required. But
 having too many memory access sync could degrade performance, on the
 other hand a larger critical section could lead to starvation.
-
-
