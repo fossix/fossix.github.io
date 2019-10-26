@@ -1,11 +1,22 @@
 ---
 layout: master
 ---
-
-<div class="container">
-  <div class="row">
-    <div class="col-sm-10">
-      {{ content }}
+{% if page.date or page.author %}
+  <div class="alert alert-light">
+    <span class="badge">Posted on: {{ page.date | date: "%-d %B, %Y"  }}</span>
+    <div class="float-right">
+      <span> By {{ page.author | capitalize }} </span>
     </div>
   </div>
+{% endif %}
+<hr>
+{{ content }}
+
+<hr>
+<div class="float-right">
+  {% for tag in page.tags %}
+  <a href="/tags/#{{ tag | slugify }}" class="badge badge-dark">
+    {{ tag }}
+  </a>
+  {% endfor %}
 </div>
