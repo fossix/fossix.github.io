@@ -3,8 +3,8 @@ layout: post
 title:  "Elegant Time"
 excerpt: "Timing function runtime"
 date:   2017-12-25 11:29:17 +0530
-categories: golang
-tags: [golang, time]
+categories: blogs
+tags: golang time
 author: sab
 ---
 
