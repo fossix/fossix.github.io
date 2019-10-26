@@ -2,21 +2,16 @@
 layout: master
 ---
 
-<div class="container">
-  <div class="row">
-    {% for post in site.posts limit:page.posts_limit %}
-    <div class="col-sm-3">
-      <div class="box">
-        <a href="{{ post.url | prepend: site.baseurl }}" class="item">
-          <h3>{{ post.title | escape}}</h3>
-          <p>
-            {{ post.excerpt }}
-          </p>
-        </a>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
+{% for post in site.categories.articles limit:page.posts_limit %}
+<div class="box">
+  <a href="{{ post.url | prepend: site.baseurl }}" class="item">
+    <h3>{{ post.title | escape}}</h3>
+  </a>
+  <p>
+    {{ post.excerpt }}
+  </p>
+  <span class="badge">{{ post.date | date: "%-d %B, %Y"  }}</span>
 </div>
+{% endfor %}
 
 {{ content }}

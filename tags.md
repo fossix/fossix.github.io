@@ -11,11 +11,12 @@ title: "Tags"
 <article id="{{ this_word }}">
   <h3>
     <span class="badge badge-dark">{{ this_word }}</span>
+    <span class="badge badge-secondary float-right">{{site.tags[this_word].size}}</span>
   </h3>
-  <ul style="list-style-type:none;">
+  <ul style="list-style-type:none;margin:0;padding:0;">
     {% for post in site.tags[this_word] reversed %}
       {% if post.title != null %}
-        <li>
+        <li style="margin:0;padding:0;">
           <a href="{{ site.url }}{{ post.url }}" title="{{ post.title }}" >
             {{ post.title }}
           </a>
@@ -27,4 +28,5 @@ title: "Tags"
     {% endfor %}
   </ul>
 </article>
+<hr>
 {% endunless %}{% endfor %}
