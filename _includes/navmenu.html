@@ -1,7 +1,10 @@
 <div class="list-group list-group-flush">
   <a href="/" class="list-group-item list-group-item-action">Home</a>
-  <a href="{{ site_baseurl }}recent" class="list-group-item list-group-item-action">
-    Latest posts
+  <a href={{ "recent" | relative_url }} class="list-group-item list-group-item-action">
+    Blog posts
   </a>
-  <a href="{{site_baseurl}}archive" class="list-group-item list-group-item-action">Archive</a>
+  <a href={{ "snippets" | relative_url }} class="list-group-item list-group-item-action">
+    Code snippets
+  </a>
+  <a href={{ "archive" | relative_url }} class="list-group-item list-group-item-action">Archive</a>
 </div>
