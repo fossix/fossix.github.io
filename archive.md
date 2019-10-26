@@ -6,17 +6,26 @@ search_omit: false
 
 <div class="container">
   <div class="row">
-    {% for post in site.posts %}
-    <div class="col-sm-3">
-      <div class="box">
-        <a href="{{ post.url | prepend: site.baseurl }}" class="item">
-          <h3>{{ post.title | escape}}</h3>
+    <div class="col-md-12">
+      {% for post in site.posts reversed %}
+      {% capture currentyear %}{{post.date | date: "%Y"}}{% endcapture %}
+      {% if currentyear != year %}
+      <h3>{{ currentyear }}</h3>
+      {% capture year %}{{currentyear}}{% endcapture %}
+      {% endif %}
+      <ul class="posts-in-year">
+        <li>
           <p>
-            {{ post.excerpt }}
+            <a href="{{ post.url | prepend: site.baseurl }}">
+              {{ post.title }}
+            </a>
+            <span class="badge float-right">
+              {{ post.date | date: "%B, %Y" }}
+            </span>
           </p>
-        </a>
-      </div>
+        </li>
+      </ul>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
 </div>
