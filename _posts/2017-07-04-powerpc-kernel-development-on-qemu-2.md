@@ -10,10 +10,10 @@ modified: 2017-07-22T11:59:05+05:30
 author: santosh
 ---
 
-[Part 1](/articles/powerpc-kernel-development-on-qemu/) of this series introduces
-kernel development on qemu.
+_Note: [Part 1](/articles/powerpc-kernel-development-on-qemu/) of this series
+introduces kernel development on qemu._
 
-# Building a distro kernel
+## Building a distro kernel
 
 Using a tiny busybox based initrd is fine for boot testing. But sometimes you
 also need a more full fledged distribution to do more. A few usecases might be
