@@ -96,7 +96,7 @@ gcc-powerpc64-linux-gnu-6.1.1-2.fc25.x86_64
 binutils-powerpc64-linux-gnu-2.27-3.fc25.x86_64
 ```
 
-`export` `CROSS_COMPILE`ing toolchain path and the `ARCH`.
+Export `CROSS_COMPILE` toolchain path and the architecture - `ARCH`.
 
 ```console
 $ export CROSS_COMPILE=powerpc64-linux-gnu-

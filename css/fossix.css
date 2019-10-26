@@ -123,6 +123,14 @@ a.author:focus {
     background-color: #ffffcc
 }
 
+@import url('https://fonts.googleapis.com/css?family=Merienda&display=swap');
+
+.navbar a {
+    font-family: 'Merienda', cursive;
+    font-size: 34px;
+    font-weight: bold;
+}
+
 /* CSS for pygmentize, copied from HtmlFormatter().get_style_defs('.highlight') output */
 .highlight .hll { background-color: #ffffcc }
 .highlight  { background: #f8f8f8; }

@@ -2,8 +2,6 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="/css/fossix.css" rel="stylesheet" media="screen">
 
     <title>
@@ -41,11 +39,33 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="/">
-        <img src="/images/site-logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        <img src="/images/site-logo.png" width="40" height="45"
+             class="d-inline-block align-top" alt="">
         {{ site.title }}
       </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">{{ site_title }}
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" id="search"
+              action="{{ site.baseurl }}/search/">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search"
+                 aria-label="Search" id="searchString" name="searchString">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
+                  name="googleSearchName" value="Search">Search</button>
+        </form>
+      </div>
     </nav>
 
+    <div class="grid" id="searchBar">
     <div class="container-fluid" style="margin-top:35px";>
       <div class="row">
         <div class="col-md-2">
@@ -86,19 +106,8 @@
       {% include footer.html %}
     </footer>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-    {% if site.google_analytics %}
-      <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '{{ site.google_analytics }}');
-      </script>
-    {% endif %}
-
   </body>
 </html>
