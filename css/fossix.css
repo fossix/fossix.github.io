@@ -24,10 +24,6 @@ footer p {
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
-    -webkit-transition: all 0.5s ease-in-out;
-    -moz-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
     padding-top:3px;
     padding-bottom:5px;
     padding-left:5px;
@@ -35,23 +31,17 @@ footer p {
     margin-top:20px;
 }
 
-.box:hover,
-.box:focus {
-    border-color: rgb(0, 125, 200);
-    -webkit-box-shadow: 0 1px 4px rgba(20, 20, 20, 0.5);
-    -moz-box-shadow: 0 1px 4px rgba(20, 20, 20, 0.5);
-    box-shadow: 0 1px 4px rgba(20, 20, 20, 0.5);
-}
-
-.box a {
-    text-decoration:none;
-    color:#333333;
-}
-
 .box a.item {
     display:block;
     height: 100%;
     width: 100%;
+    text-decoration:none;
+    color:#333333;
+    outline: 0;
+}
+
+.box a.item:hover {
+    text-decoration: underline;
 }
 
 .box .item h3 {
