@@ -72,5 +72,5 @@ If there are any questions regarding this privacy policy you may contact us by
 sending a mail to admin@fossix.org.
 
 <div class="float-right">
-  <em>Last modified on: 27<super>th</super> October, 2010</em>
+  <em>Last modified on: 27<super>th</super> October, 2019</em>
 </div>
