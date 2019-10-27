@@ -21,6 +21,10 @@ pre,code {
     font-size: 18px;
 }
 
+.navbar-brand {
+    outline: none;
+}
+
 .contenthead {
     padding-bottom:10px;
     pading-top:15px;
