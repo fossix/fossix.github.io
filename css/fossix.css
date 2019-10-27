@@ -1,3 +1,20 @@
+ /* Banner font */
+@import url(http://fonts.googleapis.com/css?family=Oswald:400,300,700);
+/* Body font */
+@import url('https://fonts.googleapis.com/css?family=ZCOOL+XiaoWei&display=swap');
+/* Code/pre font*/
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
+
+body {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 19px;
+}
+
+pre,code {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 18px;
+}
+
 .contenthead {
     padding-bottom:10px;
     pading-top:15px;
@@ -23,7 +40,7 @@ footer p {
     border-radius: 10px;
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.055);
     padding-top:3px;
     padding-bottom:5px;
     padding-left:5px;
@@ -31,7 +48,16 @@ footer p {
     margin-top:20px;
 }
 
-.box a.item {
+.box-list {
+    padding-top:2px;
+    padding-bottom:3px;
+    padding-left:5px;
+    padding-right:5px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.055);
+    margin-top:10px;
+}
+
+.box-list a.item, .box a.item {
     display:block;
     height: 100%;
     width: 100%;
@@ -40,7 +66,7 @@ footer p {
     outline: 0;
 }
 
-.box a.item:hover {
+.box-list a.item:hover, .box a.item:hover {
     text-decoration: underline;
 }
 
@@ -123,10 +149,8 @@ a.author:focus {
     background-color: #ffffcc
 }
 
-@import url('https://fonts.googleapis.com/css?family=Merienda&display=swap');
-
 .navbar a {
-    font-family: 'Merienda', cursive;
+    font-family: 'Merienda', cursive !important;
     font-size: 34px;
     font-weight: bold;
 }
