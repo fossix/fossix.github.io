@@ -65,8 +65,20 @@
     </nav>
 
     <div class="grid" id="searchBar">
-    <div class="container-fluid" style="margin-top:35px";>
-      <div class="row">
+      <div class="container-fluid" style="margin-top:35px";>
+
+        <!-- site title -->
+        <div class="row">
+          <div class="mx-auto">
+            <h1 class="front-site-title">
+              {{ site.title }}
+              <small class="text-muted">{{ site.description }}</small>
+            </h1>
+          </div>
+        </div>
+
+        <!--  page title -->
+        <div class="row">
         <div class="col-md-2">
           <!-- What should be here -->
         </div>

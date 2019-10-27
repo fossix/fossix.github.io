@@ -4,26 +4,29 @@ title: "Code snippets"
 ---
 
 <ul style="list-style-type:none;">
-  {% for s in site.categories.snippets %}
+  {% for post in site.categories.snippets limit:10 %}
+  {% if post.title != null %}
   <li style="padding-bottom: 15px;">
     <div>
-      <a href="{{ s.url | prepend: site.baseurl }}">
-        <h5>{{ s.title }}</h5>
-      </a>
-      <span class="badge float-right">
-        {{ s.date | date: "%B, %Y" }}
+      <span class="badge">
+        {{ post.date | date: "%B, %Y" }}
       </span>
-    </div>
 
-    <div>
-      {% for tag in s.tags %}
-      <a href="/tags/#{{ tag | slugify }}" class="badge badge-dark">
-        {{ tag }}
-      </a>
-      {% endfor %}
-    </div>
+      <div class="float-right">
+        {% for tag in post.tags %}
+        <a href="/tags/#{{ tag | slugify }}" class="badge badge-dark">
+          {{ tag }}
+        </a>
+        {% endfor %}
+      </div>
 
+      <div>
+        <a href="{{ site.url }}{{ post.url }}" title="{{ post.title }}" >
+          <h4>{{ post.title }}</h4>
+        </a>
+      </div>
+    </div>
   </li>
+  {% endif %}
   {% endfor %}
-
 </ul>
