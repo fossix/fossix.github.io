@@ -6,8 +6,9 @@ categories: articles
 tags: [c, process, shell]
 comments: true
 share: true
-modified: 2017-03-23T14:11:53+05:30
+modified: 2013-07-23T14:11:53+05:30
 author: santosh
+series: "Life of a process"
 ---
 
 A process is born when a program is executed. So let us back-track a little more

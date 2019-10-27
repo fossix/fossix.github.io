@@ -8,10 +8,8 @@ comments: true
 share: true
 modified: 2017-07-22T11:59:05+05:30
 author: santosh
+series: "Kernel development using qemu"
 ---
-
-_Note: [Part 1](/articles/powerpc-kernel-development-on-qemu/) of this series
-introduces kernel development on qemu._
 
 ## Building a distro kernel
 

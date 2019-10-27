@@ -8,6 +8,7 @@ comments: true
 share: true
 modified: 2013-07-21T14:11:53+05:30
 author: santosh
+series: "Life of a process"
 ---
 
 As we already know the compilation process involves four steps,

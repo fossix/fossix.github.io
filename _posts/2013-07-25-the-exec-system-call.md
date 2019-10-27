@@ -8,6 +8,7 @@ comments: true
 share: true
 modified: 2017-03-25T14:11:53+05:30
 author: santosh
+series: "Life of a process"
 ---
 
 After a successful `fork()` the child process will start to execute the command

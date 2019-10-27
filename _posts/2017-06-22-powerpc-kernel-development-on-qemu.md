@@ -8,6 +8,7 @@ comments: true
 share: true
 modified: 2017-07-05T12:26:46+05:30
 author: santosh
+series: "Kernel development using qemu"
 ---
 
 ## Build Qemu

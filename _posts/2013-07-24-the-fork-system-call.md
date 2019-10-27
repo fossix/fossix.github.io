@@ -8,6 +8,7 @@ comments: true
 share: true
 modified: 2017-03-24T14:11:53+05:30
 author: santosh
+series: "Life of a process"
 ---
 
 As we know system calls take us from the user-land to the kernel-land. As

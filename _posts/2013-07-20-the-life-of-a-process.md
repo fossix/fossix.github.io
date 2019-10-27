@@ -6,8 +6,9 @@ categories: articles
 tags: [process, linux]
 comments: true
 share: true
-modified: 2017-03-27T14:11:53+05:30
+modified: 2013-07-20T14:10:52+05:30
 author: santosh
+series: "Life of a process"
 ---
 
 The computer system is becoming a complex beast which cannot be tamed easily. In

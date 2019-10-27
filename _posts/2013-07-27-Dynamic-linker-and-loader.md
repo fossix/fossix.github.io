@@ -6,8 +6,9 @@ categories: articles
 tags: [process, linker, loader]
 comments: true
 share: true
-modified: 2013-07-21T15:12:53+05:30
+modified: 2013-07-27T15:12:53+05:30
 author: santosh
+series: "Life of a process"
 ---
 
 As you would have noticed the beginning of the document, it was told the

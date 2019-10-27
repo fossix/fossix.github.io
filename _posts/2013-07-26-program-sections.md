@@ -8,6 +8,7 @@ comments: true
 share: true
 modified: 2017-03-26T14:11:53+05:30
 author: santosh
+series: "Life of a process"
 ---
 
 Every program is split into multiple sections. In general, these are:
