@@ -23,6 +23,9 @@ plugins_dir:
   - jekyll-gist
   - jekyll-feed
 
+plugins:
+  - jekyll-feed
+
 kramdown:
   input: GFM
   auto_ids: true
