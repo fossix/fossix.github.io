@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-# gem "jekyll", ">= 3.8.3"
+gem "jekyll"
 
 group :jekyll_plugins do
   gem "jekyll-sitemap"
@@ -11,7 +11,7 @@ group :jekyll_plugins do
 end
 
 group :jekyll_plugins do
-  gem "jekyll-feed", "~> 0.6"
+  gem "jekyll-feed"
 end
 
 gem "github-pages", group: :jekyll_plugins
