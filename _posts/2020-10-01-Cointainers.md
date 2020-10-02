@@ -3,7 +3,7 @@ layout: post
 title:  "Writing containers in Linux"
 excerpt: "Literate programming attempt of writing containers"
 date:   2020-10-01 10:28:45 +0530
-categories: articles
+categories: snippets
 tags: [linux, containers]
 author: santosh
 ---
