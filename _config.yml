@@ -25,6 +25,7 @@ plugins_dir:
 
 plugins:
   - jekyll-feed
+  - jekyll-sitemap
 
 kramdown:
   input: GFM
