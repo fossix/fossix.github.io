@@ -8,7 +8,7 @@ layout: master
     <h3>{{ post.title | escape }}</h3>
   </a>
   <p class="lead">
-    {{ post.content | strip_html | truncatewords:50 }}
+    {{ post.excerpt | strip_html | truncatewords:50 }}
     <a href="{{ post.url | prepend: site.baseurl }}" class="float-right">
       More &rarr;
     </a>
