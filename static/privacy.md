@@ -11,7 +11,7 @@ href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons
 Attribution-ShareAlike 3.0 Unported License</a>.
 
 Permissions beyond the scope of this license may be available at <a
-xmlns:cc="http://creativecommons.org/ns#" href="http://fossix.org/contact"
+xmlns:cc="http://creativecommons.org/ns#" href="http://fossix.org/static/contact"
 rel="cc:morePermissions">http://fossix.org/static/contact</a>.
 
 ### Privary Policy

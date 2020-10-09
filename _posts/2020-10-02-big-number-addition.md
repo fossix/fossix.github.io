@@ -7,7 +7,7 @@ producing a third list. Let's progressively look into how to do this more
 efficiently moving away from the interview problem."
 date: 2020-10-02 16:52:00 +0530
 categories: articles
-tags: [algorithms, addition, C, GMP]
+tags: [algorithm, addition, C, GMP, bignum]
 comments: true
 share: true
 author: santosh
@@ -17,7 +17,8 @@ One of the most frequent interview questions or excercise problem is how to add
 arbitrarily large numbers. For example
 
 ```
-72345678898723456754489234667744553453453469 + 5096524508924567345907667124380094567897623
+72345678898723456754489234667744553453453469 +
+50965245089245673459076671243800945678976232
 ```
 
 This number doesn't fit in any commercially available CPU registers, in fact,
@@ -66,7 +67,6 @@ struct list *add_list(struct list *l1, struct list *l2)
 
 	return construct_list(num3);
 }
-
 ```
 
 It's easy to figure out why this code is buggy; even if the two numbers
@@ -79,7 +79,8 @@ there is a carry and want to add it back, remember this is a singly linked
 list), two lists cannot be added from the beginning. How did we do it in our
 school?
 
-![Addition of two numbers](/images/big-numbers-addition.png)
+![Addition of two numbers](/images/big-numbers-addition.png){: .img-fluid
+.justify-content-center }
 
 It's obvious that the addition will have to be done from right to left, but that
 is not possible since it is a singly linked list. What can be done is, reverse
