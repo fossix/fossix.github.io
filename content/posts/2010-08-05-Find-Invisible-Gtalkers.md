@@ -6,6 +6,7 @@ categories: articles
 tags: [xmpp, gtalk, invisible]
 comments: true
 share: true
+date: 2010-08-05 14:11:53 +0530
 modified: 2010-08-05T14:11:53+05:30
 author: sab
 ---

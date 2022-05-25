@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Kernel development using qemu
-excerpt: "Hack, build, boot kernel on a powerpc using qemu"
+summary: "Hack, build, boot kernel on a powerpc using qemu"
 categories: articles
 tags: [kernel, boot, fedora, powerpc, linux]
 comments: true

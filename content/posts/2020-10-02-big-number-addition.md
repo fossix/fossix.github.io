@@ -1,7 +1,6 @@
 ---
-layout: post
 title:  "Adding big numbers"
-excerpt: "One of the most frequently asked interview questions: How do you add
+summary: "One of the most frequently asked interview questions: How do you add
 arbitrarily large number? Or a variation of that: Add nodes of two singly linked lists,
 producing a third list. Let's progressively look into how to do this more
 efficiently moving away from the interview problem."

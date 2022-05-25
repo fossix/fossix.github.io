@@ -4,7 +4,7 @@ title:  "SOLID principles in Golang"
 excerpt: "Golang's embodiment of SOLID as a language design"
 date:   2017-03-23 11:39:17 +0530
 categories: articles
-tags: go golang go-design-patterns
+tags: [go, golang, go-design-patterns]
 author: sab
 ---
 

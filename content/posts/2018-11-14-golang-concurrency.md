@@ -4,7 +4,7 @@ title:  "Concurrency notes"
 excerpt: "Make two go goutines wait on each other"
 date:   2018-11-14 11:29:17 +0530
 categories: blogs
-tags: golang concurrency
+tags: [golang, concurrency]
 author: sab
 ---
 
