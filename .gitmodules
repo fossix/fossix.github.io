@@ -1,0 +1,3 @@
+[submodule "themes/fossix"]
+	path = themes/fossix
+	url = https://github.com/fossix/fossix.git
