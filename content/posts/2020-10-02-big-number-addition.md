@@ -78,8 +78,7 @@ there is a carry and want to add it back, remember this is a singly linked
 list), two lists cannot be added from the beginning. How did we do it in our
 school?
 
-![Addition of two numbers](/images/big-numbers-addition.png){: .img-fluid
-.justify-content-center }
+![Addition of two numbers](/images/big-numbers-addition.png)
 
 It's obvious that the addition will have to be done from right to left, but that
 is not possible since it is a singly linked list. What can be done is, reverse

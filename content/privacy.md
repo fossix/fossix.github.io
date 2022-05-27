@@ -1,5 +1,5 @@
 ---
-layout: master
+layout: page
 title: The legal stuff
 ---
 

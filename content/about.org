@@ -1,0 +1,5 @@
+#+layout: page
+#+title: About fossix
+#+modified: 2017-03-16T19:44:38.564948+05:30
+
+*Opensource and technology*
