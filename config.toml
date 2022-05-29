@@ -23,7 +23,7 @@ pygmentsUseClasses = false
 [markup]
   [markup.highlight]
     anchorLineNos = false
-    codeFences = false
+    codeFences = true
     guessSyntax = false
     hl_Lines = ''
     lineAnchors = ''
