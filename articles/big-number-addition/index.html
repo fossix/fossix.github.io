@@ -9,204 +9,247 @@ Fossix - Adding big numbers
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta charset=utf-8>
 </head>
-<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body><nav class="navbar navbar-expand-md navbar-dark bg-dark">
 <a class=navbar-brand href=/>
 <img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+<span class=front-site-title>Fossix</span>
 </a>
 <button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
 <span class=navbar-toggler-icon></span>
 </button>
 <div class="collapse navbar-collapse" id=navbarSupportedContent>
 <ul class="navbar-nav mr-auto">
-<li class="nav-item active">
-<a class=nav-link href=/>Fossix
-<span class=sr-only>(current)</span>
+<li class=nav-item>
+<a href=/categories/snippets class=nav-link>
+Snippets
+</a>
+</li>
+<li class=nav-item>
+<a href=/categories/blogs class=nav-link>
+Blogs
+</a>
+</li>
+<li class=nav-item>
+<a href=/categories/articles class=nav-link>
+Articles
+</a>
+</li>
+<li class=nav-item>
+<a class=nav-link href=/archive/>
+Archive
 </a>
 </li>
 </ul>
-<form class="form-inline my-2 my-lg-0" id=search>
-<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
-<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
-</form>
 </div>
 </nav>
 <div class=container-fluid style=margin-top:25px>
 <div class=row>
-<div class=col-md-2>
-<div class="list-group list-group-flush">
-<a href=/ class="list-group-item list-group-item-action">
-Home
-</a>
-<a href=/categories/snippets class="list-group-item list-group-item-action">
-Snippets
-</a>
-<a href=/categories/blogs class="list-group-item list-group-item-action">
-Blogs
-</a>
-<a href=/categories/articles class="list-group-item list-group-item-action">
-Articles
-</a>
-<a href=/archive/ class="list-group-item list-group-item-action">
-Archive
-</a>
+<div class=col-lg-3>
 </div>
-</div>
-<div class=col-md-6>
-<div class="row content-title">
+<div class="col-lg-6 content">
 <h1>Adding big numbers</h1>
+<div class=alert-light>
+<div class=float-left>
+<span class=badge>
+2 October, 2020 | santosh
+</span>
 </div>
-<div class="alert alert-light">
-<span class=badge>Posted on: 2 October, 2020</span>
 <div class=float-right>
-<span> By santosh</span>
+<a href=https://fossix.org/tagsalgorithm class="badge badge-light">#algorithm</a>
+<a href=https://fossix.org/tagsaddition class="badge badge-light">#addition</a>
+<a href=https://fossix.org/tagsc class="badge badge-light">#C</a>
+<a href=https://fossix.org/tagsgmp class="badge badge-light">#GMP</a>
+<a href=https://fossix.org/tagsbignum class="badge badge-light">#bignum</a>
 </div>
+<span class=badge> </span>
 </div>
 <hr>
-<p>One of the most frequent interview questions or excercise problem is how to add
-arbitrarily large numbers. For example</p>
-<pre tabindex=0><code>72345678898723456754489234667744553453453469 +
+<p>
+One of the most frequently asked interview questions: How do you add arbitrarily
+large number? Or a variation of that: Add nodes of two singly linked lists,
+producing a third list. Let's progressively look into how to do this more
+efficiently moving away from the interview problem.</p>
+<p>
+For example,</p>
+<pre class=example>
+72345678898723456754489234667744553453453469 +
 50965245089245673459076671243800945678976232
-</code></pre><p>This number doesn&rsquo;t fit in any commercially available CPU registers, in fact,
+</pre>
+<p>
+This number doesn't fit in any commercially available CPU registers, in fact,
 these numbers are larger than what can fit in a 128 bit word. The maximum number
-that can fit in a 128-bit register is <code>340282366920938463463374607431768211455</code>!
+that can fit in a 128-bit register is `340282366920938463463374607431768211455`!
 But many of the scientific and astronomical calculations will need to operate on
 these kind of very large numbers. There are libraries to deal with this, like
-the GMP library (<a href=https://gmplib.org/>GNU MP Bignum Library</a>). But lets not get
+the GMP library ([GNU MP Bignum Library](<a href=https://gmplib.org/)).>https://gmplib.org/)).</a> But lets not get
 into it for now, we will try to figure out how to do this without any library
 support.</p>
-<p>We will start with the excercise/interview question, how to add two singly
+<p>
+We will start with the excercise/interview question, how to add two singly
 linked lists.</p>
-<p><em>Input</em>
-: Pointer to two lists of single digits</p>
-<p><em>Output</em>
-: Pointer to a new list where each node is a digit of the summed value of two
-nodes from each of the input nodes.</p>
+<dl>
+<dt>
+Input
+</dt>
+<dd>
+<p>Pointer to two lists of single digits</p>
+</dd>
+<dt>
+<strong>Output</strong>
+</dt>
+<dd>
+<p>Pointer to a new list where each node is a digit of the summed value
+of two nodes from each of the input nodes.</p>
+</dd>
+</dl>
 <p>There are a couple of things that we should keep in mind</p>
 <ul>
-<li>The lists need not be of equal length</li>
-<li>Remember to propagate the carry to the first node (most significant digit)</li>
+<li>
+<p>The lists need not be of equal length</p>
+</li>
+<li>
+<p>Remember to propagate the carry to the first node (most significant digit)</p>
+</li>
 </ul>
 <p>The most easiest (and buggy) approach is to walk through the list, extract the
 numbers, add it up and construct a list from it.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=nf>add_list</span><span class=p>(</span><span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=n>l1</span><span class=p>,</span> <span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=n>l2</span><span class=p>)</span>
-<span class=p>{</span>
-	<span class=kt>unsigned</span> <span class=kt>long</span> <span class=kt>long</span> <span class=n>num1</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span> <span class=n>num2</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+<div class="src src-c">
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c>  <span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=nf>add_list</span><span class=p>(</span><span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=n>l1</span><span class=p>,</span> <span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=n>l2</span><span class=p>)</span>
+  <span class=p>{</span>
+          <span class=kt>unsigned</span> <span class=kt>long</span> <span class=kt>long</span> <span class=n>num1</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span> <span class=n>num2</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 
-	<span class=k>while</span> <span class=p>(</span><span class=n>l1</span><span class=p>)</span> <span class=p>{</span>
-		<span class=n>num1</span> <span class=o>=</span> <span class=n>num1</span> <span class=o>*</span> <span class=mi>10</span> <span class=o>+</span> <span class=n>l1</span><span class=o>-&gt;</span><span class=n>data</span><span class=p>;</span>
-		<span class=n>l1</span> <span class=o>=</span> <span class=n>l1</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
-	<span class=p>}</span>
+          <span class=k>while</span> <span class=p>(</span><span class=n>l1</span><span class=p>)</span> <span class=p>{</span>
+                  <span class=n>num1</span> <span class=o>=</span> <span class=n>num1</span> <span class=o>*</span> <span class=mi>10</span> <span class=o>+</span> <span class=n>l1</span><span class=o>-&gt;</span><span class=n>data</span><span class=p>;</span>
+                  <span class=n>l1</span> <span class=o>=</span> <span class=n>l1</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+          <span class=p>}</span>
 
-	<span class=k>while</span> <span class=p>(</span><span class=n>l2</span><span class=p>)</span> <span class=p>{</span>
-		<span class=n>num2</span> <span class=o>=</span> <span class=n>num2</span> <span class=o>*</span> <span class=mi>10</span> <span class=o>+</span> <span class=n>l2</span><span class=o>-&gt;</span><span class=n>data</span><span class=p>;</span>
-		<span class=n>l2</span> <span class=o>=</span> <span class=n>l2</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
-	<span class=p>}</span>
+          <span class=k>while</span> <span class=p>(</span><span class=n>l2</span><span class=p>)</span> <span class=p>{</span>
+                  <span class=n>num2</span> <span class=o>=</span> <span class=n>num2</span> <span class=o>*</span> <span class=mi>10</span> <span class=o>+</span> <span class=n>l2</span><span class=o>-&gt;</span><span class=n>data</span><span class=p>;</span>
+                  <span class=n>l2</span> <span class=o>=</span> <span class=n>l2</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+          <span class=p>}</span>
 
-	<span class=n>num3</span> <span class=o>=</span> <span class=n>num1</span> <span class=o>+</span> <span class=n>num2</span><span class=p>;</span>
+          <span class=n>num3</span> <span class=o>=</span> <span class=n>num1</span> <span class=o>+</span> <span class=n>num2</span><span class=p>;</span>
 
-	<span class=k>return</span> <span class=n>construct_list</span><span class=p>(</span><span class=n>num3</span><span class=p>);</span>
-<span class=p>}</span>
-</code></pre></div><p>It&rsquo;s easy to figure out why this code is buggy; even if the two numbers
+          <span class=k>return</span> <span class=n>construct_list</span><span class=p>(</span><span class=n>num3</span><span class=p>);</span>
+  <span class=p>}</span></code></pre></div>
+</div>
+<p>
+It's easy to figure out why this code is buggy; even if the two numbers
 extracted from the lists are smaller than 8 bytes (word size of a typical
 computer), the sum can overflow, resulting in a wrong answer.</p>
-<p>Since the numbers can be of different sizes and there can be a carry from the
+<p>
+Since the numbers can be of different sizes and there can be a carry from the
 next digit (this is important because we cannot go back to the previous digit if
 there is a carry and want to add it back, remember this is a singly linked
 list), two lists cannot be added from the beginning. How did we do it in our
 school?</p>
-<p><img src=/images/big-numbers-addition.png alt="Addition of two numbers"></p>
-<p>It&rsquo;s obvious that the addition will have to be done from right to left, but that
+<p>
+<img src=big-numbers-addition.png alt=big-numbers-addition.png title=big-numbers-addition.png></p>
+<p>
+It's obvious that the addition will have to be done from right to left, but that
 is not possible since it is a singly linked list. What can be done is, reverse
 both the list, do the addition and add the resulting digits to a new list.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=nf>add_list</span><span class=p>(</span><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>l1</span><span class=p>,</span> <span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>l2</span><span class=p>)</span>
-<span class=p>{</span>
-	<span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>rl1</span><span class=p>,</span> <span class=o>*</span><span class=n>rl2</span><span class=p>,</span> <span class=o>*</span><span class=n>l3</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>;</span>
-	<span class=kt>unsigned</span> <span class=n>carry</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+<div class="src src-c">
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c>  <span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=nf>add_list</span><span class=p>(</span><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>l1</span><span class=p>,</span> <span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>l2</span><span class=p>)</span>
+  <span class=p>{</span>
+          <span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>rl1</span><span class=p>,</span> <span class=o>*</span><span class=n>rl2</span><span class=p>,</span> <span class=o>*</span><span class=n>l3</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>;</span>
+          <span class=kt>unsigned</span> <span class=n>carry</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 
-	<span class=n>rl1</span> <span class=o>=</span> <span class=n>reverse_list</span><span class=p>(</span><span class=n>l1</span><span class=p>);</span>
-	<span class=n>rl2</span> <span class=o>=</span> <span class=n>reverse_list</span><span class=p>(</span><span class=n>l2</span><span class=p>);</span>
-    
-	<span class=k>while</span> <span class=p>(</span><span class=n>rl1</span> <span class=o>||</span> <span class=n>rl2</span><span class=p>)</span> <span class=p>{</span>
-		<span class=kt>unsigned</span> <span class=n>d1</span> <span class=o>=</span> <span class=n>rl1</span> <span class=o>?</span> <span class=n>rl1</span><span class=o>-&gt;</span><span class=nl>data</span> <span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
-			 <span class=n>d2</span> <span class=o>=</span> <span class=n>rl2</span> <span class=o>?</span> <span class=n>rl2</span><span class=o>-&gt;</span><span class=nl>data</span> <span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
-			 <span class=n>d</span> <span class=o>=</span> <span class=n>d1</span> <span class=o>+</span> <span class=n>d2</span><span class=p>;</span>
+          <span class=n>rl1</span> <span class=o>=</span> <span class=n>reverse_list</span><span class=p>(</span><span class=n>l1</span><span class=p>);</span>
+          <span class=n>rl2</span> <span class=o>=</span> <span class=n>reverse_list</span><span class=p>(</span><span class=n>l2</span><span class=p>);</span>
 
-		<span class=n>d</span> <span class=o>+=</span> <span class=n>carry</span><span class=p>;</span>
-		<span class=n>carry</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+          <span class=k>while</span> <span class=p>(</span><span class=n>rl1</span> <span class=o>||</span> <span class=n>rl2</span><span class=p>)</span> <span class=p>{</span>
+                  <span class=kt>unsigned</span> <span class=n>d1</span> <span class=o>=</span> <span class=n>rl1</span> <span class=o>?</span> <span class=n>rl1</span><span class=o>-&gt;</span><span class=nl>data</span> <span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+                           <span class=n>d2</span> <span class=o>=</span> <span class=n>rl2</span> <span class=o>?</span> <span class=n>rl2</span><span class=o>-&gt;</span><span class=nl>data</span> <span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+                           <span class=n>d</span> <span class=o>=</span> <span class=n>d1</span> <span class=o>+</span> <span class=n>d2</span><span class=p>;</span>
 
-		<span class=k>if</span> <span class=p>(</span><span class=n>d</span> <span class=o>&gt;=</span> <span class=mi>10</span><span class=p>)</span> <span class=p>{</span>
-			<span class=n>carry</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
-			<span class=n>d</span> <span class=o>=</span> <span class=n>d</span> <span class=o>%</span> <span class=mi>10</span><span class=p>;</span>
-		<span class=p>}</span>
+                  <span class=n>d</span> <span class=o>+=</span> <span class=n>carry</span><span class=p>;</span>
+                  <span class=n>carry</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 
-		<span class=n>append_node</span><span class=p>(</span><span class=o>&amp;</span><span class=n>l3</span><span class=p>,</span> <span class=n>d</span><span class=p>);</span>
+                  <span class=k>if</span> <span class=p>(</span><span class=n>d</span> <span class=o>&gt;=</span> <span class=mi>10</span><span class=p>)</span> <span class=p>{</span>
+                          <span class=n>carry</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
+                          <span class=n>d</span> <span class=o>=</span> <span class=n>d</span> <span class=o>%</span> <span class=mi>10</span><span class=p>;</span>
+                  <span class=p>}</span>
 
-		<span class=n>rl1</span> <span class=o>=</span> <span class=n>rl1</span> <span class=o>?</span> <span class=n>rl1</span><span class=o>-&gt;</span><span class=nl>next</span> <span class=p>:</span> <span class=nb>NULL</span><span class=p>;</span>
-		<span class=n>rl2</span> <span class=o>=</span> <span class=n>rl2</span> <span class=o>?</span> <span class=n>rl2</span><span class=o>-&gt;</span><span class=nl>next</span> <span class=p>:</span> <span class=nb>NULL</span><span class=p>;</span>
-	<span class=p>}</span>
+                  <span class=n>append_node</span><span class=p>(</span><span class=o>&amp;</span><span class=n>l3</span><span class=p>,</span> <span class=n>d</span><span class=p>);</span>
 
-	<span class=k>if</span> <span class=p>(</span><span class=n>carry</span><span class=p>)</span>
-		<span class=n>append_node</span><span class=p>(</span><span class=o>&amp;</span><span class=n>l3</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
+                  <span class=n>rl1</span> <span class=o>=</span> <span class=n>rl1</span> <span class=o>?</span> <span class=n>rl1</span><span class=o>-&gt;</span><span class=nl>next</span> <span class=p>:</span> <span class=nb>NULL</span><span class=p>;</span>
+                  <span class=n>rl2</span> <span class=o>=</span> <span class=n>rl2</span> <span class=o>?</span> <span class=n>rl2</span><span class=o>-&gt;</span><span class=nl>next</span> <span class=p>:</span> <span class=nb>NULL</span><span class=p>;</span>
+          <span class=p>}</span>
 
-	<span class=k>return</span> <span class=n>l3</span><span class=p>;</span>
-<span class=p>}</span>
-</code></pre></div><p>This same logic can extended to add numbers which are represented as a string.</p>
-<p>The reverse function by itself is an interview question. But that is easily done
+          <span class=k>if</span> <span class=p>(</span><span class=n>carry</span><span class=p>)</span>
+                  <span class=n>append_node</span><span class=p>(</span><span class=o>&amp;</span><span class=n>l3</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
+
+          <span class=k>return</span> <span class=n>l3</span><span class=p>;</span>
+  <span class=p>}</span></code></pre></div>
+</div>
+<p>
+This same logic can extended to add numbers which are represented as a string.</p>
+<p>
+The reverse function by itself is an interview question. But that is easily done
 with rearrangement of pointers.</p>
-<p><img src=/images/big-numbers-reversing-list.png alt="Reversing a list"></p>
-<p>The list reversing can be understood easily if we take only two nodes, make the
-first node point to <code>NULL</code> and the second node point to the first.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cm>/* we need a pointer to hold the next node, so as its not lost */</span>
-<span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=n>next</span> <span class=o>=</span> <span class=n>head</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
-<span class=n>head</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>;</span>
-<span class=n>next</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=n>head</span><span class=p>;</span>
-</code></pre></div><p>From here all we need to do is extend to three nodes. Since the first node is
+<p>
+<img src=reversing-list.png alt=reversing-list.png title=reversing-list.png></p>
+<p>
+The list reversing can be understood easily if we take only two nodes, make the
+first node point to `NULL` and the second node point to the first.</p>
+<div class="src src-c">
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c>  <span class=cm>/* we need a pointer to hold the next node, so as its not lost */</span>
+  <span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=n>next</span> <span class=o>=</span> <span class=n>head</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+  <span class=n>head</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>;</span>
+  <span class=n>next</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=n>head</span><span class=p>;</span></code></pre></div>
+</div>
+<p>
+From here all we need to do is extend to three nodes. Since the first node is
 already reversed, we will move head to point to the next, and repeat the same
 operation.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=nf>reverse_list</span><span class=p>(</span><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>head</span><span class=p>)</span>
-<span class=p>{</span>
-	<span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>next</span><span class=p>,</span> <span class=o>*</span><span class=n>prev</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>;</span>
+<div class="src src-c">
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c>  <span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=nf>reverse_list</span><span class=p>(</span><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>head</span><span class=p>)</span>
+  <span class=p>{</span>
+          <span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>next</span><span class=p>,</span> <span class=o>*</span><span class=n>prev</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>;</span>
 
-	<span class=k>while</span> <span class=p>(</span><span class=n>head</span><span class=p>)</span> <span class=p>{</span>
-		<span class=n>next</span> <span class=o>=</span> <span class=n>head</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
-		<span class=n>head</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=n>prev</span><span class=p>;</span>
-		<span class=n>prev</span> <span class=o>=</span> <span class=n>head</span><span class=p>;</span>
-		<span class=n>head</span> <span class=o>=</span> <span class=n>next</span><span class=p>;</span>
-	<span class=p>}</span>
-	<span class=k>return</span> <span class=n>prev</span><span class=p>;</span>
-<span class=p>}</span>
-</code></pre></div><p>This time we just used another pointer <code>prev</code> to keep track of the previous
-node, instead of just assigning a <code>NULL</code>.</p>
-<p>Coming back to the big number addition, though that was an elegant (??)
+          <span class=k>while</span> <span class=p>(</span><span class=n>head</span><span class=p>)</span> <span class=p>{</span>
+                  <span class=n>next</span> <span class=o>=</span> <span class=n>head</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+                  <span class=n>head</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=n>prev</span><span class=p>;</span>
+                  <span class=n>prev</span> <span class=o>=</span> <span class=n>head</span><span class=p>;</span>
+                  <span class=n>head</span> <span class=o>=</span> <span class=n>next</span><span class=p>;</span>
+          <span class=p>}</span>
+          <span class=k>return</span> <span class=n>prev</span><span class=p>;</span>
+  <span class=p>}</span></code></pre></div>
+</div>
+<p>
+This time we just used another pointer `prev` to keep track of the previous
+node, instead of just assigning a `NULL`.</p>
+<p>
+Coming back to the big number addition, though that was an elegant (??)
 solution, it is sub-optimal. If it was a interview question we could just leave
 it here.</p>
-<p>Computers can do calculations on large numbers (64 bits or 128 bits) in one
+<p>
+Computers can do calculations on large numbers (64 bits or 128 bits) in one
 single operation. Also the list holds one digit per node; even a short int is a
 big waste of space for a single digit (4-bits are enough). The data size can be
 reduced further using a char data type. Or we could just use the entire
-<code>unsigned long long</code> data type (or whatever type the data is), so that we will
-use less space and don&rsquo;t have to do digit by digit operation.</p>
-<p>Now that we have moved from the interview exercise problem, let&rsquo;s not stick with
+`unsigned long long` data type (or whatever type the data is), so that we will
+use less space and don't have to do digit by digit operation.</p>
+<p>
+Now that we have moved from the interview exercise problem, let's not stick with
 singly linked list. Doubly linked list is a more efficient data structure for
 this problem (Arrays are better, to avoid some memory allocation complexities,
 which we will see later we will stick with doubly linked lists for
 now). Moreover we can move back to play with the carry. Here is how we can do
 it.</p>
 <ul>
-<li>Start from the right most entry (end of the list) and add the new number</li>
-<li>if the number overflows, place only the overflowed amount in the entry, and
-add one to the previous node (or create one if one doesn&rsquo;t exist).</li>
+<li>
+<p>Start from the right most entry (end of the list) and add the new number</p>
+</li>
+<li>
+<p>if the number overflows, place only the overflowed amount in the entry, and
+add one to the previous node (or create one if one doesn't exist).</p>
+</li>
 </ul>
 <p>To save memory , we can start with one element list and add a node as we
 continue to overflow. We will look into this is a future post.</p>
 <hr>
-<div class=float-right>
-<a href=https://fossix.org/tagsalgorithm class="badge badge-dark">algorithm</a>
-<a href=https://fossix.org/tagsaddition class="badge badge-dark">addition</a>
-<a href=https://fossix.org/tagsc class="badge badge-dark">C</a>
-<a href=https://fossix.org/tagsgmp class="badge badge-dark">GMP</a>
-<a href=https://fossix.org/tagsbignum class="badge badge-dark">bignum</a>
-</div>
 </div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 <script src=/fossix.js></script>
 <script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>

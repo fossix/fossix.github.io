@@ -12,8 +12,8 @@ body {
 
 .front-site-title {
     font-family: 'Merienda', cursive !important;
-    font-size: 3em;
     font-weight: bold;
+    font-size: 34px;
 }
 
 pre,code {
@@ -31,7 +31,10 @@ pre,code {
     height:125%;
 }
 
-.content-body p {
+.content {
+}
+
+.content p {
     line-height:1.5;
 }
 
@@ -164,7 +167,6 @@ a.author:focus {
 }
 
 .navbar a {
-    font-family: 'Merienda', cursive !important;
-    font-size: 34px;
-    font-weight: bold;
+    font-family: 'Ariel', !important;
+    font-size: 22px;
 }
