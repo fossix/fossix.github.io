@@ -1,0 +1,184 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - Openstack - How To Attach To An Autoscaling Group Or An Arbitrary Group Of Nodes
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>Openstack - How To Attach To An Autoscaling Group Or An Arbitrary Group Of Nodes</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 19 July, 2014</span>
+<div class=float-right>
+<span> By sab</span>
+</div>
+</div>
+<hr>
+<p>In order to use a load balancer with an autoscaling group- we should use a
+nested stack to achieve. We can define the AutoScaling Group and LoadBalancer
+pool in the top level template and define the autoscaling instance and members
+in the nested templates. Then the loadbalancer pool id can be passed into the
+nested template as a property and be used by OS::Neutron::PoolMember to
+associate each nova server when they are created. The example template can be
+found
+at:
+<a href=https://github.com/shabinesh/OpenStack-heat-test-templates/blob/master/scale.yaml>scale.yaml</a> and
+<a href=https://github.com/shabinesh/OpenStack-heat-test-templates/blob/master/server.yaml>server.yaml</a></p>
+<h1 id=url-mapping-how-to-select-which-url-paths-get-mapped-and-in-what-fashion>URL mapping: how to select which URL paths get mapped and in what fashion</h1>
+<p>The following are specific to HAProxy:</p>
+<p>The URL specific forwards to backend server can be done using ACLs. There are
+directives to match an url: path_beg , path_end etc.</p>
+<pre><code>Frontend main *:80
+           Acl  url_app1  path_beg  /app1
+           Acl  url_app2  path_beg  /app2
+           Use_backend   app1_backend  if  url_app1
+           Use_backend   app2_backend  if  url_app2
+      Backend  app1_backend
+           Balance    roundrobin
+           Server     app1    127.0.0.1:5001    check
+           Server     app2    127.0.0.1:5002    check
+      Backend  app2_backend
+           Balance    roundrobin
+           Server     app1    127.0.0.1:5003    check
+           Server     app2    127.0.0.1:5004    check
+</code></pre>
+<p>Specific to Nginx:</p>
+<pre><code>server {
+    listen 80;
+    # ... other stuff
+
+    upstream backend1 {
+        server 127.0.0.1:8080;
+    }
+
+    location /test/ {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass http://192.168.1.2;
+    }
+    location /news/ {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass http://192.168.1.1;
+    }
+
+}
+</code></pre>
+<p><em>Sticky sessions:</em> application-specific cookie There are two ways a server can be
+identified when requests are routed through HAProxy, Cookie Insert method
+:Loadbalancer will add a Set-Cookie Header with a server name as its value. So
+when the client sends back the response with the cookie HAProxy knows which back
+end server it should be sending it to. The configuration for haproxy will have:</p>
+<p>Cookie Prefix method::Loadbalancer will prefix the application cookie with a
+server name. <code>cookie JSESSION_ID</code> prefix</p>
+<p>The request response cycle between client and server will be:</p>
+<ol>
+<li>Set-Cookie: s1~JSESSION_ID=jashfkjsd323r49983214hj0j4h94gds</li>
+<li>Cookie: s1~JSESSION_ID=jashfkjsd323r49983214hj0j4h94gds</li>
+<li>Cookie: JSESSION_ID=jashfkjsd323r49983214hj0j4h94gds (from HAProxy to application.)</li>
+</ol>
+<p>For Nginx: In case of Nginx, the redirection can be specific to host running an
+application instance. In this way the session is maintained. A sample
+configuration may look like this:</p>
+<pre><code>server {
+    ...
+    set $upstream &quot;default-app-Server&quot;;
+    if ($http_cookie ~ &quot;Host=([\w-]+)&quot;) {
+        set $upstream $1;                                   
+    }
+
+    location /original-request {
+        proxy_pass http://$upstream/$uri
+    }
+}
+</code></pre>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagsopenstack class="badge badge-dark">openstack</a>
+<a href=https://fossix.org/tagsautoscaling class="badge badge-dark">autoscaling</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

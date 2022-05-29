@@ -1,0 +1,157 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - The exec() system call
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>The exec() system call</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 25 March, 2017</span>
+<div class=float-right>
+<span> By santosh</span>
+</div>
+</div>
+<hr>
+<p>After a successful <code>fork()</code> the child process will start to execute the command
+typed by the user, in our case the <code>a.out</code> file. This execution is started by
+the exec system call. The job of the system call is to overlay the calling
+process’ address space with the executable image and give control to it. The
+<code>exec()</code> syscall does the following functions:</p>
+<ul>
+<li>The files shared by the parent and child processes are unshared, a new unknown
+executable shouldn’t be sharing files with the shell</li>
+<li>The executable file is opened and checked for permissions whether the new file
+has executable and open permission for the current user.</li>
+<li>The total number of arguments passed to the file is checked for exceeding the
+maximum argument limit.</li>
+<li>If the file is satisfies all the previous checks, the ELF header of the
+executable is checked for the binary loader program name, this will be
+discussed in the next section.</li>
+<li>The file is memory mapped in the address space of the current process and the
+new code is scheduled to execute.</li>
+</ul>
+<p>So far we came to an understanding that the new process that was created using
+fork will now be replaced with the new image, this means that same PID will have
+different images at different instances. This can be easily found by introducing
+a small delay in the shell simulator (see below). In our sample program given in
+previous <a href=/articles/the-birth-of-a-process>article on process</a>, inserting a delay
+would stop our process from completing quickly, so we can observe the change
+using <code>ps</code>.</p>
+<pre><code class=language-c>  fork();
+  sleep(5);
+</code></pre>
+<pre><code class=language-console>$ ./shell-exec ./a.out &amp;
+$ ps             # executing immediately
+  PID TTY          TIME CMD
+ 3939 pts/3    00:00:03 bash
+24893 pts/3    00:00:00 shell-exec
+24896 pts/3    00:00:00 shell-exec
+24985 pts/3    00:00:00 ps
+$ ps             # After 5 seconds
+  PID TTY          TIME CMD
+ 3939 pts/3    00:00:03 bash
+24896 pts/3    00:00:00 a.out
+24998 pts/3    00:00:00 ps
+</code></pre>
+<p>We have come so far knowing that the new program image replaces the new child
+process’ address space, without telling what an address space is. Every process
+in Linux is given a range of virtual addresses <sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup> on which a process can
+act. The program is also split into different sections to simplify some use
+cases and for security.</p>
+<section class=footnotes role=doc-endnotes>
+<hr>
+<ol>
+<li id=fn:1 role=doc-endnote>
+<p>For now just knowing that virtual address are not physical addresses and
+they are also not one-to-one mapped with the physical memory should
+suffice. Virtual memory will be covered later.&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagsprocess class="badge badge-dark">process</a>
+<a href=https://fossix.org/tagsexec class="badge badge-dark">exec</a>
+<a href=https://fossix.org/tagssyscall class="badge badge-dark">syscall</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - Searching for files?
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>Searching for files?</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 16 March, 2017</span>
+<div class=float-right>
+<span> By sab</span>
+</div>
+</div>
+<hr>
+<p>Nobody is a exception for searching files unless you don’t have a computer. here
+are two commands you must learn if you are a beginner. find command</p>
+<pre><code class=language-console>$ find /path/ -name file_name
+</code></pre>
+<p>example:</p>
+<pre><code class=language-console>$ find . -name &quot;date*&quot;
+</code></pre>
+<p>Notice the ‘.’ which says search in the current directory for files starting
+with &ldquo;date&rdquo; , you can use your regular expression skill here. And you if you
+want to search for file starting from the root just replace ‘.’ with ‘/’.</p>
+<pre><code class=language-console>$ find / -name file.txt
+</code></pre>
+<p><code>-name</code> option where you will specify your file names, use <code>-iname</code> option for
+case insensitivity.</p>
+<p>You might also filter the files with their type <code>-type</code> for example</p>
+<p>$ find /home -name file.txt -type f</p>
+<p>‘f’ following <code>-type</code> says file.txt is a file, or use ‘d’ instead if you are
+looking for directories, or ‘s’ for block files.</p>
+<p>There are two more important option. If you know that your files are buried many
+levels below, without wasting time, you mention the level from where the search
+should begin using <code>-mindepth.</code></p>
+<pre><code class=language-console>$ find / -mindepth 3 -iname file.tex 
+</code></pre>
+<p>Same way -maxdepth says how far you should go searching for the file. <code>locate</code>
+command</p>
+<p>locate is a simple and fast searching tool (faster than find). It searches from
+the database of files and folders which it maintains. You can manually update
+the database with</p>
+<pre><code class=language-console>$ updatedb
+</code></pre>
+<p>and locating is as simple as this</p>
+<pre><code class=language-console>$ locate file.txt
+</code></pre>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagsfind class="badge badge-dark">find</a>
+<a href=https://fossix.org/tagslocate class="badge badge-dark">locate</a>
+<a href=https://fossix.org/tagsfiles class="badge badge-dark">files</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

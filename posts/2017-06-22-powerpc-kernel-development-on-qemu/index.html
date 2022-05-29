@@ -1,0 +1,227 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - Kernel development using qemu
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>Kernel development using qemu</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 5 July, 2017</span>
+<div class=float-right>
+<span> By santosh</span>
+</div>
+</div>
+<hr>
+<h2 id=build-qemu>Build Qemu</h2>
+<p>Using qemu from the standard installation does not seem to work. Always gives a
+illegal instruction error and the kernel panics.</p>
+<pre><code class=language-console>$ git clone git://git.qemu-project.org/qemu.git
+$ cd qemu
+$ ./configure --target-list=ppc64-softmmu
+$ make
+</code></pre>
+<p>The standard qemu packages did not work probably they didn&rsquo;t have the
+<code>ppc64-softmmu</code> selected. Enabling <code>ppc64-softmmu</code> was
+mentioned
+<a href=http://jk.ozlabs.org/blog/post/157/powerpc-testing-without-powerpc-hardware/>here</a>.
+Make sure the newly built qemu-system-ppc64 image, which is under ppc64-softmmu
+directory is in your path.</p>
+<h2 id=installation>Installation</h2>
+<p>Now that we have built qemu, lets use it to install a fedora 25
+distribution. Note that we won&rsquo;t get a shiny GUI for installation, we will have
+to use a serial console to do installation in text mode.</p>
+<pre><code class=language-console>$ qemu-system-ppc64 -M pseries -m 2048 -nodefaults -nographic \
+  -serial pty -monitor stdio \-cdrom Fedora-Server-dvd-ppc64le-25-1.2.iso \
+  -drive file=ppc.img,if=virtio -s
+</code></pre>
+<p>We could give the boot target in the command line, but the openfirmware
+always looks at the drive, even if you had give <code>-boot c</code> in the commandline. So
+when the boot fails, and when its stopped in the openfirmware prompt, type <code>boot cdrom</code> to boot the fedora image. Now it&rsquo;s the usual installation process except
+you will have to do it in text mode, but thats fun too.</p>
+<p>We haven&rsquo;t configured network yet. Once the installation has completed, reboot
+your qemu, now without any firmware prompt, we should boot out newly installed
+system. Once it boots, poweroff and let&rsquo;s enable networking.</p>
+<p>Since we have installed the OS, we need not specify the <code>-cdrom</code> option to
+qemu. I will drop it from subsequent commands. For networking, we append <code>-net nic,model=virtio</code> to the command line. Also if we want to be able to ssh into
+the guest, we can add a <code>hostfwd</code> option too.</p>
+<pre><code class=language-console>$ qemu-system-ppc64 -M pseries -m 2048 -nodefaults -nographic -serial pty \
+  -monitor stdio -drive file=ppc.img,if=virtio -s -net nic,model=virtio \
+  -net user,hostfwd=tcp::2222-:22
+</code></pre>
+<p>Once this is done, we will have the access to the outside network, which is very
+helpful when we want to update of install any package. Also, we can login to the
+guest using ssh.</p>
+<pre><code class=language-console>$ ssh root@localhost -p 2222
+</code></pre>
+<p>For more convinience we can create a user with the same name as the host user
+that we are logged into, and configure password less login using
+<code>ssh-copy-id</code>. A must for people lazy to type password all the time.</p>
+<h2 id=kernel-development>Kernel development</h2>
+<p>Even though we cannot expect a qemu machine to have all the features on a real
+hardware, but nonetheless it can be used for boot testing and basic sanity
+testing. First thing to boot a new kernel is to build it. But running a machine
+of a different architecture as that of the host is very CPU intensive. So we
+should avoid running heavy workloads on the guest. As we know, building a kernel
+is also one such CPU intensive activity. Here comes the usefulness of
+cross-compiling.</p>
+<p>I am running a fedora 25 X86_64 machine, with a fedora 25 ppc64 guest on it. So
+we will install powerpc cross-compile toolchain for our purpose. Here what I
+have in my machine. Depending on the distribution the installation procedure
+might vary. Once the installation is done, the rest is just a breeze.</p>
+<pre><code class=language-console>$ rpm -qa | grep powerpc
+binutils-powerpc64le-linux-gnu-2.27-3.fc25.x86_64
+gcc-powerpc64-linux-gnu-6.1.1-2.fc25.x86_64
+binutils-powerpc64-linux-gnu-2.27-3.fc25.x86_64
+</code></pre>
+<p>Export <code>CROSS_COMPILE</code> toolchain path and the architecture - <code>ARCH</code>.</p>
+<pre><code class=language-console>$ export CROSS_COMPILE=powerpc64-linux-gnu-
+$ export ARCH=powerpc
+$ make pseries_defconfig
+$ make -j4
+</code></pre>
+<p>If you don&rsquo;t want to pollute your kernel source directory, maybe you want to
+build and test for multiple architectures, you can pass the
+<code>O=/path/to/build/dir</code> option to <code>make</code>.</p>
+<pre><code class=language-console>$ mkdir ../powerpc_build
+$ make O=../powerpc_build pseries_defconfig
+$ make O=../powerpc_build -j4
+</code></pre>
+<h2 id=booting-the-kernel>Booting the kernel</h2>
+<p>When we are trying to boot a custom kernel, we will not be (?) able to use the
+disk image we created as rootfs. We will have to pass the the rootfs and initrd
+from the commandline. One reason we would not be able to boot, even if we manage
+to get the rootfs from the disk image is because the kernel modules' version
+will be different. For our just boot and test purpose we will create a tiny
+initrd from BusyBox. I am not cross-compiling BusyBox, you may try it
+ofcourse. The reason being most of the time we will have some headers missing
+problem. Let us fire up of qemu machine and compile.</p>
+<pre><code class=language-console>$ git clone git://busybox.net/busybox.git
+$ cd busybox
+$ make menuconfig
+$ make
+</code></pre>
+<p>You may want to install gcc if not available. During <code>make menuconfig</code>, in
+&lsquo;Busybox settings&rsquo; menu, select &lsquo;Build Busybox as a static binary&rsquo; option. This
+will avoid shared library mess in our to-be build initrd. Once this is done, we
+install it, the default path would be <code>./_install</code>.</p>
+<pre><code class=language-console>$ make install
+</code></pre>
+<p>Now <code>tar</code> the <code>_install</code> directory and copy it over to the host machine using
+<code>scp</code>. Now we are ready to create the <code>initrd</code>. The basic steps to create a
+ramdisk are:</p>
+<ul>
+<li>Create a raw image using <code>dd</code></li>
+<li>Format image with ext4</li>
+<li>Mount and copy all the needed files</li>
+<li>Umount and gzip the image</li>
+</ul>
+<pre><code class=language-console>$ tar cf _install.tar
+$ dd if=/dev/zero of=initrd.img bs=1M count=10   # 10 MB image
+$ mkfs.ext4 initrd.img
+$ mkdir root
+$ sudo mount initrd.img root/
+$ sudo cp _install/* root/
+$ sudo cp -a /dev/console initrd/dev/
+$ sudo cp -a /dev/null initrd/dev/
+$ sudo cp -a /dev/tty0 initrd/dev/
+$ sudo cp -a /dev/tty1 initrd/dev/
+$ sudo umount root/
+$ gzip initrd.img
+</code></pre>
+<p>Finally,</p>
+<pre><code class=language-console>$ qemu-system-ppc64 -M pseries -m 2048 -smp cores=2 -nodefaults -nographic \
+  -serial pty -monitor stdio -s -net nic,model=virtio \
+  -net user,hostfwd=tcp::2222-:22  -kernel vmlinux \
+  -initrd initrd/initrd.img.gz -append root=/dev/ram0
+</code></pre>
+<p>..and we are done!.</p>
+<p><a href=/articles/powerpc-kernel-development-on-qemu-2/>Part 2</a> talks more about kernel development on qemu</p>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagskernel class="badge badge-dark">kernel</a>
+<a href=https://fossix.org/tagsboot class="badge badge-dark">boot</a>
+<a href=https://fossix.org/tagsfedora class="badge badge-dark">fedora</a>
+<a href=https://fossix.org/tagspowerpc class="badge badge-dark">powerpc</a>
+<a href=https://fossix.org/tagslinux class="badge badge-dark">linux</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

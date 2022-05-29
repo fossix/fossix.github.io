@@ -1,0 +1,255 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - Twitter From The Command Line
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>Twitter From The Command Line</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 18 March, 2017</span>
+<div class=float-right>
+<span> By santosh</span>
+</div>
+</div>
+<hr>
+<p>Twitter has become popular with many of us recently. Most of us are too lazy to
+use the web interface to do a update. So there are options like twitter for
+firefox, twitgin for pidgin and so on. But still most of are CLI oriented and
+rarely visit the GUI. I am one such guy. So when I came to hear about Twitter
+API, I was excited and started to write a simple python script to update to
+Twitter. You can find the version 1 of the script in this post.</p>
+<h1 id=how-to-use-clt>How to use clt?</h1>
+<p>You can tweet using the following command:</p>
+<pre><code class=language-console>$ clt [-u username] [-p password] your tweet message here
+</code></pre>
+<p>Note that the username is not required if it is set <code>TWEETUSER</code> environment
+variable. But you can give explicitly if you want to send as a different user.</p>
+<p>The following will get the specified user’s last tweet update.</p>
+<pre><code class=language-console>$ clt [-u username] -l
+</code></pre>
+<p>You can always refer the options using</p>
+<pre><code class=language-console>$ clt --help
+</code></pre>
+<p>The python code for clt is here.</p>
+<pre><code class=language-python>#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+###############################################################################
+#     Twitter from the command line
+#     Copyright (C) 2009 Santosh Sivaraj 
+#
+#     This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 2 of the License, or (at your option) any
+# later version.
+#
+#     This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
+#
+#     You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc., 59
+# Temple Place, Suite 330, Boston, MA 02111-1307 USA
+#
+# Command line twitter
+# clt version 1.0
+# Sun Aug 30 2009 - Santosh - Released version 1.0
+###############################################################################
+
+import twitter
+import getpass
+import sys
+import getopt
+import os
+
+tweetapi = twitter.Api()
+
+VERSION = &quot;1.0&quot;
+authreq = 0 #set as one if we need authentication for any operations
+password = ''
+
+def printversion():
+    print &quot;clt (Command line tweeting) 1.0&quot;
+    print &quot;Copyright (C) 2009 Santosh, fossix.org&quot;
+    print &quot;This is free software; see the source for copying conditions. &quot;,
+    print &quot;There is NO \nWarranty; not even for MERCHANTABILITY or FITNESS &quot;,
+    print &quot;FOR A PARTICULAR PURPOSE.&quot;
+
+def usage():
+    print &quot;What are you doing now:\n&quot;,
+    print &quot;\tclt [-u username] [-p password] tweetmsg&quot;
+    print &quot;Get last tweet update:\n&quot;,
+    print &quot;\tclt [-u username] -l&quot;
+    print &quot;Get recent tweet updates from all friends:\n&quot;,
+    print &quot;\tclt [-u username] -p password]-a&quot;
+    print &quot;clt --version&quot;
+    print &quot;clt --help&quot;
+
+def auth(username):
+    global password, authreq
+    if not username:
+        print &quot;No username supplied or no environment variable 'TWEETUSER'!&quot;
+        print (&quot;Use 'clt --help' for more info&quot;)
+        sys.exit(1)
+    # We will reach here only for operations that need authentication
+    if not password:
+        password = getpass.getpass()
+    p = twitter.Api(username, password)
+    return p
+
+def fall(username):
+    a = auth(username)
+    if not a:
+        print &quot;Invalid password or username&quot;
+        sys.exit(1)
+
+    status = a.GetFriendsTimeline()
+    for s in status:
+        print &quot;{0}: {1}&quot;.format(s.user.name, s.text)
+
+def main(argv):
+    global password, authreq
+    username = os.environ.get(&quot;TWEETUSER&quot;)
+    otheropts = 0
+    last = 0 #last status message
+    getall = 0
+
+    try:
+        opts, args = getopt.getopt(argv, &quot;u:p:la&quot;, [&quot;help&quot;, &quot;version&quot;])
+    except getopt.GetoptError:
+        usage()
+        sys.exit(2)
+
+# Parse all the command line arguments
+    for opt, arg in opts:
+        if opt == &quot;--help&quot;:
+            usage()
+            sys.exit();
+    if opt == &quot;--version&quot;:
+        printversion()
+            sys.exit()
+        elif opt == '-u':
+            username = arg
+        elif opt == '-p':
+            password = arg
+        elif opt == '-l':
+            last = 1
+    elif opt == '-a':
+            getall = 1
+
+    tweet = &quot; &quot;.join(args)
+    if tweet != '':
+        authreq = 1;
+
+    if getall == 1:
+        fall(username)
+        sys.exit();
+
+    if last == 1:
+        laststat = tweetapi.GetUserTimeline(username, count = 1)
+        for l in laststat:
+            print l.text
+        sys.exit()
+
+    p = auth(username)
+
+    # perform all authentication required operations here
+        # --------- other operations -----------#
+
+    # Reach here only to post tweets, else return early.
+    if tweet == '':
+        print &quot;Tweet what?&quot;
+        sys.exit(1)
+
+    p.PostUpdate(tweet)
+
+if __name__ == &quot;__main__&quot;:
+    main(sys.argv[1:])
+</code></pre>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagscli class="badge badge-dark">CLI</a>
+<a href=https://fossix.org/tagstwitter class="badge badge-dark">twitter</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

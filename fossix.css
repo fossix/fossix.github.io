@@ -1,0 +1,170 @@
+ /* Banner font */
+@import url(http://fonts.googleapis.com/css?family=Oswald:400,300,700);
+/* Body font */
+@import url('https://fonts.googleapis.com/css?family=ZCOOL+XiaoWei&display=swap');
+/* Code/pre font*/
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Source+Code+Pro&display=swap');
+
+body {
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 19px;
+}
+
+.front-site-title {
+    font-family: 'Merienda', cursive !important;
+    font-size: 3em;
+    font-weight: bold;
+}
+
+pre,code {
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+}
+
+.navbar-brand {
+    outline: none;
+}
+
+.contenthead {
+    padding-bottom:10px;
+    padding-top:15px;
+    height:125%;
+}
+
+.content-body p {
+    line-height:1.5;
+}
+
+footer p {
+    line-height:1.5;
+    font-size:12px;
+}
+
+.content li {
+    align:justify;
+}
+
+.content-title {
+    padding-left:20px;
+}
+
+.box {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.055);
+    padding-top:3px;
+    padding-bottom:5px;
+    padding-left:5px;
+    padding-right:5px;
+    margin-top:20px;
+}
+
+.box-list {
+    padding-top:2px;
+    padding-bottom:3px;
+    padding-left:5px;
+    padding-right:5px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.055);
+    margin-top:10px;
+}
+
+.box-list a.item, .box a.item {
+    display:block;
+    height: 100%;
+    width: 100%;
+    text-decoration:none;
+    color:#333333;
+    outline: 0;
+}
+
+.box-list a.item:hover, .box a.item:hover {
+    text-decoration: underline;
+}
+
+.box .item h3 {
+    display:block;
+    margin-bottom: 0px;
+}
+
+.box a p {
+    font-size:16px;
+    margin-top:7px;
+}
+
+ul.nav li.dropdown:hover > ul.dropdown-menu {
+    display: block;
+    margin-top:0px;
+}
+
+a.menu:after, .dropdown-toggle:after {
+  content: none;
+}
+
+.rounded {
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -khtml-border-radius: 50px;
+    overflow:hidden;
+}
+
+a.author {
+    color:#333333;
+    text-decoration:none;
+}
+
+a.author:hover,
+a.author:focus {
+    text-decoration:underline;
+}
+
+.loading {
+    align:center;
+}
+
+.recommended .box {
+    border-color: rgb(0, 0, 0);
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0);
+    border-radius: 0px;
+}
+
+.comment-article-author {
+    background-color: rgba(193, 205, 205, 0.2);
+}
+
+.tag-box {
+    overflow:hidden;
+    width:22%;
+    display:table;
+    float:left;
+    padding:4px;
+    margin-right:5px;
+    margin-bottom:10px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.tag-box p {
+    height:5.3em;
+    font-size:12px;
+    color:#555555;
+    overflow:hidden;
+}
+
+.tag-box .pull-left {
+    margin:5px;
+}
+
+.shighlight {
+    background-color: #ffffcc
+}
+
+.navbar a {
+    font-family: 'Merienda', cursive !important;
+    font-size: 34px;
+    font-weight: bold;
+}

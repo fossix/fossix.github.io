@@ -1,0 +1,158 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - The Birth of a Process
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>The Birth of a Process</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 23 July, 2013</span>
+<div class=float-right>
+<span> By santosh</span>
+</div>
+</div>
+<hr>
+<p>A process is born when a program is executed. So let us back-track a little more
+and start from the program birth. The program is born when there is a need for
+the programmer. So now I have a need to write a program so that I could create a
+process out of it and start explaining what happens along the way. The following
+is the sample code used for explaining various concepts in the rest of the
+article.</p>
+<pre><code class=language-c>#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main()
+{
+    float d;
+
+    d = cos(20);
+    printf(&quot;%f\n&quot;, d);
+}
+</code></pre>
+<p>The source is trivial, which just finds the cosine of a number and prints
+it. Now compiling the program should give us an executable from which we will
+start the journey of tracking the process down.</p>
+<pre><code class=language-console>$ cc sample-source.c -lm
+</code></pre>
+<p>which should give us a.out. Note that we are linking with the math library. Now executing this should create a process, on which our study will be based on.</p>
+<h2 id=the-program-and-the-shell>The Program and the Shell</h2>
+<pre><code class=language-console>$ ./a.out
+</code></pre>
+<p>When typing <code>./a.out</code> in the shell, the shell first creates a process of its own
+using the <code>fork()</code> system call. This <code>fork()</code> system call will create a new
+process. This new process will overlay itself with the executable image given
+through the <code>execv()</code> set of system calls. We will go more into each of these
+system calls in the coming sections. Roughly what the shell will do is in the
+following listing.</p>
+<pre><code class=language-c>#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+
+int shell_exec (char *command)
+{
+    pid_t pid;
+
+    pid = fork();
+    if (pid == 0) {
+        execlp(command, command, NULL);
+    }
+    /* parent process continues running */
+    return 0;
+}
+
+int main (int count, char **command)
+{
+    if (count &lt; 2)
+        printf(&quot;Need a command to execute\n&quot;);
+
+    return shell_exec(command[1]);
+}
+</code></pre>
+<p>The above code is a major simplification of what the shell does, which handles
+pipes, permissions, job control and much more.</p>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagsc class="badge badge-dark">c</a>
+<a href=https://fossix.org/tagsprocess class="badge badge-dark">process</a>
+<a href=https://fossix.org/tagsshell class="badge badge-dark">shell</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - Dynamic linker and loader
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>Dynamic linker and loader</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 27 July, 2013</span>
+<div class=float-right>
+<span> By santosh</span>
+</div>
+</div>
+<hr>
+<p>As you would have noticed the beginning of the document, it was told the
+explanation will be based on the program we had written earlier in this
+series. The program was compiled using the command</p>
+<pre><code class=language-console>$ cc sample-source.c -lm
+</code></pre>
+<p>As you have probably noticed, we are linking the program with the math
+library. This was done intentionally to explain the dynamic loader. Any file can
+be identified using the file command. Running file on the <code>a.out</code> executable gives
+us some information on the type of executable.</p>
+<pre><code class=language-console>$ file a.out
+a.out: ELF 64-bit LSB executable, x86-64, version 1 
+(SYSV), dynamically linked (uses shared libs), for
+GNU/Linux 2.6.32, not stripped
+</code></pre>
+<p>The description shows that the executable compiled is a <code>ELF</code> (Executable and
+Linkable Format) type executable for a 64 bit machine and used shared
+libraries. To find out what are all the shared libraries that went into making
+the ELF executable can be found using the <code>ldd</code> program.</p>
+<pre><code class=language-console>$ ldd a.out
+linux-vdso.so.1 =&gt;  (0x00007fff1d368000)
+libm.so.6 =&gt; /lib64/libm.so.6 (0x0000003cede00000)
+libc.so.6 =&gt; /lib64/libc.so.6 (0x0000003cece00000)
+/lib64/ld-linux-x86-64.so.2 (0x0000003ceca00000)
+</code></pre>
+<p>The output shows that our tiny executable uses the services of four different
+shared libraries. {The <code>linux-vdso.so</code> library will be explained elsewhere in this
+series). The <code>libm.so</code> is the match library that we linked in while compiling out
+program code. The next is the standard C library. The last library is the
+dynamic loader which will help during the start of the program execution to use
+other library functions that we are linked with. This section will describe the
+functions of the dynamic loader in detail.</p>
+<p>Before we can proceed with the dynamic loader in detail, there are some
+background information that needs to be known about the compilation process.</p>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagsprocess class="badge badge-dark">process</a>
+<a href=https://fossix.org/tagslinker class="badge badge-dark">linker</a>
+<a href=https://fossix.org/tagsloader class="badge badge-dark">loader</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

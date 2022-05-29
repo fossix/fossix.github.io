@@ -1,0 +1,233 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - Go's Reflection
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>Go's Reflection</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 8 March, 2017</span>
+<div class=float-right>
+<span> By sab</span>
+</div>
+</div>
+<hr>
+<h1 id=gos-reflection>Go&rsquo;s reflection</h1>
+<p>Reflection is used by the Go program to inspect types at runtime. Some
+understanding of Go&rsquo;s <code>interface{}</code> is required before proceeding.</p>
+<p>Consider a hypothetical requirement to build a validation for structures. In
+usual case I would prefer a <code>if-else</code> statement.</p>
+<pre><code class=language-go>type Employee struct {
+	Name    string `json:&quot;name&quot;`
+	Address string `json:&quot;address&quot;`
+	Age     int    `json:&quot;age&quot;`
+}
+
+var e Employee
+err := json.Unmarshal(data, &amp;e)
+
+// validate each field
+
+if e.Name == &quot;&quot; {
+    log.Fatal(&quot;Name cannot be empty&quot;)
+}
+
+if e.Age &lt; 18 {
+    log.Fatal(&quot;Should be atleast 18 years old&quot;)
+}
+...
+</code></pre>
+<p>This is prefectly fine until the only resource in you web application is
+Employee. Life is never made so simple even you wish it could be, If there are
+many such struct, aka json contracts that need to be validated a simpler
+approach is beneficial. Fortunately, Go&rsquo;s standard library comes with a package
+<code>reflect</code>, we need a generic validator for all common actions.</p>
+<p>So our hypothetical validator will implement a <code>validator()</code> function. Which
+takes in a interface{} and spews out a interface{} and errors if necessary.</p>
+<pre><code class=language-go>func main() {
+	e := Employee{Name: &quot;Sab&quot;, Address: &quot;here&quot;, Age: 13}
+    fmt.Println(validator(e))
+}
+func validator(e interface{}) []error {
+    /* Convert the interface to reflection object -&gt; do some processing -&gt; convert it back to interface{} */
+}
+</code></pre>
+<p>So the meat of the validator function is to convert the interface to a
+validation object and verify validity of data. since I don&rsquo;t know what is the
+type of the input; here comes
+<a href=https://en.wikipedia.org/wiki/Reflection_(computer_programming)>reflection</a>.</p>
+<p>Inorder to convert a interface to a reflection object; We need to know there are
+two kinds of reflection objects: <code>Type</code> & <code>Value</code>; functions <code>reflect.TypeOf()</code>,
+<code>reflect.ValueOf()</code> return <code>Type</code> and <code>Value</code> respectively. <code>Type</code> represents
+the Go&rsquo;s type.</p>
+<p>First, Our challenge will be to go over each field in the struct. This can be
+done with the following:</p>
+<pre><code class=language-go>func validator(e interface{}) []error {
+	v := reflect.TypeOf(e) // returns reflect.Type 
+	for i := 0; i &lt; v.NumField(); i++ {
+		fmt.Println(v.Field(i).Name, v.Field(i).Type.Kind())
+	}
+    return nil
+}
+</code></pre>
+<p>Here <code>Field()</code> method of the Type object return a <code>StructField</code> instance, which
+in turn has a reference to the Type of the field. Now that our first part of our
+problem is complete, second part of the problem is to identify what kind of
+validation should be applied to what kind of data. In our case we will need a
+string validator and number validator. We can use a custom struct tag which will
+give inputs to our validator.</p>
+<pre><code class=language-go>type Employee struct {
+	Name    string `json:&quot;name&quot; validate:&quot;string,min=1,max=0&quot;`
+	Address string `json:&quot;address&quot; validate:&quot;string,min=1,max=0&quot;`
+	Age     int    `json:&quot;age&quot; validate:&quot;number,min=1,max=0&quot;`
+}
+</code></pre>
+<p>And our validators will be:</p>
+<pre><code class=language-go>type stringValidator struct {
+	MaxLength int
+	MinLength int
+}
+
+func (s stringValidator) validate(x reflect.Value) error {
+	v := x.Interface().(string)
+	if len(v) &gt; s.MaxLength {
+		return errors.New(&quot;exceeds max length&quot;)
+	}
+	if len(v) &lt; s.MinLength {
+		return errors.New(&quot;Can be this small&quot;)
+	}
+	return nil
+}
+
+type numberValidator struct {
+	Max int
+	Min int
+}
+
+func (s numberValidator) validate(x reflect.Value) error {
+	v := x.Interface().(int)
+	if v &gt; s.Max {
+		return errors.New(&quot;exceeds max value&quot;)
+	}
+	if v &lt; s.Min {
+		return errors.New(&quot;Can be this small&quot;)
+	}
+	return nil
+}
+</code></pre>
+<p><code>v</code> here is converted back to <code>interface{}</code> type so that it can be converted
+back to it real underlying type. To select one of these validators, our
+validator function should use the validate tag&rsquo;s type information. Our validator
+function should be extended as following.</p>
+<pre><code class=language-go>func validator(e interface{}) []error {
+	v := reflect.ValueOf(e)
+	t := v.Type()
+	errs := make([]error, 0, t.NumField())
+	for i := 0; i &lt; t.NumField(); i++ {
+		tag := strings.SplitN(t.Field(i).Tag.Get(&quot;validate&quot;), &quot;,&quot;, 2)
+
+		switch tag[0] {
+		case &quot;number&quot;:
+			x := numberValidator{}
+			fmt.Sscanf(tag[1], &quot;min=%d,max=%d&quot;, &amp;x.Min, &amp;x.Max)
+			e := x.validate(v.Field(i))
+			errs = append(errs, e)
+			break
+		case &quot;string&quot;:
+			x := stringValidator{}
+			fmt.Sscanf(tag[1], &quot;min=%d,max=%d&quot;, &amp;x.MinLength, &amp;x.MaxLength)
+			e := x.validate(v.Field(i))
+			errs = append(errs, e)
+			break
+		}
+		return errs
+	}
+	return nil
+}
+</code></pre>
+<p>Tip: Read this <a href=https://blog.golang.org/laws-of-reflection>https://blog.golang.org/laws-of-reflection</a></p>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagsgolang class="badge badge-dark">golang</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

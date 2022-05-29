@@ -1,0 +1,199 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - Sending SMS from the command line in Jolla
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>Sending SMS from the command line in Jolla</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 10 October, 2014</span>
+<div class=float-right>
+<span> By santosh</span>
+</div>
+</div>
+<hr>
+<p>Without much ado, here is the entire script which I had written, works really
+well expect when you need to add a new group. A new group is added when sending
+the SMS, but the same group is not used when the message is received (I was
+testing sending SMS to myself), I didn’t try really hard after this discovery!!
+Add a new group for yourself and you should get a random funny message added in
+your UI (Sailfish people are not boring you know!).</p>
+<p>The following script was entirely written in Emacs from over the SSH, and even
+for such a huge editor, Jolla was not at all slow, and didn’t heat up, nor it
+lagged in any case. Awesome!</p>
+<pre><code class=language-bash># sendsms phonenumber|firstname|lastname &quot;Message Text&quot; type
+# type is mobile by default
+# If not unique numbers are found, script will prompt for a choice
+# the message if sent successfully, it will add into the message UI also
+
+[ $# -lt 2 ] &amp;&amp; echo &quot;Usage&quot; &amp;&amp; exit 1
+
+# just pick up the first word (if fullname has been given)
+contact=`echo $1 | cut -f1 -d&quot; &quot; | tr '[a-z]' '[A-Z]'`
+message=$2
+
+if [ $# -gt 2 ]; then
+    type=`echo $3 | cut -f1 -d&quot; &quot; | tr '[a-z]' '[A-Z]'`
+else
+    type=&quot;MOBILE&quot;
+fi
+
+phonenumber=`sqlite3 /home/nemo/.local/share/system/privileged/Contacts/qtcontacts-sqlite/contacts.db &quot;select phoneNumber from phonenumbers where contactId in (select ContactId from contacts where upper(firstname)='$contact' or upper(lastname)='$contact') and upper(subTypes)='$type' group by phoneNumber&quot;`
+
+count=`wc -w &lt;&lt;&lt; $phonenumber`
+
+if [ $count -gt 1 ]; then
+    phonenumbers=($phonenumber)
+    echo &quot;Found multiple phone numbers for name $contact&quot;
+    echo &quot;Select phone number to send message&quot;
+    c=1;
+    for i in ${phonenumbers[@]} ; do
+    echo $c: $i
+    c=$((c+1))
+    done
+    read -p &quot;Enter choice (any other to quit): &quot; choice
+
+    if [ -n $choice ]; then
+    ! [[ $choice =~ &quot;^[0-9]+$&quot; ]] &amp;&amp; exit 0
+    [ $choice -gt $count ] &amp;&amp; exit 0
+    else
+    # empty?
+    exit 0
+    fi
+
+    [ $choice -eq 0 ] &amp;&amp; exit 0
+
+    choice=$((choice-1))
+    phonenumber=${phonenumbers[$choice]}
+fi
+
+echo &quot;Sending message to $contact ($phonenumber)&quot;
+
+# strip zeroes and + etc from
+phonenumber=`sed -e 's/^0//g' &lt;&lt;&lt;$phonenumber`
+echo $phonenumber
+groupid=`sqlite3 /home/nemo/.local/share/commhistory/commhistory.db &quot;select max(groupId) from Events where groupId in (select id from Groups where remoteUids like '%$phonenumber')&quot;`
+echo $groupid
+if [ -z $groupid ]; then
+    su - nemo -c &quot;commhistory-tool add -newgroup '' '$phonenumber'&quot;
+    groupid=`sqlite3 /home/nemo/.local/share/commhistory/commhistory.db &quot;select max(groupId) from Events where groupId in (select id from Groups where remoteUids like '%$phonenumber')&quot;`
+    if [ -z $groupid ]; then
+    echo &quot;error adding group&quot;
+    exit 1
+    fi
+fi
+
+su - nemo -c &quot;commhistory-tool add -group $groupid -text '$message' -out -sms '' '$phonenumber'&quot;
+
+dbus-send --system --print-reply --dest=org.ofono /ril_0 org.ofono.MessageManager.SendMessage string:&quot;$phonenumber&quot; string:&quot;$message&quot;
+if [ $? -eq 0 ]; then
+    echo &quot;Message sent&quot;
+fi
+</code></pre>
+<p>There are some hacks, with <code>su -c</code> etc, because we cannot access history DB as
+root user, and we cannot access the phonebook and contacts DB as nemo :-(</p>
+<p>The basic usage is (you have to run as root, there is no other choice as far as
+I have learnt)</p>
+<pre><code class=language-console>$ sendsms Santosh &quot;A test message&quot;
+Sending message to SANTOSH (xxxxxxxxxx)
+xxxxxxxxxx
+
+[W] CommHistoryDatabase::open:301 - Opened commhistory database: &quot;/home/nemo/.local/share/commhistory/commhistory.db&quot;
+Added group 59
+[D] Catcher::eventsCommittedSlot:71 - void Catcher::eventsCommittedSlot(QList&lt;CommHistory::Event&gt;, bool)
+[W] CommHistoryDatabase::open:301 - Opened commhistory database: &quot;/home/nemo/.local/share/commhistory/commhistory.db&quot;
+[D] Catcher::eventsCommittedSlot:71 - void Catcher::eventsCommittedSlot(QList&lt;CommHistory::Event&gt;, bool)
+method return sender=:1.7 -&gt; dest=:1.2929 reply_serial=2
+   object path &quot;/ril_0/message_A6FB1FE1D5C5920F9F5572355DA9A200C85D1112&quot;
+Message sent
+</code></pre>
+<p>If there are multiple phone number present, it will as you to choose one. Try
+sending an SMS to yourself and see the Easter egg in action!!</p>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagscli class="badge badge-dark">CLI</a>
+<a href=https://fossix.org/tagsjolla class="badge badge-dark">jolla</a>
+<a href=https://fossix.org/tagseaster-eggs class="badge badge-dark">easter-eggs</a>
+<a href=https://fossix.org/tagssms class="badge badge-dark">sms</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

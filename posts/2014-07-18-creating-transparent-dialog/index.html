@@ -1,0 +1,119 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - C++ - Creating Transparent Dialog
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>C++ - Creating Transparent Dialog</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 18 March, 2017</span>
+<div class=float-right>
+<span> By ashishn</span>
+</div>
+</div>
+<hr>
+<p>This is a simple trick to make a transparent dialog without making its child
+controls transparent. We can set the opacity and transparency color key of a
+layered window.</p>
+<p>To know more about layered window you can click <a href=http://msdn.microsoft.com/en-us/library/ms997507.aspx>here</a></p>
+<p>I used <code>SetLayeredWindowAttributes</code> with <code>LWA_COLORKEY</code> to replace a color with
+transparency, in order to achieve a transparent background. Set the background
+color of the dialog which is not used in the application. I selected a color
+(e.g., RGB(1,11,21)) that is not present anywhere except in the dialog
+background. Set that color transparent using <code>SetLayeredWindowAttributes</code> with the
+<code>LWA_COLORKEY</code> flag.</p>
+<p>The code that makes dialog is:</p>
+<pre><code class=language-cpp>SetBackgroundColor(RGB(1,11,21));
+LONG ExtendedStyle = GetWindowLong(GetSafeHwnd(), GWL_EXSTYLE);
+SetWindowLong(GetSafeHwnd(), GWL_EXSTYLE, ExtendedStyle | WS_EX_LAYERED);
+::SetLayeredWindowAttributes(GetSafeHwnd(), RGB(1,11,21), 0, LWA_COLORKEY);
+</code></pre>
+<p>Paste the above code in the <code>OnInitDialog()</code> function of your dialog class. Use
+Visual Studio 2010 and derive your dialog class from the <code>CDialogEx</code> class.</p>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagsdialog class="badge badge-dark">dialog</a>
+<a href=https://fossix.org/tagstransparent class="badge badge-dark">transparent</a>
+<a href=https://fossix.org/tagswindows class="badge badge-dark">windows</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

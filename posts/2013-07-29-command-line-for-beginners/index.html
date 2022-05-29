@@ -1,0 +1,206 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - Command Line for beginners - Email
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>Command Line for beginners - Email</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 29 March, 2017</span>
+<div class=float-right>
+<span> By santosh</span>
+</div>
+</div>
+<hr>
+<p>There are a vast number of mail clients available to choose from for our
+everyday usage. But as Michael Elkins said, all mail clients suck. So there must
+be some way we could make one of those suckers suck less.</p>
+<p>Most mail clients are GUI based. But I am going to talk about command line mail
+clients, and specifically about mutt, because this one sucks less, and that’s
+what I use. But to use mutt, you should also know how to use a Mail Transport
+Agent (MTA) and a Mail Delivery Agent (MDA). For MTA, what we will be seeing
+here is fetchmail and the MDA will be procmail. We will look at configuring,
+minimilistically, and running the programs, which will just satisfy your basic
+needs, and scratches your itches to do more ;-)</p>
+<h2 id=how-is-this-going-to-work>How is this going to work</h2>
+<ul>
+<li>Enable mail server to accept POP connections</li>
+<li>Configure local workstation to contact mail server and fetch mails</li>
+<li>Configure a Local Mail Delivery Agent to deliver it to you</li>
+<li>Optionally configure the MDA to deliver mails in the way you prefer.</li>
+</ul>
+<h3 id=configuring-email-to-be-delivered-to-your-mail-spooler>Configuring email to be delivered to your mail spooler</h3>
+<p>The first step to start using a CLI based Mail User Agent (MUA), mutt, is to
+somehow bring in all your mails to <code>/var/spool/mail/you</code>. This part is done by
+fetchmail, and opensource, free MTA.</p>
+<p>Here is a dummy configuration:</p>
+<pre><code>poll pop.gmail.com with proto POP3 and options no dns
+user 'somebody@example.com' there with password 'password' is 'password' here  options ssl flush
+</code></pre>
+<p>What this says to fetchmail is that, poll the gmail server with protocol pop3
+for the user <a href=mailto:somebody@example.com>somebody@example.com</a> whose password is &ldquo;password&rdquo;, and do
+everything securely over Secure Socket Layer (SSL).</p>
+<p>Once you change this to your needs and put them into <code>.fetchmailrc</code>, just run
+<code>fetchmail -c</code> and check for any errors. If there are no errors, you will know
+about new mails in the server. New mails? No rush to check it in the web site,
+just wait, we are almost done.</p>
+<p>Now lets put this fetchmail command in cron so we don’t have to check mail
+manually.</p>
+<pre><code class=language-console>$ crontab -e
+*/10 * * * * fetchmail &gt;/dev/null 2&gt;&amp;1
+</code></pre>
+<p>The redirection to <code>/dev/null</code> is to stop <code>cron</code> sending us mails every 10
+minutes.</p>
+<p>After the first run, check your mail with <code>mail</code> command. If you can see new
+mails from your ISP. If you still get errors, then</p>
+<ul>
+<li>The configuration might be incorrect</li>
+<li>Make sure fetchmail in cron has run or you run it without the <code>-c</code> option</li>
+<li>Check you have enabled pop support for the mail address (In case of gmail,
+<code>setting->forwarding->enable pop</code>)</li>
+</ul>
+<p>Yes, this is it! you have started using command line for reading mails!!</p>
+<p>The first step is a good step, but the reading mails through mail is not very
+interesting, the UI is not very friendly. So you just open mutt from your
+command line. This would have a nice interface, atleast better than mail.</p>
+<p>Oh! you need filters? You have using filters in thunderbird heavily? mm.. then
+we should learn some more configurations, and this is for procmail.</p>
+<h3 id=making-your-mda-deliver-mails-the-way-you-want-it>Making your MDA deliver mails the way you want it</h3>
+<p>I hope you got the terms.</p>
+<dl>
+<dt><code>fetchmail</code></dt>
+<dd>is a MTA since it gets mail from the mail server to your local workstation</dd>
+<dt><code>procmail</code></dt>
+<dd>is a MDA since it just delivers the mail to you in a way you want it</dd>
+</dl>
+<p>The mail fetched by fetchmail which would be in <code>/var/spool/mail/you</code> is a single
+file containing all the mails you have received. Now you want then to be
+filtered out and put into separate files. This is where <code>procmail</code> comes in. The
+below configuration is for <code>.procmailrc</code></p>
+<pre><code>LINEBUF=4096
+VERBOSE=off
+MAILDIR=$HOME/Mail
+DEFAULT=$MAILDIR/INBOX
+FORMAIL=/usr/bin/formail
+SENDMAIL=/usr/sbin/sendmail 
+PMDIR=$HOME/.procmail
+LOGFILE=$PMDIR/log
+INCLUDERC=$PMDIR/rc.maillists
+</code></pre>
+<p>In the above I have used a directory called Mail to hold all my mails. My mail
+filter rules are present in <code>rc.maillists</code> file inside <code>.procmail</code> directory in my
+home. So the <code>.procmail/rc.maillists</code> file contains the following filter.</p>
+<pre><code>:0:
+* ^TO_ilugc@ae.iitm.ac.in
+lug
+
+:0:
+* ^TO_kernelnewbies@nl.linux.org
+kernel
+
+:0:
+* ^TO_kernel-janitors@vger.kernel.org
+kernel
+
+:0:
+* ^TO_linuxcprogramming@lists.linux.org.au
+programming
+
+:0:
+* ^TO_linux-c-programming@vger.kernel.org
+programming
+</code></pre>
+<p>I have created some rules which puts mails form specific mailing lists to its
+own file in my Mail directory. The DEFAULT variable makes sure that procmail
+puts all the rest of the mails in the INBOX file. For more information on the
+procmail rules see <a href=http://www.procmail.org/>http://www.procmail.org/</a> or the
+procmailex man page.</p>
+<p>And finally configuring the mail client itself. This is all about personal
+preference, the colors, the key bindings etc. The <code>.muttrc</code> file itself can be
+built using <a href=http://www.muttrcbuilder.org/>http://www.muttrcbuilder.org/</a>.</p>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagscli class="badge badge-dark">CLI</a>
+<a href=https://fossix.org/tagsemail class="badge badge-dark">email</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

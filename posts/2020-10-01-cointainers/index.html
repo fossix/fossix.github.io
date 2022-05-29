@@ -1,0 +1,166 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - Writing containers in Linux
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>Writing containers in Linux</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 1 October, 2020</span>
+<div class=float-right>
+<span> By santosh</span>
+</div>
+</div>
+<hr>
+<h2 id=creating-containers>Creating Containers</h2>
+<p>A basic contianer can be created with minimal amount of code.</p>
+<h3 id=container>Container</h3>
+<pre><code class=language-c>struct container {
+	char *name;
+	char *rootfs;
+	char *cmd;
+	void *stack;
+};
+
+struct container *new_container(char *name, char *rootfs, char *cmd)
+{
+	struct container *c;
+
+	c = calloc(sizeof(struct container), 1);
+	if (!c)
+		err(errno, &quot;Container&quot;);
+
+	c-&gt;name = strdup(name);
+	c-&gt;rootfs = strdup(rootfs);
+	c-&gt;cmd = strdup(cmd);
+
+	if (!c-&gt;name || !c-&gt;rootfs || !c-&gt;cmd)
+		err(errno, &quot;Container&quot;);
+
+	return c;
+}
+</code></pre>
+<h3 id=cloning-process>Cloning Process</h3>
+<p>Clone process using the `clone` system call with the appropriate namespace
+flags to create a new namespace for the contianer.</p>
+<pre><code class=language-c>#define STACK_SIZE (1024 * 1024)
+
+int run_container(struct container *c)
+{
+	int pid;
+
+	/* We will add the network namespace later */
+	int cloneflags = CLONE_NEWPID|CLONE_NEWNS|CLONE_NEWUTS|CLONE_NEWIPC;
+	cloneflags |= SIGCHLD;
+
+	c-&gt;stack = malloc(STACK_SIZE);
+	if (!c-&gt;stack)
+		err(errno, &quot;Stack creation&quot;);
+
+	printf(&quot;Cloning\n&quot;);
+	pid = clone(_container_exec, c-&gt;stack + STACK_SIZE, cloneflags, (void *) c);
+	if (pid == -1)
+		err(errno, &quot;Clone&quot;);
+
+	printf(&quot;Cloned\n&quot;);
+
+	return pid;
+}
+</code></pre>
+<h3 id=change-root-filesystem>Change root filesystem</h3>
+<pre><code class=language-c>    if (chroot(c-&gt;rootfs) == -1)
+            err(errno, &quot;chroot&quot;);
+    
+    if (chdir(c-&gt;rootfs) == -1)
+            err(errno, &quot;chdir&quot;);
+    
+    /* mount proc so we can run `ps` etc */
+    if (mount(&quot;proc&quot;, &quot;/proc&quot;, &quot;proc&quot;, 0, NULL) == -1)
+            err(errno, &quot;mount&quot;);
+</code></pre>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagslinux class="badge badge-dark">linux</a>
+<a href=https://fossix.org/tagscontainers class="badge badge-dark">containers</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - XMPP Auto Reply Bot
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>XMPP Auto Reply Bot</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 23 August, 2010</span>
+<div class=float-right>
+<span> By sab</span>
+</div>
+</div>
+<hr>
+<p>This an introduction to a simple Perl script that replies to your XMPP buddies based on key words.</p>
+<p>This is not really a great script in terms of use, but could be fun. This is not
+same as auto-reply in Pidgin. This script replies to your buddies, may be you
+can run it while you are away. There are few key words like ‘hi’, ‘hello’,
+‘hey’, ‘why’, ‘where’, ‘what’ etc. You can add few more you like. Probably,
+using this script may make your friends think that you have gone crazy, but that
+doesn’t matter ;).</p>
+<p>Before using this script, you should have your systems installed with
+<code>IO::Socket::SSL</code> , and <code>AnyEvent::XMPP</code>. You can install it with the following
+commands.</p>
+<pre><code class=language-console>$ sudo cpan IO::Socket::SSL
+$ sudo cpan AnyEvent::XMPP
+</code></pre>
+<p>The following is the code for the auto-reply bot.</p>
+<pre><code class=language-perl>#!/usr/bin/perl
+use strict;
+use utf8;
+use AnyEvent;
+use AnyEvent::XMPP::Client;
+use AnyEvent::XMPP::IM::Message;
+
+
+my $uname = 'your_gmail_id';    # or be jabber, don't forget to change $server to jabber.org
+my $passwd = 'your_password';
+my $server = &quot;talk.google.com&quot;;
+my $j = AnyEvent-&gt;condvar;
+my $cl = AnyEvent::XMPP::Client-&gt;new (debug =&gt; 0);
+$cl-&gt;add_account ($uname,$passwd,$server);
+$cl-&gt;reg_cb (
+   session_ready =&gt; sub {
+    my ($cl, $acc) = @_;
+    $cl-&gt;set_presence(&quot;avaliable&quot;,&quot;Under reply bot\'s control&quot;,10);
+   },
+   disconnect =&gt; sub {
+      my ($cl, $acc, $h, $p, $reas) = @_;
+      print &quot;disconnect ($h:$p): $reas\n&quot;;
+   },
+   error =&gt; sub {
+      my ($cl, $acc, $err) = @_;
+      print &quot;ERROR: &quot; . $err-&gt;string . &quot;\n&quot;;
+   },
+   message =&gt; sub {
+      my ($cl, $acc, $msg) = @_;
+    my ($u,$r) = split(/[\._@]/,$msg-&gt;from);
+     if($msg-&gt;body()=~ /^[\s]*$/){ print $u.&quot; is typing\n&quot;;}
+    else{
+        $r = $msg-&gt;make_reply;
+        my $rep=&amp;sentm($msg-&gt;body,$u);
+        $r-&gt;add_body($rep);
+        $r-&gt;send;
+
+    }
+        print &quot;$u says: &quot;.$msg-&gt;body() . &quot;\n&quot;;
+   }
+);
+
+#you can add your own keyword's, need to improve this part!
+sub sentm{
+    my $msg=shift;
+    my $u =shift;
+    my $reply;
+    if($msg=~/([hH]ow)|([hH]i)|([hH]ey)|([Hh]ello)/){return $reply=&quot;$u, Hi.. How are you.. &quot;;}
+    if($msg=~/([Ww]hat)|\?|([Ww]at)|(^did)/){return $reply=&quot;yes but not really $u... :) &quot;;}
+    if($msg=~/([Ww]hy)|([Ww]hen)/){return $reply=&quot;may be in sometime $u.. :)&quot;;}
+    if($msg=~/([Oo]kay)|([oO]k)/){return $reply=&quot;good&quot;;}
+    else {return $reply=&quot;hey $u, I will alert if I meet $ENV{'USER'}&quot;;}
+}
+$cl-&gt;start;
+$j-&gt;wait;
+</code></pre>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagsgtalk class="badge badge-dark">gtalk</a>
+<a href=https://fossix.org/tagsxmpp class="badge badge-dark">xmpp</a>
+<a href=https://fossix.org/tagsbot class="badge badge-dark">bot</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

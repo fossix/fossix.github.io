@@ -1,0 +1,181 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - In-house Audio Streaming
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>In-house Audio Streaming</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 23 March, 2017</span>
+<div class=float-right>
+<span> By santosh</span>
+</div>
+</div>
+<hr>
+<p>Lots of users have gigabytes of music in their personal computer, but every time
+when we want to listen to music on our portable device, we need to copy
+selectively some songs to the device and then listen. You can listen to all the
+songs from your PC itself. But what if your girl friend wants to watch videos
+and you have only one computer in your house? Now stop fighting, leave the
+computer with you girl friend and start your music stream to connect from your
+Android or any mobile with streaming audio playback support.</p>
+<p>How is that is what we will be looking in this post, it is quite simple, read
+on.</p>
+<p>I am using a Fedora, which is a RPM based ditro, so I will use yum to install
+and update my packages. If you are using some other distribution based on
+Debian, then you will be using aptitude.</p>
+<p>The first package we need is icecast, which is a streaming media server.</p>
+<pre><code class=language-console>$ sudo yum install icecast
+</code></pre>
+<p><code>icecast</code> works on mount points. A mount point is where the source (which does
+the actual music conversion, decoding and encoding) send all the music to. We
+will do a basic, working configuration and test it.</p>
+<p>The configuration for icecast is XML based. The default configuration given by
+icecast is good enough, except for adding an extra listen socket with your local
+IP.</p>
+<pre><code class=language-xml>&lt;listen-socket&gt;
+        &lt;port&gt;8000&lt;/port&gt;
+        &lt;bind-address&gt;192.168.1.2&lt;/bind-address&gt;
+&lt;/listen-socket&gt;
+</code></pre>
+<p>Change the IP above to you computer’s IP, so you connect from another system or
+device.</p>
+<p>Now for the next package called ezstream.</p>
+<pre><code class=language-console>$ sudo yum install ezstream
+</code></pre>
+<p>Examples for ezstream configuration is located in <code>/usr/share/doc/ezstream/examples/</code></p>
+<p>Copy the example configuration file which says ezstream_mp3.xml to some nice
+folder (your home or Music folder will be fine). Before changing any
+configurations for ezstream, it would be better if had tested icecast, Now copy
+some mp3 file to <code>/usr/share/icecast/web</code> directory and start the icecast
+server.</p>
+<pre><code class=language-console>$ icecast -b -c /etc/icecast.xml
+</code></pre>
+<p>the option <code>-b</code> tells icecast to run in the background and <code>-c</code> is used to pass
+the config file to icecast. Now, from your browser open the URL like (of course,
+change the IP to your IP, or use localhost if on the same system)</p>
+<pre><code>http://192.168.1.2:8000/example.mp3
+</code></pre>
+<p>Now, your browser should be able to playback the streamed audio file. If this is
+not working check for the log file in <code>/var/log/icecast</code> else leave a comment, we
+can try to figure out the issue.</p>
+<p>Ok, moving on to ezstream configuration, the default is good enough, just make
+sure that the username and password for source matches that of the same in
+icecast configuration file. Also check the mount point, IP and URL.</p>
+<pre><code class=language-xml>&lt;ezstream&gt;
+    &lt;url&gt;http://localhost:8000/stream&lt;/url&gt;
+    &lt;sourcepassword&gt;hackme&lt;/sourcepassword&gt;
+    &lt;format&gt;MP3&lt;/format&gt;
+    &lt;filename&gt;playlist.m3u&lt;/filename&gt;
+    &lt;!-- Once done streaming playlist.m3u, exit: --&gt;
+    &lt;stream_once&gt;1&lt;/stream_once&gt;
+</code></pre>
+<p>You can see the playlist.m3u, that’s what we need to create now. Assuming we are
+in a folder which has audio files organised by folders, we will create the m3u
+files using find.</p>
+<pre><code class=language-console>$ find . -name &quot;*.mp3&quot; &gt; playlist.m3u
+</code></pre>
+<p>The final thing is to start streaming.</p>
+<pre><code>$ ezstream -c ezstream_mp3.xml
+</code></pre>
+<p>This should start streaming your music, and you should able to listen through
+your browser or players like <code>Rhythmbox</code> or <code>Totem</code>.</p>
+<p>Where does Android come here?</p>
+<p>Android is not required, you just need any phone with Wifi and a stream media
+playback capable player. If you are using Android, then install &ldquo;Stream media
+Player&rdquo;, open it, click on internet radio, give your URL as</p>
+<pre><code>http://192.168.1.2:8000/stream
+</code></pre>
+<p>where stream is the mount point you defined in the icecast and ezstream
+configuration files. Now you don’t have to be with the PC to listen to your
+songs, all you require is extended wifi range, so you can sit in your garden and
+relax, without keeping you PC speakers in full volume and scaring the hell out
+of your neighbours.</p>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagsandroid class="badge badge-dark">android</a>
+<a href=https://fossix.org/tagsstreaming class="badge badge-dark">streaming</a>
+<a href=https://fossix.org/tagsfedora class="badge badge-dark">fedora</a>
+<a href=https://fossix.org/tagsaudio class="badge badge-dark">audio</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

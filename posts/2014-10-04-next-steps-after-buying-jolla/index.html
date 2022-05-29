@@ -1,0 +1,168 @@
+<!doctype html><html><head>
+<link rel=stylesheet href=/syntax.css>
+<link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+<link href=/fossix.css rel=stylesheet media=screen>
+<title>
+Fossix - What next after buying Jolla
+</title>
+<script data-ad-client=ca-pub-0086577717613608 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta charset=utf-8>
+</head>
+<body><nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<a class=navbar-brand href=/>
+<img src=/site-logo.png width=40 height=45 class="d-inline-block align-top" alt>
+</a>
+<button class=navbar-toggler type=button data-toggle=collapse data-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
+<span class=navbar-toggler-icon></span>
+</button>
+<div class="collapse navbar-collapse" id=navbarSupportedContent>
+<ul class="navbar-nav mr-auto">
+<li class="nav-item active">
+<a class=nav-link href=/>Fossix
+<span class=sr-only>(current)</span>
+</a>
+</li>
+</ul>
+<form class="form-inline my-2 my-lg-0" id=search>
+<input class="form-control mr-sm-2" type=search placeholder=Search aria-label=Search id=searchString name=searchString>
+<button class="btn btn-outline-success my-2 my-sm-0" type=submit name=googleSearchName value=Search>Search</button>
+</form>
+</div>
+</nav>
+<div class=container-fluid style=margin-top:25px>
+<div class=row>
+<div class=col-md-2>
+<div class="list-group list-group-flush">
+<a href=/ class="list-group-item list-group-item-action">
+Home
+</a>
+<a href=/categories/snippets class="list-group-item list-group-item-action">
+Snippets
+</a>
+<a href=/categories/blogs class="list-group-item list-group-item-action">
+Blogs
+</a>
+<a href=/categories/articles class="list-group-item list-group-item-action">
+Articles
+</a>
+<a href=/archive/ class="list-group-item list-group-item-action">
+Archive
+</a>
+</div>
+</div>
+<div class=col-md-6>
+<div class="row content-title">
+<h1>What next after buying Jolla</h1>
+</div>
+<div class="alert alert-light">
+<span class=badge>Posted on: 19 July, 2014</span>
+<div class=float-right>
+<span> By santosh</span>
+</div>
+</div>
+<hr>
+<p>A Jolla phone’s Sailfish OS is just like any other Linux distribution. Like you
+use KDE or Gnome or Mate et cetra in your Desktop, this
+uses <a href=https://github.com/nemomobile/lipstick-colorful-home>Lipstick</a> as its
+UI. So the underlying filesystem and everything else is the same as you know
+from your Desktop. To get a feel you can enable developer mode and ssh into the
+phone. How do we do this?</p>
+<pre><code>Settings -&gt; System -&gt; Developer Mode -&gt; Click on Developer Mode
+</code></pre>
+<p>Now you will see a terminal in your apps screen. You can use that just like any
+other terminal and browse through your filesystem. It will be a little hard to
+type in the small screen. So we will now ssh into the phone. Connect your phone
+to the PC and when prompted select the Developer Mode in your phone. Now this
+will establish a ethernet over USB connection with the PC and there is an IP
+supplied by the phone. If not automatically connected, connected your PC system
+to the newly established ethernet connection.</p>
+<p>By default the IP address of the phone will be <code>192.168.2.15</code> (you can check
+this in the Developer Mode settings). So fire up your terminal and <code>ssh</code> into
+your phone with username <code>nemo</code>. The password needs to be set too in the
+Developer Mode settings.</p>
+<pre><code class=language-console>$ ssh nemo@192.168.2.15
+nemo@192.168.2.15's password:
+Last login: Thu Oct  2 20:59:31 2014 from 192.168.1.6
+,---
+| SailfishOS 1.0.8.19 (Tahkalampi) (armv7hl)
+'---
+[nemo@Jolla ~]$
+</code></pre>
+<p>This is your regular shell, and it supports most of the commands. It comes with
+<code>screen</code> and <code>vi</code> editor too (you can install <code>emacs</code> if you wish from Warehouse
+store).</p>
+<p>Got around your phone? There are few things that needs to be done apart from
+installing the recommended apps. The media and galary have problems displaying
+content from your SD card. The problem is intermittent. To avoid this we can
+bind mount the music, pictures and videos folders to the folders in the home
+screen. The Video and Pictures folders are also needed to be mounted because
+camera currently doesn’t have the ability to switch storage areas. So its
+default is <code>~/Pictures</code> for pictures and <code>~/Videos</code> for videos. Create these
+directories in your SD card, or you can just bind your existing music and
+pictures folders.</p>
+<pre><code class=language-console>$ mkdir /media/sdcard/sdcard1/Music # if you don't have any music folder already
+$ mkdir /media/sdcard/sdcard1/Videos # if you don't have any videos folder already
+$ mkdir /media/sdcard/sdcard1/Pictures # if you don't have any pictures folder already
+$ devel-su # takes you to root
+$ passwd # change password so you can use regular su
+$ mount --bind /media/sdcard/sdcard1/Music /home/nemo/Music
+$ mount --bind /media/sdcard/sdcard1/Pictures /home/nemo/Pictures
+$ mount --bind /media/sdcard/sdcard1/Videos /home/nemo/Videos
+</code></pre>
+<p>If you were using android earlier and want to use the same folder to store your
+Pictures, you can bind the DCIM folder where the pictures used to get saved in
+android.</p>
+<p>The next thing you will have to do, if you are willing to install beta apps, you
+should install the Warehouse app. The app can be downloaded from
+openrepos.net. After installation, you probably might get an error while
+installing applications from inside the warehouse app. This is because of an
+empty package remote specified by default. You can disable that. Go to your
+command line and then follow the steps.</p>
+<pre><code class=language-console>$ ssu lr # you should see a repo names home
+$ ssu dr home # disable it
+$ pkcon refresh
+</code></pre>
+<p>After a reboot it should be fine installing packages. The next thing in line is
+to install patchmanager from warehouse. This will provide you with better
+options for your Jolla. Currently after a call is connected there is no haptic
+notification, and not media player controls in the lock screen. Patchmanager
+provides you with the options to enable these.</p>
+<p>Happy hacking.</p>
+<hr>
+<div class=float-right>
+<a href=https://fossix.org/tagsjolla class="badge badge-dark">jolla</a>
+<a href=https://fossix.org/tagssailfish class="badge badge-dark">sailfish</a>
+<a href=https://fossix.org/tagsnewbie class="badge badge-dark">newbie</a>
+</div>
+</div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
+<script src=/fossix.js></script>
+<script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
+<script src=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js integrity=sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy crossorigin=anonymous></script>
+<hr>
+<div class=container>
+<div class=row>
+<div class=mx-auto>
+<ul class=nav>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/about>About</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/contact/>Contact</a>
+</li>
+<li class=nav-item>
+<a class="nav-link text-muted" href=/privacy/>Privacy Policy</a>
+</li>
+</ul>
+</div>
+</div>
+<div class=row>
+<div class=mx-auto>
+<p>Site design and logo and content &copy; fossix.org</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
