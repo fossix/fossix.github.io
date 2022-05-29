@@ -2,7 +2,7 @@
 #+date: 2022-05-26 10:43:43 +0530
 #+title: Emacs for Kernel Development
 #+categories[]: articles
-#+tags[]: emacs, kernel, linux, lsp, ccls
+#+tags[]: emacs kernel linux lsp ccls
 #+draft: t
 
 One of the most important part in the process of understanding the Linux kernel
