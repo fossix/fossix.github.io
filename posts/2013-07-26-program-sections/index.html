@@ -78,44 +78,22 @@ Archive
 </dl>
 <p>They are just the defaults, there can be many more sections in a binary. For
 example our sample code contains the following different sections.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>objdump -h a.out
-</code></pre></td></tr></table>
-</div>
-</div><p>Most of the section compiled into the binary is either empty or just debugging
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>objdump -h a.out
+</code></pre></div><p>Most of the section compiled into the binary is either empty or just debugging
 information. The most important of the sections are the <code>.text</code>, <code>.bss</code>,
 <code>.data</code>. The <code>.text</code> section contains the executable instructions. This data can
 be viewed using <code>objdump</code></p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=c1># disassemble only the .text section</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=c1># disassemble only the .text section</span>
 <span class=gp>$ </span>objdump -d -j .text a.out
-</code></pre></td></tr></table>
-</div>
-</div><p>The next section <code>.bss</code> will contain uninitialized data. The C standard say that
+</code></pre></div><p>The next section <code>.bss</code> will contain uninitialized data. The C standard say that
 all uninitialized global variables much be set to zero. So instead of wasting
 space in the binary with zeroes, it contains only the size of the <code>.bss</code>
 section, as the kernel provided memory will always be initialized to zero. The
 other sections too are not present in the binary as they are available during
 the run time, like the stack and the heap sections. The symbols present in
 various sections can be found using the <code>nm</code> command.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>nm a.out
-</code></pre></td></tr></table>
-</div>
-</div><p>The type of symbol is printed in the second column. <code>b</code> or <code>B</code> means <code>BSS</code> and
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>nm a.out
+</code></pre></div><p>The type of symbol is printed in the second column. <code>b</code> or <code>B</code> means <code>BSS</code> and
 <code>d</code> or <code>D</code> refers to the symbols in <code>.data</code> section.</p>
 <p>In this section we have seen one more new term - the binary loader. This is the
 dynamic loader which links the executable with the shared libraries(.so) at run

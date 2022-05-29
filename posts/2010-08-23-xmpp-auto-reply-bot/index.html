@@ -72,77 +72,10 @@ doesn’t matter ;).</p>
 <p>Before using this script, you should have your systems installed with
 <code>IO::Socket::SSL</code> , and <code>AnyEvent::XMPP</code>. You can install it with the following
 commands.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>sudo cpan IO::Socket::SSL
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>sudo cpan IO::Socket::SSL
 <span class=gp>$ </span>sudo cpan AnyEvent::XMPP
-</code></pre></td></tr></table>
-</div>
-</div><p>The following is the code for the auto-reply bot.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span><span class=lnt>34
-</span><span class=lnt>35
-</span><span class=lnt>36
-</span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span><span class=lnt>42
-</span><span class=lnt>43
-</span><span class=lnt>44
-</span><span class=lnt>45
-</span><span class=lnt>46
-</span><span class=lnt>47
-</span><span class=lnt>48
-</span><span class=lnt>49
-</span><span class=lnt>50
-</span><span class=lnt>51
-</span><span class=lnt>52
-</span><span class=lnt>53
-</span><span class=lnt>54
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-perl data-lang=perl><span class=ch>#!/usr/bin/perl</span>
+</code></pre></div><p>The following is the code for the auto-reply bot.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-perl data-lang=perl><span class=ch>#!/usr/bin/perl</span>
 <span class=k>use</span> <span class=nn>strict</span><span class=p>;</span>
 <span class=k>use</span> <span class=nn>utf8</span><span class=p>;</span>
 <span class=k>use</span> <span class=nn>AnyEvent</span><span class=p>;</span>
@@ -197,9 +130,7 @@ commands.</p>
 <span class=p>}</span>
 <span class=nv>$cl</span><span class=o>-&gt;</span><span class=n>start</span><span class=p>;</span>
 <span class=nv>$j</span><span class=o>-&gt;</span><span class=nb>wait</span><span class=p>;</span>
-</code></pre></td></tr></table>
-</div>
-</div>
+</code></pre></div>
 <hr>
 <div class=float-right>
 <a href=https://fossix.org/tagsgtalk class="badge badge-dark">gtalk</a>

@@ -63,19 +63,7 @@ Archive
 </div>
 <hr>
 <p>Assume this is the production grade program we need to dockerize and run.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=kn>package</span> <span class=nx>main</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=kn>package</span> <span class=nx>main</span>
 
 <span class=kn>import</span> <span class=s>&#34;fmt&#34;</span>
 
@@ -83,24 +71,7 @@ Archive
      <span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;saying hello to the world&#34;</span><span class=p>)</span>
 <span class=p>}</span>
 
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-docker data-lang=docker><span class=k>FROM</span><span class=s> golang:1.10-alpine as builder</span><span class=err>
+</code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-docker data-lang=docker><span class=k>FROM</span><span class=s> golang:1.10-alpine as builder</span><span class=err>
 </span><span class=err></span><span class=k>WORKDIR</span><span class=s> /go/src/github.com/shabinesh/prog</span><span class=err>
 </span><span class=err></span><span class=k>COPY</span> main.go  .<span class=err>
 </span><span class=err></span><span class=k>COPY</span> vendor ./vendor<span class=err>
@@ -111,9 +82,7 @@ Archive
 </span><span class=err></span><span class=k>WORKDIR</span><span class=s> /</span><span class=err>
 </span><span class=err></span><span class=k>COPY</span> --from<span class=o>=</span><span class=m>0</span> /go/src/github.com/shabinesh/prog/main .<span class=err>
 </span><span class=err></span><span class=k>CMD</span> <span class=p>[</span><span class=s2>&#34;./main&#34;</span><span class=p>]</span> <span class=err>
-</span></code></pre></td></tr></table>
-</div>
-</div>
+</span></code></pre></div>
 <hr>
 <div class=float-right>
 <a href=https://fossix.org/tagsgolang class="badge badge-dark">golang</a>

@@ -77,37 +77,7 @@ blocked. I use a free git repository server for hosting my files.</p>
 <p>The next thing I did was to customize my .emacs file for tasks, notes, fast note
 taking with remember(New users with org-mode version 6.36 and later should use
 capture) etc. My org-mode specific configurations are below.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-elisp data-lang=elisp><span class=c1>;;; remember and org-mode</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-elisp data-lang=elisp><span class=c1>;;; remember and org-mode</span>
 <span class=p>(</span><span class=nv>org-remember-insinuate</span><span class=p>)</span>
 <span class=p>(</span><span class=nb>setq</span> <span class=nv>org-default-notes-file</span> <span class=s>&#34;~/notes/org/notes&#34;</span><span class=p>)</span>
 <span class=p>(</span><span class=nb>setq</span> <span class=nv>remember-annotation-functions</span> <span class=o>&#39;</span><span class=p>(</span><span class=nv>org-remember-annotation</span><span class=p>))</span>
@@ -133,29 +103,10 @@ capture) etc. My org-mode specific configurations are below.</p>
          <span class=s>&#34;Learning Notes&#34;</span><span class=p>)</span>
         <span class=p>(</span><span class=s>&#34;Misc&#34;</span> <span class=sc>?m</span> <span class=s>&#34;* %T %^{Title}\n  %i%?\n  %a&#34;</span> <span class=s>&#34;~/notes/org/notes&#34;</span> <span class=s>&#34;Unfiled&#34;</span><span class=p>)</span>
         <span class=p>(</span><span class=s>&#34;Work&#34;</span> <span class=sc>?w</span> <span class=s>&#34;* %^{Title}\n  %i%?\n  %a&#34;</span> <span class=s>&#34;~/work/notes/jots.org&#34;</span><span class=p>)))</span>
-</code></pre></td></tr></table>
-</div>
-</div><h3 id=other-emacs-customisation>Other emacs customisation</h3>
+</code></pre></div><h3 id=other-emacs-customisation>Other emacs customisation</h3>
 <p>I used to use Emacs not XEmacs, so I had a habit of closing the window when I
 intended to close the buffer. So I changed the the quit keyboard command to <code>C-x C-\</code> and <code>C-x C-c</code> to kill-buffer. That part of the file is below.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-elisp data-lang=elisp><span class=c1>;; prompt when quitting Emacs in GUI</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-elisp data-lang=elisp><span class=c1>;; prompt when quitting Emacs in GUI</span>
 <span class=p>(</span><span class=nb>defun</span> <span class=nv>ask-before-closing</span> <span class=p>()</span>
   <span class=s>&#34;Ask whether or not to close, and then close if y was pressed&#34;</span>
   <span class=p>(</span><span class=nb>interactive</span><span class=p>)</span>
@@ -168,9 +119,7 @@ intended to close the buffer. So I changed the the quit keyboard command to <cod
 <span class=p>(</span><span class=nb>when</span> <span class=nf>window-system</span>
   <span class=p>(</span><span class=nv>global-set-key</span> <span class=p>(</span><span class=nv>kbd</span> <span class=s>&#34;C-x C-\\&#34;</span><span class=p>)</span> <span class=ss>&#39;ask-before-closing</span><span class=p>)</span>
   <span class=p>(</span><span class=nv>global-set-key</span> <span class=p>(</span><span class=nv>kbd</span> <span class=s>&#34;C-x C-c&#34;</span><span class=p>)</span> <span class=ss>&#39;kill-buffer</span><span class=p>))</span>
-</code></pre></td></tr></table>
-</div>
-</div><h3 id=ok-how-do-i-use-it>OK how do I use it?</h3>
+</code></pre></div><h3 id=ok-how-do-i-use-it>OK how do I use it?</h3>
 <p>How you want to use the org-mode and remember package is up to you. I will just
 give you some ideas about how to start using it, not conceptually, just keyboard
 shortcuts, invocations etc.</p>
@@ -202,17 +151,9 @@ prefer not to close files when searching for another definition. To avoid Emacs
 opening separately for each file, and cscope waiting for the editor to be
 closed, I use <code>emacsclient</code> as my <code>CSCOPE_EDITOR</code>. I wrote a small script like
 the below.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=cp>#!/bin/bash
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=cp>#!/bin/bash
 </span><span class=cp></span>emacsclient -a vi -n <span class=nv>$*</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>When Emacs server is not running, I just use <code>vi</code> instead of wasting my time
+</code></pre></div><p>When Emacs server is not running, I just use <code>vi</code> instead of wasting my time
 starting the server for small look-ups.</p>
 <p>A very nice tutorial on org-mode is <a href=http://doc.norang.ca/org-mode.html>http://doc.norang.ca/org-mode.html</a>.</p>
 <hr>

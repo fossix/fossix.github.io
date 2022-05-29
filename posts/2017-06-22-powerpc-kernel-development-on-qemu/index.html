@@ -65,21 +65,11 @@ Archive
 <h2 id=build-qemu>Build Qemu</h2>
 <p>Using qemu from the standard installation does not seem to work. Always gives a
 illegal instruction error and the kernel panics.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>git clone git://git.qemu-project.org/qemu.git
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>git clone git://git.qemu-project.org/qemu.git
 <span class=gp>$ </span><span class=nb>cd</span> qemu
 <span class=gp>$ </span>./configure --target-list<span class=o>=</span>ppc64-softmmu
 <span class=gp>$ </span>make
-</code></pre></td></tr></table>
-</div>
-</div><p>The standard qemu packages did not work probably they didn&rsquo;t have the
+</code></pre></div><p>The standard qemu packages did not work probably they didn&rsquo;t have the
 <code>ppc64-softmmu</code> selected. Enabling <code>ppc64-softmmu</code> was
 mentioned
 <a href=http://jk.ozlabs.org/blog/post/157/powerpc-testing-without-powerpc-hardware/>here</a>.
@@ -89,19 +79,10 @@ directory is in your path.</p>
 <p>Now that we have built qemu, lets use it to install a fedora 25
 distribution. Note that we won&rsquo;t get a shiny GUI for installation, we will have
 to use a serial console to do installation in text mode.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>qemu-system-ppc64 -M pseries -m <span class=m>2048</span> -nodefaults -nographic <span class=se>\
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>qemu-system-ppc64 -M pseries -m <span class=m>2048</span> -nodefaults -nographic <span class=se>\
 </span><span class=se></span><span class=go>  -serial pty -monitor stdio \-cdrom Fedora-Server-dvd-ppc64le-25-1.2.iso \
 </span><span class=go>  -drive file=ppc.img,if=virtio -s
-</span></code></pre></td></tr></table>
-</div>
-</div><p>We could give the boot target in the command line, but the openfirmware
+</span></code></pre></div><p>We could give the boot target in the command line, but the openfirmware
 always looks at the drive, even if you had give <code>-boot c</code> in the commandline. So
 when the boot fails, and when its stopped in the openfirmware prompt, type <code>boot cdrom</code> to boot the fedora image. Now it&rsquo;s the usual installation process except
 you will have to do it in text mode, but thats fun too.</p>
@@ -111,30 +92,14 @@ system. Once it boots, poweroff and let&rsquo;s enable networking.</p>
 <p>Since we have installed the OS, we need not specify the <code>-cdrom</code> option to
 qemu. I will drop it from subsequent commands. For networking, we append <code>-net nic,model=virtio</code> to the command line. Also if we want to be able to ssh into
 the guest, we can add a <code>hostfwd</code> option too.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>qemu-system-ppc64 -M pseries -m <span class=m>2048</span> -nodefaults -nographic -serial pty <span class=se>\
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>qemu-system-ppc64 -M pseries -m <span class=m>2048</span> -nodefaults -nographic -serial pty <span class=se>\
 </span><span class=se></span><span class=go>  -monitor stdio -drive file=ppc.img,if=virtio -s -net nic,model=virtio \
 </span><span class=go>  -net user,hostfwd=tcp::2222-:22
-</span></code></pre></td></tr></table>
-</div>
-</div><p>Once this is done, we will have the access to the outside network, which is very
+</span></code></pre></div><p>Once this is done, we will have the access to the outside network, which is very
 helpful when we want to update of install any package. Also, we can login to the
 guest using ssh.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>ssh root@localhost -p <span class=m>2222</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>For more convinience we can create a user with the same name as the host user
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>ssh root@localhost -p <span class=m>2222</span>
+</code></pre></div><p>For more convinience we can create a user with the same name as the host user
 that we are logged into, and configure password less login using
 <code>ssh-copy-id</code>. A must for people lazy to type password all the time.</p>
 <h2 id=kernel-development>Kernel development</h2>
@@ -149,51 +114,22 @@ cross-compiling.</p>
 we will install powerpc cross-compile toolchain for our purpose. Here what I
 have in my machine. Depending on the distribution the installation procedure
 might vary. Once the installation is done, the rest is just a breeze.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>rpm -qa <span class=p>|</span> grep powerpc
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>rpm -qa <span class=p>|</span> grep powerpc
 <span class=go>binutils-powerpc64le-linux-gnu-2.27-3.fc25.x86_64
 </span><span class=go>gcc-powerpc64-linux-gnu-6.1.1-2.fc25.x86_64
 </span><span class=go>binutils-powerpc64-linux-gnu-2.27-3.fc25.x86_64
-</span></code></pre></td></tr></table>
-</div>
-</div><p>Export <code>CROSS_COMPILE</code> toolchain path and the architecture - <code>ARCH</code>.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=nb>export</span> <span class=nv>CROSS_COMPILE</span><span class=o>=</span>powerpc64-linux-gnu-
+</span></code></pre></div><p>Export <code>CROSS_COMPILE</code> toolchain path and the architecture - <code>ARCH</code>.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=nb>export</span> <span class=nv>CROSS_COMPILE</span><span class=o>=</span>powerpc64-linux-gnu-
 <span class=gp>$ </span><span class=nb>export</span> <span class=nv>ARCH</span><span class=o>=</span>powerpc
 <span class=gp>$ </span>make pseries_defconfig
 <span class=gp>$ </span>make -j4
-</code></pre></td></tr></table>
-</div>
-</div><p>If you don&rsquo;t want to pollute your kernel source directory, maybe you want to
+</code></pre></div><p>If you don&rsquo;t want to pollute your kernel source directory, maybe you want to
 build and test for multiple architectures, you can pass the
 <code>O=/path/to/build/dir</code> option to <code>make</code>.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>mkdir ../powerpc_build
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>mkdir ../powerpc_build
 <span class=gp>$ </span>make <span class=nv>O</span><span class=o>=</span>../powerpc_build pseries_defconfig
 <span class=gp>$ </span>make <span class=nv>O</span><span class=o>=</span>../powerpc_build -j4
-</code></pre></td></tr></table>
-</div>
-</div><h2 id=booting-the-kernel>Booting the kernel</h2>
+</code></pre></div><h2 id=booting-the-kernel>Booting the kernel</h2>
 <p>When we are trying to boot a custom kernel, we will not be (?) able to use the
 disk image we created as rootfs. We will have to pass the the rootfs and initrd
 from the commandline. One reason we would not be able to boot, even if we manage
@@ -202,33 +138,16 @@ will be different. For our just boot and test purpose we will create a tiny
 initrd from BusyBox. I am not cross-compiling BusyBox, you may try it
 ofcourse. The reason being most of the time we will have some headers missing
 problem. Let us fire up of qemu machine and compile.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>git clone git://busybox.net/busybox.git
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>git clone git://busybox.net/busybox.git
 <span class=gp>$ </span><span class=nb>cd</span> busybox
 <span class=gp>$ </span>make menuconfig
 <span class=gp>$ </span>make
-</code></pre></td></tr></table>
-</div>
-</div><p>You may want to install gcc if not available. During <code>make menuconfig</code>, in
+</code></pre></div><p>You may want to install gcc if not available. During <code>make menuconfig</code>, in
 &lsquo;Busybox settings&rsquo; menu, select &lsquo;Build Busybox as a static binary&rsquo; option. This
 will avoid shared library mess in our to-be build initrd. Once this is done, we
 install it, the default path would be <code>./_install</code>.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>make install
-</code></pre></td></tr></table>
-</div>
-</div><p>Now <code>tar</code> the <code>_install</code> directory and copy it over to the host machine using
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>make install
+</code></pre></div><p>Now <code>tar</code> the <code>_install</code> directory and copy it over to the host machine using
 <code>scp</code>. Now we are ready to create the <code>initrd</code>. The basic steps to create a
 ramdisk are:</p>
 <ul>
@@ -237,23 +156,7 @@ ramdisk are:</p>
 <li>Mount and copy all the needed files</li>
 <li>Umount and gzip the image</li>
 </ul>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>tar cf _install.tar
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>tar cf _install.tar
 <span class=gp>$ </span>dd <span class=k>if</span><span class=o>=</span>/dev/zero <span class=nv>of</span><span class=o>=</span>initrd.img <span class=nv>bs</span><span class=o>=</span>1M <span class=nv>count</span><span class=o>=</span><span class=m>10</span>   <span class=c1># 10 MB image</span>
 <span class=gp>$ </span>mkfs.ext4 initrd.img
 <span class=gp>$ </span>mkdir root
@@ -265,24 +168,12 @@ ramdisk are:</p>
 <span class=gp>$ </span>sudo cp -a /dev/tty1 initrd/dev/
 <span class=gp>$ </span>sudo umount root/
 <span class=gp>$ </span>gzip initrd.img
-</code></pre></td></tr></table>
-</div>
-</div><p>Finally,</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>qemu-system-ppc64 -M pseries -m <span class=m>2048</span> -smp <span class=nv>cores</span><span class=o>=</span><span class=m>2</span> -nodefaults -nographic <span class=se>\
+</code></pre></div><p>Finally,</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>qemu-system-ppc64 -M pseries -m <span class=m>2048</span> -smp <span class=nv>cores</span><span class=o>=</span><span class=m>2</span> -nodefaults -nographic <span class=se>\
 </span><span class=se></span><span class=go>  -serial pty -monitor stdio -s -net nic,model=virtio \
 </span><span class=go>  -net user,hostfwd=tcp::2222-:22  -kernel vmlinux \
 </span><span class=go>  -initrd initrd/initrd.img.gz -append root=/dev/ram0
-</span></code></pre></td></tr></table>
-</div>
-</div><p>..and we are done!.</p>
+</span></code></pre></div><p>..and we are done!.</p>
 <p><a href=/articles/powerpc-kernel-development-on-qemu-2/>Part 2</a> talks more about kernel development on qemu</p>
 <hr>
 <div class=float-right>

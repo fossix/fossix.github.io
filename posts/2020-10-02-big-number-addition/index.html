@@ -88,29 +88,7 @@ nodes from each of the input nodes.</p>
 </ul>
 <p>The most easiest (and buggy) approach is to walk through the list, extract the
 numbers, add it up and construct a list from it.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=nf>add_list</span><span class=p>(</span><span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=n>l1</span><span class=p>,</span> <span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=n>l2</span><span class=p>)</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=nf>add_list</span><span class=p>(</span><span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=n>l1</span><span class=p>,</span> <span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=n>l2</span><span class=p>)</span>
 <span class=p>{</span>
 	<span class=kt>unsigned</span> <span class=kt>long</span> <span class=kt>long</span> <span class=n>num1</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span> <span class=n>num2</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
 
@@ -128,9 +106,7 @@ numbers, add it up and construct a list from it.</p>
 
 	<span class=k>return</span> <span class=n>construct_list</span><span class=p>(</span><span class=n>num3</span><span class=p>);</span>
 <span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>It&rsquo;s easy to figure out why this code is buggy; even if the two numbers
+</code></pre></div><p>It&rsquo;s easy to figure out why this code is buggy; even if the two numbers
 extracted from the lists are smaller than 8 bytes (word size of a typical
 computer), the sum can overflow, resulting in a wrong answer.</p>
 <p>Since the numbers can be of different sizes and there can be a carry from the
@@ -142,43 +118,7 @@ school?</p>
 <p>It&rsquo;s obvious that the addition will have to be done from right to left, but that
 is not possible since it is a singly linked list. What can be done is, reverse
 both the list, do the addition and add the resulting digits to a new list.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=nf>add_list</span><span class=p>(</span><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>l1</span><span class=p>,</span> <span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>l2</span><span class=p>)</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=nf>add_list</span><span class=p>(</span><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>l1</span><span class=p>,</span> <span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>l2</span><span class=p>)</span>
 <span class=p>{</span>
 	<span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>rl1</span><span class=p>,</span> <span class=o>*</span><span class=n>rl2</span><span class=p>,</span> <span class=o>*</span><span class=n>l3</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>;</span>
 	<span class=kt>unsigned</span> <span class=n>carry</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
@@ -210,48 +150,20 @@ both the list, do the addition and add the resulting digits to a new list.</p>
 
 	<span class=k>return</span> <span class=n>l3</span><span class=p>;</span>
 <span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>This same logic can extended to add numbers which are represented as a string.</p>
+</code></pre></div><p>This same logic can extended to add numbers which are represented as a string.</p>
 <p>The reverse function by itself is an interview question. But that is easily done
 with rearrangement of pointers.</p>
 <p><img src=/images/big-numbers-reversing-list.png alt="Reversing a list"></p>
 <p>The list reversing can be understood easily if we take only two nodes, make the
 first node point to <code>NULL</code> and the second node point to the first.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cm>/* we need a pointer to hold the next node, so as its not lost */</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cm>/* we need a pointer to hold the next node, so as its not lost */</span>
 <span class=k>struct</span> <span class=n>list</span> <span class=o>*</span><span class=n>next</span> <span class=o>=</span> <span class=n>head</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
 <span class=n>head</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>;</span>
 <span class=n>next</span><span class=o>-&gt;</span><span class=n>next</span> <span class=o>=</span> <span class=n>head</span><span class=p>;</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>From here all we need to do is extend to three nodes. Since the first node is
+</code></pre></div><p>From here all we need to do is extend to three nodes. Since the first node is
 already reversed, we will move head to point to the next, and repeat the same
 operation.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=nf>reverse_list</span><span class=p>(</span><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>head</span><span class=p>)</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=nf>reverse_list</span><span class=p>(</span><span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>head</span><span class=p>)</span>
 <span class=p>{</span>
 	<span class=k>struct</span> <span class=n>node</span> <span class=o>*</span><span class=n>next</span><span class=p>,</span> <span class=o>*</span><span class=n>prev</span> <span class=o>=</span> <span class=nb>NULL</span><span class=p>;</span>
 
@@ -263,9 +175,7 @@ operation.</p>
 	<span class=p>}</span>
 	<span class=k>return</span> <span class=n>prev</span><span class=p>;</span>
 <span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>This time we just used another pointer <code>prev</code> to keep track of the previous
+</code></pre></div><p>This time we just used another pointer <code>prev</code> to keep track of the previous
 node, instead of just assigning a <code>NULL</code>.</p>
 <p>Coming back to the big number addition, though that was an elegant (??)
 solution, it is sub-optimal. If it was a interview question we could just leave

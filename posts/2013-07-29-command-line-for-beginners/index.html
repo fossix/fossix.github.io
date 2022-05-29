@@ -95,17 +95,9 @@ about new mails in the server. New mails? No rush to check it in the web site,
 just wait, we are almost done.</p>
 <p>Now lets put this fetchmail command in cron so we don’t have to check mail
 manually.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>crontab -e
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>crontab -e
 <span class=go>*/10 * * * * fetchmail &gt;/dev/null 2&gt;&amp;1
-</span></code></pre></td></tr></table>
-</div>
-</div><p>The redirection to <code>/dev/null</code> is to stop <code>cron</code> sending us mails every 10
+</span></code></pre></div><p>The redirection to <code>/dev/null</code> is to stop <code>cron</code> sending us mails every 10
 minutes.</p>
 <p>After the first run, check your mail with <code>mail</code> command. If you can see new
 mails from your ISP. If you still get errors, then</p>

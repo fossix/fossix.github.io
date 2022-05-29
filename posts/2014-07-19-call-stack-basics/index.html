@@ -94,21 +94,11 @@ kernel maps more memory for the stack, which equals a <code>PAGE_SIZE</code>, st
 the end of the stack (stack top). Theoretically stack can grow until there is no
 more room in the memory. But usually the stack size is limited by the system
 configuration.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=nb>ulimit</span> -s <span class=c1># Maximum stack size of a program  (soft limit)</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=nb>ulimit</span> -s <span class=c1># Maximum stack size of a program  (soft limit)</span>
 <span class=go>8192
 </span><span class=go></span><span class=gp>$ </span><span class=nb>ulimit</span> -Hs <span class=c1># hard limit</span>
 <span class=go>unlimited
-</span></code></pre></td></tr></table>
-</div>
-</div><p>When there is no limit we should ideally expect the program to be killed only
+</span></code></pre></div><p>When there is no limit we should ideally expect the program to be killed only
 when we run out of memory (OOM), but we have something called stack overflow
 too, which can occur even when enough physical memory is available. Stack
 overflow occurs when stack grows down and reaches the region where the next
@@ -136,30 +126,7 @@ is also very important and very much used, which warrants for a dedicated
 register. This is typically called the frame pointer <code>FP</code> and in some cases like
 the x86 it’s called Base Pointer, and register name is <code>EBP</code>.</p>
 <p>Let’s start with an example program.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
 </span><span class=cp></span>
 <span class=kt>int</span> <span class=nf>add</span><span class=p>(</span><span class=kt>int</span> <span class=n>a</span><span class=p>,</span> <span class=kt>int</span> <span class=n>b</span><span class=p>)</span>
 <span class=p>{</span>
@@ -178,9 +145,7 @@ the x86 it’s called Base Pointer, and register name is <code>EBP</code>.</p>
 
     <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
 <span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>In the above example code, the first function to be called, as you should
+</code></pre></div><p>In the above example code, the first function to be called, as you should
 already know, is main, which has a frame for itself. That frame holds all the
 variables inside the function. These variables unlike global variables are not
 even part of the final code generated, they are created during runtime and all
@@ -198,21 +163,11 @@ moving <code>SP</code> 32 bytes down, so now the next line of code <code>mov $10
 which means, move value 10 to address at <code>ESP + 28</code>, which also means <code>EBP - 4</code>. Let’s print addresses of <code>SP</code> and <code>FP</code> in both the functions and see what
 else is we can discover. The following snippet shows how you can print the <code>EBP</code>
 and <code>ESP</code> in a C program.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>const</span> <span class=kt>unsigned</span> <span class=kt>int</span> <span class=o>*</span> <span class=k>register</span> <span class=n>fp</span> <span class=nf>asm</span><span class=p>(</span><span class=s>&#34;ebp&#34;</span><span class=p>);</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>const</span> <span class=kt>unsigned</span> <span class=kt>int</span> <span class=o>*</span> <span class=k>register</span> <span class=n>fp</span> <span class=nf>asm</span><span class=p>(</span><span class=s>&#34;ebp&#34;</span><span class=p>);</span>
 <span class=k>const</span> <span class=kt>unsigned</span> <span class=kt>int</span> <span class=o>*</span> <span class=k>register</span> <span class=n>sp</span> <span class=nf>asm</span><span class=p>(</span><span class=s>&#34;esp&#34;</span><span class=p>);</span>
 
 <span class=n>printf</span><span class=p>(</span><span class=s>&#34;sp: %p fp: %p</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>sp</span><span class=p>,</span> <span class=n>fp</span><span class=p>);</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>If you see clearly, printing all the addresses of the variables, the frame
+</code></pre></div><p>If you see clearly, printing all the addresses of the variables, the frame
 pointer and the stack pointer of the main function, you will find that there are
 some extra space in the stack, which is used for storing the return address and
 the frame pointer of the current frame before calling <code>add()</code>. We will see in

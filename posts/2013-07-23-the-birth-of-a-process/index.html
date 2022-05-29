@@ -68,21 +68,7 @@ the programmer. So now I have a need to write a program so that I could create a
 process out of it and start explaining what happens along the way. The following
 is the sample code used for explaining various concepts in the rest of the
 article.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span><span class=lnt>8
-</span><span class=lnt>9
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
 </span><span class=cp>#include</span> <span class=cpf>&lt;math.h&gt;</span><span class=cp>
 </span><span class=cp></span>
 <span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
@@ -92,62 +78,20 @@ article.</p>
     <span class=n>d</span> <span class=o>=</span> <span class=n>cos</span><span class=p>(</span><span class=mi>20</span><span class=p>);</span>
     <span class=n>printf</span><span class=p>(</span><span class=s>&#34;%f</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>d</span><span class=p>);</span>
 <span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>The source is trivial, which just finds the cosine of a number and prints
+</code></pre></div><p>The source is trivial, which just finds the cosine of a number and prints
 it. Now compiling the program should give us an executable from which we will
 start the journey of tracking the process down.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>cc sample-source.c -lm
-</code></pre></td></tr></table>
-</div>
-</div><p>which should give us a.out. Note that we are linking with the math library. Now executing this should create a process, on which our study will be based on.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>cc sample-source.c -lm
+</code></pre></div><p>which should give us a.out. Note that we are linking with the math library. Now executing this should create a process, on which our study will be based on.</p>
 <h2 id=the-program-and-the-shell>The Program and the Shell</h2>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>./a.out
-</code></pre></td></tr></table>
-</div>
-</div><p>When typing <code>./a.out</code> in the shell, the shell first creates a process of its own
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>./a.out
+</code></pre></div><p>When typing <code>./a.out</code> in the shell, the shell first creates a process of its own
 using the <code>fork()</code> system call. This <code>fork()</code> system call will create a new
 process. This new process will overlay itself with the executable image given
 through the <code>execv()</code> set of system calls. We will go more into each of these
 system calls in the coming sections. Roughly what the shell will do is in the
 following listing.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
 </span><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
 </span><span class=cp></span>
 <span class=kt>int</span> <span class=nf>shell_exec</span> <span class=p>(</span><span class=kt>char</span> <span class=o>*</span><span class=n>command</span><span class=p>)</span>
@@ -169,9 +113,7 @@ following listing.</p>
 
     <span class=k>return</span> <span class=n>shell_exec</span><span class=p>(</span><span class=n>command</span><span class=p>[</span><span class=mi>1</span><span class=p>]);</span>
 <span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>The above code is a major simplification of what the shell does, which handles
+</code></pre></div><p>The above code is a major simplification of what the shell does, which handles
 pipes, permissions, job control and much more.</p>
 <hr>
 <div class=float-right>

@@ -71,79 +71,7 @@ your UI (Sailfish people are not boring you know!).</p>
 <p>The following script was entirely written in Emacs from over the SSH, and even
 for such a huge editor, Jolla was not at all slow, and didn’t heat up, nor it
 lagged in any case. Awesome!</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span><span class=lnt>34
-</span><span class=lnt>35
-</span><span class=lnt>36
-</span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span><span class=lnt>42
-</span><span class=lnt>43
-</span><span class=lnt>44
-</span><span class=lnt>45
-</span><span class=lnt>46
-</span><span class=lnt>47
-</span><span class=lnt>48
-</span><span class=lnt>49
-</span><span class=lnt>50
-</span><span class=lnt>51
-</span><span class=lnt>52
-</span><span class=lnt>53
-</span><span class=lnt>54
-</span><span class=lnt>55
-</span><span class=lnt>56
-</span><span class=lnt>57
-</span><span class=lnt>58
-</span><span class=lnt>59
-</span><span class=lnt>60
-</span><span class=lnt>61
-</span><span class=lnt>62
-</span><span class=lnt>63
-</span><span class=lnt>64
-</span><span class=lnt>65
-</span><span class=lnt>66
-</span><span class=lnt>67
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># sendsms phonenumber|firstname|lastname &#34;Message Text&#34; type</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># sendsms phonenumber|firstname|lastname &#34;Message Text&#34; type</span>
 <span class=c1># type is mobile by default</span>
 <span class=c1># If not unique numbers are found, script will prompt for a choice</span>
 <span class=c1># the message if sent successfully, it will add into the message UI also</span>
@@ -211,29 +139,11 @@ dbus-send --system --print-reply --dest<span class=o>=</span>org.ofono /ril_0 or
 <span class=k>if</span> <span class=o>[</span> <span class=nv>$?</span> -eq <span class=m>0</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
     <span class=nb>echo</span> <span class=s2>&#34;Message sent&#34;</span>
 <span class=k>fi</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>There are some hacks, with <code>su -c</code> etc, because we cannot access history DB as
+</code></pre></div><p>There are some hacks, with <code>su -c</code> etc, because we cannot access history DB as
 root user, and we cannot access the phonebook and contacts DB as nemo :-(</p>
 <p>The basic usage is (you have to run as root, there is no other choice as far as
 I have learnt)</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>sendsms Santosh <span class=s2>&#34;A test message&#34;</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>sendsms Santosh <span class=s2>&#34;A test message&#34;</span>
 <span class=go>Sending message to SANTOSH (xxxxxxxxxx)
 </span><span class=go>xxxxxxxxxx
 </span><span class=go></span><span class=err>
@@ -245,9 +155,7 @@ I have learnt)</p>
 </span><span class=go>method return sender=:1.7 -&gt; dest=:1.2929 reply_serial=2
 </span><span class=go>   object path &#34;/ril_0/message_A6FB1FE1D5C5920F9F5572355DA9A200C85D1112&#34;
 </span><span class=go>Message sent
-</span></code></pre></td></tr></table>
-</div>
-</div><p>If there are multiple phone number present, it will as you to choose one. Try
+</span></code></pre></div><p>If there are multiple phone number present, it will as you to choose one. Try
 sending an SMS to yourself and see the Easter egg in action!!</p>
 <hr>
 <div class=float-right>

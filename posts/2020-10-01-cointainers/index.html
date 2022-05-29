@@ -65,35 +65,7 @@ Archive
 <h2 id=creating-containers>Creating Containers</h2>
 <p>A basic contianer can be created with minimal amount of code.</p>
 <h3 id=container>Container</h3>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>struct</span> <span class=n>container</span> <span class=p>{</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=k>struct</span> <span class=n>container</span> <span class=p>{</span>
 	<span class=kt>char</span> <span class=o>*</span><span class=n>name</span><span class=p>;</span>
 	<span class=kt>char</span> <span class=o>*</span><span class=n>rootfs</span><span class=p>;</span>
 	<span class=kt>char</span> <span class=o>*</span><span class=n>cmd</span><span class=p>;</span>
@@ -117,39 +89,10 @@ Archive
 
 	<span class=k>return</span> <span class=n>c</span><span class=p>;</span>
 <span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><h3 id=cloning-process>Cloning Process</h3>
+</code></pre></div><h3 id=cloning-process>Cloning Process</h3>
 <p>Clone process using the `clone` system call with the appropriate namespace
 flags to create a new namespace for the contianer.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cp>#define STACK_SIZE (1024 * 1024)
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cp>#define STACK_SIZE (1024 * 1024)
 </span><span class=cp></span>
 <span class=kt>int</span> <span class=nf>run_container</span><span class=p>(</span><span class=k>struct</span> <span class=n>container</span> <span class=o>*</span><span class=n>c</span><span class=p>)</span>
 <span class=p>{</span>
@@ -172,23 +115,8 @@ flags to create a new namespace for the contianer.</p>
 
 	<span class=k>return</span> <span class=n>pid</span><span class=p>;</span>
 <span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><h3 id=change-root-filesystem>Change root filesystem</h3>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span><span class=lnt>8
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c>    <span class=k>if</span> <span class=p>(</span><span class=n>chroot</span><span class=p>(</span><span class=n>c</span><span class=o>-&gt;</span><span class=n>rootfs</span><span class=p>)</span> <span class=o>==</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
+</code></pre></div><h3 id=change-root-filesystem>Change root filesystem</h3>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c>    <span class=k>if</span> <span class=p>(</span><span class=n>chroot</span><span class=p>(</span><span class=n>c</span><span class=o>-&gt;</span><span class=n>rootfs</span><span class=p>)</span> <span class=o>==</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
             <span class=n>err</span><span class=p>(</span><span class=n>errno</span><span class=p>,</span> <span class=s>&#34;chroot&#34;</span><span class=p>);</span>
     
     <span class=k>if</span> <span class=p>(</span><span class=n>chdir</span><span class=p>(</span><span class=n>c</span><span class=o>-&gt;</span><span class=n>rootfs</span><span class=p>)</span> <span class=o>==</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
@@ -197,9 +125,7 @@ flags to create a new namespace for the contianer.</p>
     <span class=cm>/* mount proc so we can run `ps` etc */</span>
     <span class=k>if</span> <span class=p>(</span><span class=n>mount</span><span class=p>(</span><span class=s>&#34;proc&#34;</span><span class=p>,</span> <span class=s>&#34;/proc&#34;</span><span class=p>,</span> <span class=s>&#34;proc&#34;</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=nb>NULL</span><span class=p>)</span> <span class=o>==</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
             <span class=n>err</span><span class=p>(</span><span class=n>errno</span><span class=p>,</span> <span class=s>&#34;mount&#34;</span><span class=p>);</span>
-</code></pre></td></tr></table>
-</div>
-</div>
+</code></pre></div>
 <hr>
 <div class=float-right>
 <a href=https://fossix.org/tagslinux class="badge badge-dark">linux</a>

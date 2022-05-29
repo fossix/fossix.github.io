@@ -72,20 +72,7 @@ directory, disturbing the auto-completion in the CLI. I was so lazy to manually
 delete it, and Makefiles are no use for simple test codes that I write
 randomly. So I took a bold step of writing a script which would delete any ELF
 files. The script went like this:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span><span class=lnt>8
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=cp>#!/bin/bash
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=cp>#!/bin/bash
 </span><span class=cp></span>
 <span class=k>for</span> i in *<span class=p>;</span> <span class=k>do</span>
     <span class=k>if</span> <span class=o>[</span> -f <span class=s2>&#34;</span><span class=nv>$i</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
@@ -94,103 +81,17 @@ files. The script went like this:</p>
         <span class=k>fi</span>
     <span class=k>fi</span>
 <span class=k>done</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>Here I could have checked for executable mode of a file, but I don’t want shell
+</code></pre></div><p>Here I could have checked for executable mode of a file, but I don’t want shell
 scripts lying around to get removed too. Now, back to the story - Later one day,
 this script took about 2 seconds to loop through and delete all ELFs. For a busy
 guy like me (you got to believe me ;-)), this was infinity.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=nb>time</span> ../sh/rmelf
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=nb>time</span> ../sh/rmelf
 <span class=go>real    0m1.273s
 </span><span class=go>user    0m0.405s
 </span><span class=go>sys 0m1.028s
-</span></code></pre></td></tr></table>
-</div>
-</div><p>Then the brave guy (that’s me), took another brave decision of writing it in C,
+</span></code></pre></div><p>Then the brave guy (that’s me), took another brave decision of writing it in C,
 for which the code goes like this:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 0
-</span><span class=lnt> 1
-</span><span class=lnt> 2
-</span><span class=lnt> 3
-</span><span class=lnt> 4
-</span><span class=lnt> 5
-</span><span class=lnt> 6
-</span><span class=lnt> 7
-</span><span class=lnt> 8
-</span><span class=lnt> 9
-</span><span class=lnt>10
-</span><span class=lnt>11
-</span><span class=lnt>12
-</span><span class=lnt>13
-</span><span class=lnt>14
-</span><span class=lnt>15
-</span><span class=lnt>16
-</span><span class=lnt>17
-</span><span class=lnt>18
-</span><span class=lnt>19
-</span><span class=lnt>20
-</span><span class=lnt>21
-</span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span><span class=lnt>25
-</span><span class=lnt>26
-</span><span class=lnt>27
-</span><span class=lnt>28
-</span><span class=lnt>29
-</span><span class=lnt>30
-</span><span class=lnt>31
-</span><span class=lnt>32
-</span><span class=lnt>33
-</span><span class=lnt>34
-</span><span class=lnt>35
-</span><span class=lnt>36
-</span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span><span class=lnt>42
-</span><span class=lnt>43
-</span><span class=lnt>44
-</span><span class=lnt>45
-</span><span class=lnt>46
-</span><span class=lnt>47
-</span><span class=lnt>48
-</span><span class=lnt>49
-</span><span class=lnt>50
-</span><span class=lnt>51
-</span><span class=lnt>52
-</span><span class=lnt>53
-</span><span class=lnt>54
-</span><span class=lnt>55
-</span><span class=lnt>56
-</span><span class=lnt>57
-</span><span class=lnt>58
-</span><span class=lnt>59
-</span><span class=lnt>60
-</span><span class=lnt>61
-</span><span class=lnt>62
-</span><span class=lnt>63
-</span><span class=lnt>64
-</span><span class=lnt>65
-</span><span class=lnt>66
-</span><span class=lnt>67
-</span><span class=lnt>68
-</span><span class=lnt>69
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cm>/* rmelf.c
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=cm>/* rmelf.c
 </span><span class=cm> * Remove executables (ELF) in a directory.
 </span><span class=cm> *
 </span><span class=cm> * Copyright (C) 2007 - 2010 Santosh Sivaraj (santoshs (_at_) fossix.org)
@@ -260,26 +161,14 @@ for which the code goes like this:</p>
         <span class=n>closedir</span><span class=p>(</span><span class=n>dir</span><span class=p>);</span>
         <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
 <span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>I know, that is a comment-less code, bad code, could have been better, but it
+</code></pre></div><p>I know, that is a comment-less code, bad code, could have been better, but it
 solved the purpose, so kept it safe. Now, for the same number of files and ELFs,
 the time this baby takes is:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=nb>time</span> rmelf 
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=nb>time</span> rmelf 
 <span class=go>real    0m0.008s
 </span><span class=go>user    0m0.000s
 </span><span class=go>sys     0m0.008s
-</span></code></pre></td></tr></table>
-</div>
-</div><p>Impressive isn’t it ;-)</p>
+</span></code></pre></div><p>Impressive isn’t it ;-)</p>
 <p>Ok, the point is moving down the language hierarchy, moving towards the low
 levels, always guarantees speed. But stability, manageability and readability
 (Your son may maintain it in the future!) are guaranteed to be non-existent. But
@@ -296,42 +185,17 @@ section .bss    ;uninitialized data
 </code></pre><h3 id=program-start>Program start</h3>
 <p>We have to specify where our main program starts or else we would get a linker
 error. We tell the linker how we have indicated the main section by using</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-asm data-lang=asm><span class=nf>global</span> <span class=no>_start</span>   <span class=c>;main() as in C
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-asm data-lang=asm><span class=nf>global</span> <span class=no>_start</span>   <span class=c>;main() as in C
 </span><span class=c></span>    <span class=c>; _start and main are customary, but can be any name
-</span></code></pre></td></tr></table>
-</div>
-</div><p>Then we start the main section using a label</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-asm data-lang=asm><span class=nl>_start:</span>
+</span></code></pre></div><p>Then we start the main section using a label</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-asm data-lang=asm><span class=nl>_start:</span>
             <span class=c>;program starts executing from here.
-</span></code></pre></td></tr></table>
-</div>
-</div><p>All arguments to the program (<code>argv[][]</code>) are put into the top of the stack at
+</span></code></pre></div><p>All arguments to the program (<code>argv[][]</code>) are put into the top of the stack at
 program execution, so to obtain them we just pop out into a location.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-asm data-lang=asm>    <span class=nf>pop</span> <span class=no>ebx</span>     <span class=c>;the number of arguments(argc)
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-asm data-lang=asm>    <span class=nf>pop</span> <span class=no>ebx</span>     <span class=c>;the number of arguments(argc)
 </span><span class=c></span>    <span class=no>pop</span> <span class=no>ebx</span>     <span class=c>;the program name(argv[0])
 </span><span class=c></span>    <span class=no>pop</span> <span class=no>ebx</span>     <span class=c>;the actual arguments start here
-</span></code></pre></td></tr></table>
-</div>
-</div><h3 id=system-call>System call</h3>
+</span></code></pre></div><h3 id=system-call>System call</h3>
 <p>We use Linux system calls for various functions like printing. To get the kernel
 attention to do some work we issue an interrupt with interrupt number <code>80h</code>.</p>
 <p>The arguments to system a call are placed in <code>ebx</code>, <code>ecx</code>, <code>edx</code>, <code>esi</code>, <code>edi</code>,
@@ -349,19 +213,10 @@ list. System calls are declared in <code>unistd.h</code>, and help in section 2 
     \r  13
 </code></pre><p>Labels are used for branching and useful to be used as functions. Looping labels
 have a dot preceding them.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-asm data-lang=asm><span class=na>.loop</span>   <span class=no>dec</span> <span class=no>ax</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-asm data-lang=asm><span class=na>.loop</span>   <span class=no>dec</span> <span class=no>ax</span>
     <span class=c>;; other statements
 </span><span class=c></span>    <span class=nf>jnz</span> <span class=no>.loop</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>For a detailed Assembly language tutorial, see Linux Assembly Tutorial,
+</code></pre></div><p>For a detailed Assembly language tutorial, see Linux Assembly Tutorial,
 step-by-step guide.</p>
 <hr>
 <div class=float-right>

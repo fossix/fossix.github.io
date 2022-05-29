@@ -80,27 +80,14 @@ to the newly established ethernet connection.</p>
 this in the Developer Mode settings). So fire up your terminal and <code>ssh</code> into
 your phone with username <code>nemo</code>. The password needs to be set too in the
 Developer Mode settings.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>ssh nemo@192.168.2.15
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>ssh nemo@192.168.2.15
 <span class=go>nemo@192.168.2.15&#39;s password:
 </span><span class=go>Last login: Thu Oct  2 20:59:31 2014 from 192.168.1.6
 </span><span class=go>,---
 </span><span class=go>| SailfishOS 1.0.8.19 (Tahkalampi) (armv7hl)
 </span><span class=go>&#39;---
 </span><span class=go>[nemo@Jolla ~]$
-</span></code></pre></td></tr></table>
-</div>
-</div><p>This is your regular shell, and it supports most of the commands. It comes with
+</span></code></pre></div><p>This is your regular shell, and it supports most of the commands. It comes with
 <code>screen</code> and <code>vi</code> editor too (you can install <code>emacs</code> if you wish from Warehouse
 store).</p>
 <p>Got around your phone? There are few things that needs to be done apart from
@@ -112,19 +99,7 @@ camera currently doesn’t have the ability to switch storage areas. So its
 default is <code>~/Pictures</code> for pictures and <code>~/Videos</code> for videos. Create these
 directories in your SD card, or you can just bind your existing music and
 pictures folders.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>mkdir /media/sdcard/sdcard1/Music <span class=c1># if you don&#39;t have any music folder already</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>mkdir /media/sdcard/sdcard1/Music <span class=c1># if you don&#39;t have any music folder already</span>
 <span class=gp>$ </span>mkdir /media/sdcard/sdcard1/Videos <span class=c1># if you don&#39;t have any videos folder already</span>
 <span class=gp>$ </span>mkdir /media/sdcard/sdcard1/Pictures <span class=c1># if you don&#39;t have any pictures folder already</span>
 <span class=gp>$ </span>devel-su <span class=c1># takes you to root</span>
@@ -132,9 +107,7 @@ pictures folders.</p>
 <span class=gp>$ </span>mount --bind /media/sdcard/sdcard1/Music /home/nemo/Music
 <span class=gp>$ </span>mount --bind /media/sdcard/sdcard1/Pictures /home/nemo/Pictures
 <span class=gp>$ </span>mount --bind /media/sdcard/sdcard1/Videos /home/nemo/Videos
-</code></pre></td></tr></table>
-</div>
-</div><p>If you were using android earlier and want to use the same folder to store your
+</code></pre></div><p>If you were using android earlier and want to use the same folder to store your
 Pictures, you can bind the DCIM folder where the pictures used to get saved in
 android.</p>
 <p>The next thing you will have to do, if you are willing to install beta apps, you
@@ -143,19 +116,10 @@ openrepos.net. After installation, you probably might get an error while
 installing applications from inside the warehouse app. This is because of an
 empty package remote specified by default. You can disable that. Go to your
 command line and then follow the steps.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>ssu lr <span class=c1># you should see a repo names home</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>ssu lr <span class=c1># you should see a repo names home</span>
 <span class=gp>$ </span>ssu dr home <span class=c1># disable it</span>
 <span class=gp>$ </span>pkcon refresh
-</code></pre></td></tr></table>
-</div>
-</div><p>After a reboot it should be fine installing packages. The next thing in line is
+</code></pre></div><p>After a reboot it should be fine installing packages. The next thing in line is
 to install patchmanager from warehouse. This will provide you with better
 options for your Jolla. Currently after a call is connected there is no haptic
 notification, and not media player controls in the lock screen. Patchmanager

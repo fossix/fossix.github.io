@@ -75,60 +75,29 @@ on.</p>
 and update my packages. If you are using some other distribution based on
 Debian, then you will be using aptitude.</p>
 <p>The first package we need is icecast, which is a streaming media server.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>sudo yum install icecast
-</code></pre></td></tr></table>
-</div>
-</div><p><code>icecast</code> works on mount points. A mount point is where the source (which does
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>sudo yum install icecast
+</code></pre></div><p><code>icecast</code> works on mount points. A mount point is where the source (which does
 the actual music conversion, decoding and encoding) send all the music to. We
 will do a basic, working configuration and test it.</p>
 <p>The configuration for icecast is XML based. The default configuration given by
 icecast is good enough, except for adding an extra listen socket with your local
 IP.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;listen-socket&gt;</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;listen-socket&gt;</span>
         <span class=nt>&lt;port&gt;</span>8000<span class=nt>&lt;/port&gt;</span>
         <span class=nt>&lt;bind-address&gt;</span>192.168.1.2<span class=nt>&lt;/bind-address&gt;</span>
 <span class=nt>&lt;/listen-socket&gt;</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>Change the IP above to you computer’s IP, so you connect from another system or
+</code></pre></div><p>Change the IP above to you computer’s IP, so you connect from another system or
 device.</p>
 <p>Now for the next package called ezstream.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>sudo yum install ezstream
-</code></pre></td></tr></table>
-</div>
-</div><p>Examples for ezstream configuration is located in <code>/usr/share/doc/ezstream/examples/</code></p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>sudo yum install ezstream
+</code></pre></div><p>Examples for ezstream configuration is located in <code>/usr/share/doc/ezstream/examples/</code></p>
 <p>Copy the example configuration file which says ezstream_mp3.xml to some nice
 folder (your home or Music folder will be fine). Before changing any
 configurations for ezstream, it would be better if had tested icecast, Now copy
 some mp3 file to <code>/usr/share/icecast/web</code> directory and start the icecast
 server.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>icecast -b -c /etc/icecast.xml
-</code></pre></td></tr></table>
-</div>
-</div><p>the option <code>-b</code> tells icecast to run in the background and <code>-c</code> is used to pass
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>icecast -b -c /etc/icecast.xml
+</code></pre></div><p>the option <code>-b</code> tells icecast to run in the background and <code>-c</code> is used to pass
 the config file to icecast. Now, from your browser open the URL like (of course,
 change the IP to your IP, or use localhost if on the same system)</p>
 <pre tabindex=0><code>http://192.168.1.2:8000/example.mp3
@@ -138,38 +107,18 @@ can try to figure out the issue.</p>
 <p>Ok, moving on to ezstream configuration, the default is good enough, just make
 sure that the username and password for source matches that of the same in
 icecast configuration file. Also check the mount point, IP and URL.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span><span class=lnt>1
-</span><span class=lnt>2
-</span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;ezstream&gt;</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;ezstream&gt;</span>
     <span class=nt>&lt;url&gt;</span>http://localhost:8000/stream<span class=nt>&lt;/url&gt;</span>
     <span class=nt>&lt;sourcepassword&gt;</span>hackme<span class=nt>&lt;/sourcepassword&gt;</span>
     <span class=nt>&lt;format&gt;</span>MP3<span class=nt>&lt;/format&gt;</span>
     <span class=nt>&lt;filename&gt;</span>playlist.m3u<span class=nt>&lt;/filename&gt;</span>
     <span class=c>&lt;!-- Once done streaming playlist.m3u, exit: --&gt;</span>
     <span class=nt>&lt;stream_once&gt;</span>1<span class=nt>&lt;/stream_once&gt;</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>You can see the playlist.m3u, that’s what we need to create now. Assuming we are
+</code></pre></div><p>You can see the playlist.m3u, that’s what we need to create now. Assuming we are
 in a folder which has audio files organised by folders, we will create the m3u
 files using find.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>0
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>find . -name <span class=s2>&#34;*.mp3&#34;</span> &gt; playlist.m3u
-</code></pre></td></tr></table>
-</div>
-</div><p>The final thing is to start streaming.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>find . -name <span class=s2>&#34;*.mp3&#34;</span> &gt; playlist.m3u
+</code></pre></div><p>The final thing is to start streaming.</p>
 <pre tabindex=0><code>$ ezstream -c ezstream_mp3.xml
 </code></pre><p>This should start streaming your music, and you should able to listen through
 your browser or players like <code>Rhythmbox</code> or <code>Totem</code>.</p>
