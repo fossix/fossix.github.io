@@ -8,6 +8,8 @@ publishdir    = "public"
 
 theme = "fossix"
 
+pygmentsUseClasses = false
+
 [Params]
   custom_css = ["syntax.css"]
   subtitle = "Open Source Matters"
@@ -17,3 +19,17 @@ theme = "fossix"
   changefreq = "monthly"
   priority = 0.5
   filename = "sitemap.xml"
+
+[markup]
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = false
+    guessSyntax = false
+    hl_Lines = ''
+    lineAnchors = ''
+    lineNoStart = 0
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = false
+    noHl = false
+    tabWidth = 4
