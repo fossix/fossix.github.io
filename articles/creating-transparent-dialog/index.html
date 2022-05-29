@@ -55,13 +55,12 @@ Archive
 </span>
 </div>
 <div class=float-right>
-<a href=https://fossix.org/tagsdialog class="badge badge-light">#dialog</a>
-<a href=https://fossix.org/tagstransparent class="badge badge-light">#transparent</a>
-<a href=https://fossix.org/tagswindows class="badge badge-light">#windows</a>
+<a href=https://fossix.org/tags/dialog class="badge badge-light">#dialog</a>
+<a href=https://fossix.org/tags/transparent class="badge badge-light">#transparent</a>
+<a href=https://fossix.org/tags/windows class="badge badge-light">#windows</a>
 </div>
 <span class=badge> </span>
 </div>
-<hr>
 <p>This is a simple trick to make a transparent dialog without making its child
 controls transparent. We can set the opacity and transparency color key of a
 layered window.</p>
@@ -79,7 +78,10 @@ background. Set that color transparent using <code>SetLayeredWindowAttributes</c
 <span class=o>::</span><span class=n>SetLayeredWindowAttributes</span><span class=p>(</span><span class=n>GetSafeHwnd</span><span class=p>(),</span> <span class=n>RGB</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=mi>11</span><span class=p>,</span><span class=mi>21</span><span class=p>),</span> <span class=mi>0</span><span class=p>,</span> <span class=n>LWA_COLORKEY</span><span class=p>);</span>
 </code></pre></div><p>Paste the above code in the <code>OnInitDialog()</code> function of your dialog class. Use
 Visual Studio 2010 and derive your dialog class from the <code>CDialogEx</code> class.</p>
-<hr>
+</div>
+<div class=col-lg-3>
+<div>
+</div>
 </div><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script>
 <script src=/fossix.js></script>
 <script src=//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js></script>
