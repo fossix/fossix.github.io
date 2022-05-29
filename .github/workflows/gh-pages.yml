@@ -31,5 +31,5 @@ jobs:
           external_repository: fossix/fossix.github.io
           deploy_key: ${{ secrets.HUGO }}
           publish_dir: ./public
-          publish_branch: master
+          publish_branch: gh_pages
           cname: fossix.org
