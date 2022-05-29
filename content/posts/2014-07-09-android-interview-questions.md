@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Android Interview Questions
-excerpt: "List of Interview questions related to android"
+summary: "List of Interview questions related to android"
 categories: articles
 tags: [android, questions]
 comments: true

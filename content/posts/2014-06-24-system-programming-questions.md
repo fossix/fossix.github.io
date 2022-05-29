@@ -1,7 +1,7 @@
 ---
 layout: post
 title: System Programming Interview Questions
-excerpt: "small effort on updated interview questions."
+summary: "small effort on updated interview questions."
 categories: articles
 tags: [programming, questions]
 comments: true

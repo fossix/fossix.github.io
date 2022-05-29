@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Find Invisible Gtalkers!
-excerpt: "Find your buddies who decided to remain invisible"
+summary: "Find your buddies who decided to remain invisible"
 categories: articles
 tags: [xmpp, gtalk, invisible]
 comments: true

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: The exec() system call
-excerpt: "This is part of the series 'The Life of a process'. This write-up is about the exec system call. We saw about how a process is created, but how is a new program gets loaded? Let's see here."
+summary: "This is part of the series 'The Life of a process'. This write-up is about the exec system call. We saw about how a process is created, but how is a new program gets loaded? Let's see here."
 categories: articles
 tags: [process, exec, syscall]
 comments: true

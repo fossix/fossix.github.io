@@ -1,7 +1,7 @@
 ---
 layout: snippets
 title:  "Dockerize go programs"
-excerpt: "How to run program in a Docker"
+summary: "How to run program in a Docker"
 date:   2018-08-14 11:29:17 +0530
 categories: snippets
 tags: [golang, docker]

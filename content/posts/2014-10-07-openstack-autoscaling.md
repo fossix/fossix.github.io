@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Openstack - How To Attach To An Autoscaling Group Or An Arbitrary Group Of Nodes
-excerpt: "In order to use a load balancer with an autoscaling group- we should use a nested stack to achieve. We can define the AutoScaling Group and LoadBalancer pool in the top level template."
+summary: "In order to use a load balancer with an autoscaling group- we should use a nested stack to achieve. We can define the AutoScaling Group and LoadBalancer pool in the top level template."
 categories: articles
 tags: [openstack, autoscaling]
 comments: true

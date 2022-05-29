@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Go's Reflection"
-excerpt: "Using the reflect package"
+summary: "Using the reflect package"
 date:   2017-03-08 11:39:17 +0530
 categories: articles
 tags: [golang]

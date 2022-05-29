@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Twitter From The Command Line
-excerpt: "We all love to tweet.. but how to do that right from you favourite command line?"
+summary: "We all love to tweet.. but how to do that right from you favourite command line?"
 categories: articles
 tags: [CLI, twitter]
 image:

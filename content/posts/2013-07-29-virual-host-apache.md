@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Virtual Host Running on apache
-excerpt: "Nobody is a exception for searching files unless you don’t have a computer."
+summary: "Nobody is a exception for searching files unless you don’t have a computer."
 categories: articles
 tags: [virtalhost, apache]
 comments: true

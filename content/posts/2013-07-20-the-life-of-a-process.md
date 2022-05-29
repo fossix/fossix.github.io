@@ -1,7 +1,7 @@
 ---
 layout: post
 title: The life of a Process
-excerpt: "This is a series trying to explain the Life of a process in a Linux system. Will try to cover most of the aspects from the user space to the kernel space."
+summary: "This is a series trying to explain the Life of a process in a Linux system. Will try to cover most of the aspects from the user space to the kernel space."
 categories: articles
 tags: [process, linux]
 comments: true

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Developing android app the fun way
-excerpt: "Developing an Android app was never easy before, we need to know Java, after the introduction of ASE, we need to know Python, now, its child's play, just putting the pieces of a puzzle together."
+summary: "Developing an Android app was never easy before, we need to know Java, after the introduction of ASE, we need to know Python, now, its child's play, just putting the pieces of a puzzle together."
 categories: articles
 tags: [android, google]
 comments: true

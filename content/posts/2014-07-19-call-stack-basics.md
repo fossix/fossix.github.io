@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Call Stack for Beginners - Part 1
-excerpt: "This is part of Life of a Process series, but this one is not an exact continuation of the where it was left, but it should be useful for the overall understanding of a process and its life."
+summary: "This is part of Life of a Process series, but this one is not an exact continuation of the where it was left, but it should be useful for the overall understanding of a process and its life."
 categories: articles
 tags: [process, linux, stack]
 comments: true

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Dynamic linker and loader
-excerpt: "This is a part of the Life of a Process Series. This section explains how libraries are linked and loaded dynamically upon the start of execution of a program."
+summary: "This is a part of the Life of a Process Series. This section explains how libraries are linked and loaded dynamically upon the start of execution of a program."
 categories: articles
 tags: [process, linker, loader]
 comments: true

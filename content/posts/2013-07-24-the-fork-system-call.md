@@ -1,7 +1,7 @@
 ---
 layout: post
 title: The fork() system call
-excerpt: "This is part of the series titles The Life of a Process. This part tell about how a fork system call works which is required to create a new process."
+summary: "This is part of the series titles The Life of a Process. This part tell about how a fork system call works which is required to create a new process."
 categories: articles
 tags: [process, fork, syscall]
 comments: true

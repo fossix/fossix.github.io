@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Debuggin Linux Kernel using JTAG (In ARM)
-excerpt: "Simple and useful steps to debug vmlinux in a JTAG debugger."
+summary: "Simple and useful steps to debug vmlinux in a JTAG debugger."
 categories: articles
 tags: [linux, debugging, trace32]
 comments: true

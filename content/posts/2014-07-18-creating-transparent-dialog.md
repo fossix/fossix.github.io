@@ -1,7 +1,7 @@
 ---
 layout: post
 title: C++ - Creating Transparent Dialog
-excerpt: "Trick to make a transparent dialog without making its child controls transparent in C++"
+summary: "Trick to make a transparent dialog without making its child controls transparent in C++"
 categories: articles
 tags: [dialog, transparent, windows]
 comments: true

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: The Birth of a Process
-excerpt: "This is a part of the series on Life of a Process. This section explains how a process is created from the shell."
+summary: "This is a part of the series on Life of a Process. This section explains how a process is created from the shell."
 categories: articles
 tags: [c, process, shell]
 comments: true

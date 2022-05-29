@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Program Sections
-excerpt: "This is part of The Life of a Process series. This section explains the different sections of a program. Like the BSS, Data etc."
+summary: "This is part of The Life of a Process series. This section explains the different sections of a program. Like the BSS, Data etc."
 categories: articles
 tags: [process, elf]
 comments: true

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Linux Interview Questions
-excerpt: "Linux kernel and device driver interview questions."
+summary: "Linux kernel and device driver interview questions."
 categories: articles
 tags: [linux, driver, questions]
 comments: true

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Gnome Humour!
-excerpt: "If fortunately, a geek has a girl friend, they are sure that they will find bug in their relationship and needs a Bugzilla to fix it."
+summary: "If fortunately, a geek has a girl friend, they are sure that they will find bug in their relationship and needs a Bugzilla to fix it."
 categories: articles
 tags: [bugzilla, funny, gnome, humour]
 image:

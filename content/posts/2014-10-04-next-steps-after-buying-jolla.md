@@ -1,7 +1,7 @@
 ---
 layout: post
 title: What next after buying Jolla
-excerpt: "Got a Jolla Sailfish phone? Congrats and welcome to the non-android, non-IOS, a pure traditional Linux OS liking community. Learn to hack your phone, its fun and its in the spirit of the OS and community."
+summary: "Got a Jolla Sailfish phone? Congrats and welcome to the non-android, non-IOS, a pure traditional Linux OS liking community. Learn to hack your phone, its fun and its in the spirit of the OS and community."
 categories: articles
 tags: [jolla, sailfish, newbie]
 comments: true

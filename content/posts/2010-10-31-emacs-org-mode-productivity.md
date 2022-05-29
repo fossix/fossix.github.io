@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Emacs org-mode productivity
-excerpt: "Using emacs is awesome, using it also as a productivity tool is so productive. Combined with org-mode emacs and your life will be not the same again."
+summary: "Using emacs is awesome, using it also as a productivity tool is so productive. Combined with org-mode emacs and your life will be not the same again."
 categories: articles
 tags: [linux, emacs, productivity, organise]
 comments: true

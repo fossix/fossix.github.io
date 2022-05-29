@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Program Compilation - An introduction
-excerpt: "A basic intro about how compilation works for a C program. This is part of the 'Life of a Process' series. We will see the compilation steps and what ld does."
+summary: "A basic intro about how compilation works for a C program. This is part of the 'Life of a Process' series. We will see the compilation steps and what ld does."
 categories: articles
 tags: [c, gcc, linking]
 comments: true

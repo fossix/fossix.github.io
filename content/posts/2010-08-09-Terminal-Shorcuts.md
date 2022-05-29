@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Terminal Shortcuts! (Compilation)
-excerpt: "Few shortcuts to enhance your commandline skills"
+summary: "Few shortcuts to enhance your commandline skills"
 categories: articles
 tags: [linux, CLI, commands, terminal, shortcuts]
 comments: true

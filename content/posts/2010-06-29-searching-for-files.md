@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Searching for files?
-excerpt: "Nobody is a exception for searching files unless you don’t have a computer."
+summary: "Nobody is a exception for searching files unless you don’t have a computer."
 categories: articles
 tags: [find, locate, files]
 image:

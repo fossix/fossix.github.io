@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Generate unique IDs
-excerpt: "The aritcle talks about a simple way to generate meaningful unique ids. Typical application is with database shards."
+summary: "The aritcle talks about a simple way to generate meaningful unique ids. Typical application is with database shards."
 categories: articles
 tags: [c, database, algorithm]
 comments: true

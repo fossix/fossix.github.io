@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Command Line for beginners - Email
-excerpt: "An attempt to create a series of articles targetting audencies who are beginning their command line journey. This post speaks about how to setup your email and view mails in a command line client."
+summary: "An attempt to create a series of articles targetting audencies who are beginning their command line journey. This post speaks about how to setup your email and view mails in a command line client."
 categories: articles
 tags: [CLI, email]
 comments: true

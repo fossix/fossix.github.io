@@ -1,7 +1,7 @@
 ---
 layout: post
 title: You personal computer can be a webserver
-excerpt: "Running a personal webserver from home can be fun, and also keep you busy. Know how to do it."
+summary: "Running a personal webserver from home can be fun, and also keep you busy. Know how to do it."
 categories: articles
 tags: [linux, apache, webserver]
 comments: true

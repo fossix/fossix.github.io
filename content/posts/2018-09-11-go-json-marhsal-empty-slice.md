@@ -1,7 +1,7 @@
 ---
 layout: snippets
 title:  "Go's json marshal"
-excerpt: "Marshalling nil objects"
+summary: "Marshalling nil objects"
 date:   2018-09-11 11:16:17 +0700
 categories: snippets
 tags: [golang]

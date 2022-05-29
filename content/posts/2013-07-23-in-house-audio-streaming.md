@@ -1,7 +1,7 @@
 ---
 layout: post
 title: In-house Audio Streaming
-excerpt: "How can we actually do a non-stop radio like setup that we can listen on our phones? Its actually easy with icecast and easystream. Read on to find out."
+summary: "How can we actually do a non-stop radio like setup that we can listen on our phones? Its actually easy with icecast and easystream. Read on to find out."
 categories: articles
 tags: [android, streaming, fedora, audio]
 comments: true

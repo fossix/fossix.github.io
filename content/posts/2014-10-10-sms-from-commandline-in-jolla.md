@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Sending SMS from the command line in Jolla
-excerpt: " A shell script to send SMS from the command line interface of sailfish.. and also see the Easter egg inside sailfish"
+summary: " A shell script to send SMS from the command line interface of sailfish.. and also see the Easter egg inside sailfish"
 categories: articles
 tags: [CLI, jolla, easter-eggs, sms]
 comments: true

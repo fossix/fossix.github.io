@@ -1,7 +1,7 @@
 ---
 layout: post
 title: XMPP Auto Reply Bot
-excerpt: "How about having a automatic reply for all your chats which are based on the XMPP? Even Gtalk is based on XMPP, and so many others too."
+summary: "How about having a automatic reply for all your chats which are based on the XMPP? Even Gtalk is based on XMPP, and so many others too."
 categories: articles
 tags: [gtalk, xmpp, bot]
 comments: true
