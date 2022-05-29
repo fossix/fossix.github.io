@@ -27,10 +27,3 @@ understand as well the complete process life covering both kernel and user-space
 aspects. The explanations and details are based on the Linux based operating
 systems only, other systems might follow different mechanisms which I might not
 be aware of or have no intention of discussing those systems.
-
-- [Program Compilation - An introduction](/articles/program-compilation-an-introduction/)
-- [The Birth Of a Process](/articles/the-birth-of-a-process/)
-- [The fork() system call](/articles/the-fork-system-call/)
-- [The exec system call](/articles/the-exec-system-call/)
-- [Program Sections](/articles/program-sections/)
-- [Dynamic linker and loader](/articles/Dynamic-linker-and-loader/)

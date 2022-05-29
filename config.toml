@@ -20,6 +20,11 @@ pygmentsUseClasses = false
   priority = 0.5
   filename = "sitemap.xml"
 
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  series = "series"
+
 [markup]
   [markup.highlight]
     anchorLineNos = false

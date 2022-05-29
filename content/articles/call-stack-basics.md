@@ -8,6 +8,7 @@ comments: true
 share: true
 modified: 2014-07-19T15:12:53+05:30
 author: santosh
+series: "Life of a process"
 ---
 
 Every process, no matter how it came into being, has at least one stack for the

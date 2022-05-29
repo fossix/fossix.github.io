@@ -1,73 +1,175 @@
 #+title: Email in Emacs
 #+date: 2022-05-28 20:08:38 +0530
 #+categories[]: articles
-#+tags[]: emacs email notmuch
+#+tags[]: emacs email notmuch mbsync
 #+author: santosh
 #+draft: t
 
-My email setup in emacs.
+Organising email, filtering, reading, adding action items and following up is a
+process, an evolving one, which, I believe, no one email client can
+satisfy. This article will show /one of the better/ methods to manage emails with
+the help of mbsync, notmuch and emacs.
 
 # more
 
+This is a the next version of my email work flow, which kept evolving after I
+published about [[/articles/command-line-for-beginners][emacs and email]] in 2017. The original set-up had in it's process
+the following tools:
+
+- Fetchmail
+- Crontab
+- Procmail
+- Mutt
+
+This working well for a while until I wanted to add emails as action items and
+to-do items, include email links in my notes. Searching was a slower in this
+set-up, along with maintaining multiple accounts. So I have settled to this after
+few months of refining my current set-up.
+
+#+begin_src dot :file new-mail-flow.png :noweb yes :exports results
+  digraph R {
+      <<lob-dot-transparent>>
+      rankdir=LR
+      node [style=rounded]
+      Provider [shape=box]
+      mbsync [style="rounded", shape=folder]
+      notmuch [shape=record, label="{ tags }"]
+      emacs [shape=box]
+
+      Provider -> mbsync -> notmuch -> emacs
+  }
+#+end_src
+
+#+RESULTS:
+[[file:new-mail-flow.png]]
+
+The components didn't just change overnight. The first component to arrive in
+this new flow was ~mbsync~ replacing ~fetchmail~. The filtering and front-end was
+still ~procmail~ and ~mutt~, which was then replaced by ~notmuch~ and ~emacs~.
+
 * Fetching email
-  with ~mbsync~
-*** GMail
-    
-    #+begin_src cfg
-      Create Slave
-      SyncState *
 
-      IMAPAccount gmail
-      Host imap.gmail.com
-      User me@gmail.com
-      PassCmd "gpg2 --use-agent --no-tty -d --quiet ~/path/to/passwdfile.gpg"
-      SSLType IMAPS
-      CertificateFile /etc/ssl/certs/ca-bundle.crt
+  The below is the configuration for ~mbsync~ for GMail. Save it in ~~/.mbsyncrc~
+  and make the necessary changes.
 
-      MaildirStore gmail-local
-      # The trailing "/" is important
-      Path ~/Mail/gmail/
-      Inbox ~/Mail/gmail/INBOX
-      Subfolders Verbatim
+  #+begin_src cfg
+    Create Slave
+    SyncState *
 
-      IMAPStore gmail-remote
-      Account gmail
+    IMAPAccount gmail
+    Host imap.gmail.com
+    User me@gmail.com
+    PassCmd "gpg2 --use-agent --no-tty -d --quiet ~/path/to/passwdfile.gpg"
+    SSLType IMAPS
+    CertificateFile /etc/ssl/certs/ca-bundle.crt
 
-      Channel gmail
-      Far :gmail-remote:
-      Near :gmail-local:
-      Patterns *
-      Create Both
-      SyncState *
-      Sync All
-    #+end_src
+    MaildirStore gmail-local
+    # The trailing "/" is important
+    Path ~/Mail/gmail/
+    Inbox ~/Mail/gmail/INBOX
+    Subfolders Verbatim
 
-    The password file in the config above is encrypted with ~gpg2~. If you have
-    already setup ~gpg~ then encryption is easy:
+    IMAPStore gmail-remote
+    Account gmail
 
-    : $  echo "MyStr0ngP@ssword" > passwdfile
-    : $ gpg2 --encrypt -r me@gmail.com passwdfile
+    Channel gmail
+    Far :gmail-remote:
+    Near :gmail-local:
+    Patterns *
+    Create Both
+    SyncState *
+    Sync All
+  #+end_src
 
-    Make sure to ~shred~ the file after encryption.
+  The password file in the config above is encrypted with ~gpg2~. If you have
+  already setup ~gpg~ then encryption is easy:
 
-    : shred passwdfile && rm passwdfile
+  : $  echo "MyStr0ngP@ssword" > passwdfile
+  : $ gpg2 --encrypt -r me@gmail.com passwdfile
 
-    If you look at the ~echo~ command in the example above, there is a space
-    deliberately kept in the beginning of the line, this will ensure that, that
-    specific command will not be stored in the shell command history if the
-    following is set in the ~bash~ profile.
+  Make sure to ~shred~ the file after encryption.
 
-    : export HISTCONTROL=ignoreboth
+  : shred passwdfile && rm passwdfile
+
+  If you look at the ~echo~ command in the example above, there is a space
+  deliberately kept in the beginning of the line, this will ensure that, that
+  specific command will not be stored in the shell command history if the
+  following is set in the ~bash~ profile.
+
+  : export HISTCONTROL=ignoreboth
+
+
+  With the above ~mbsync~ configuration, running ~mbsync -a~ should fetch all mails
+  and save it under ~~/Mail/gmail~ folder. If the configured Gmail account has
+  already filters, those should also appear in their respective folders. I
+  personally remove all filters and labelled in the Gmail UI and do my filtering
+  locally using ~notmuch~, which we will in the coming sections.
 
 *** Fetching Office365
     The configuration for /office365/ mails is also similar to that of the
-    above. Since new /office365/ use oauth, an additional tool, [[https://github.com/harishkrupo/oauth2ms][~oauth2ms~]] is needed
-    to fetch the oauth token for ~mbsync~.
-*** Systemd service setup
+    above. Since new /office365/ uses oauth, an additional tool, [[https://github.com/harishkrupo/oauth2ms][oauth2ms]] is
+    needed to fetch the oauth token for ~mbsync~. Detailed steps is given in
+    ~oauth2ms~ repository's readme. A sample config for /office365/ is given below:
+
+    #+begin_src cfg
+      IMAPAccount work
+      Host outlook.office365.com
+      User user@company.com
+      PassCmd oauth2ms
+      AuthMechs XOAUTH2
+      SSLType IMAPS
+      SSLVersions TLSv1.2
+      CertificateFile /etc/ssl/certs/ca-bundle.crt
+      PipelineDepth 1
+
+      IMAPStore work-remote
+      Account work
+
+      MaildirStore work-local
+      Path ~/Mail/work/
+      Inbox ~/Mail/work/INBOX
+      SubFolders Verbatim
+
+      Channel work
+      Far :work-remote:
+      Near :work-local:
+      # Include everything
+      Patterns "INBOX" "*"
+      Create Both
+      Sync All
+      SyncState *
+    #+end_src
+
+    The only change, apart from the host and email address is the ~PassCmd~ line,
+    which instead of the ~gpg2~, it has the ~oauth2ms~ command to get the oauth2
+    token. If you have configured your MS Application correctly, then ~mbsync -a~
+    should sync all your mails under ~~Mail/work/~.
+
 * Notmuch
-*** Configuration
+  Initial configuration for notmuch is very simple, just run ~notmuch~ once, the
+  configuration is saved in ~~/.notmuch-config~. The most important part of this
+  configuration is
+
+  #+begin_example
+    [database]
+    path=Mail
+
+    [new]
+    tags=unread;new;
+  #+end_example
+
+  Rest of config is also important, but there is no need to change the
+  defaults. But please do take a look into the config file, it has good amount
+  of comments to know each of the config options. ~path~ points to the path to the
+  toplevel mail directory, there could be sub-directories containing multiple
+  accounts. ~tags~ tell what to tag the new mails. The tags above both make sense
+  for a new mail, it is a new mail, and therefore it has to be unread.
+
 *** Intial Tagging
 *** Notmuch dashboard in emacs (notmuch-hello)
+
+* Systemd service setup
+
 * Email in Emacs
 *** Org-mode integration
 ***** Capture
@@ -103,9 +205,3 @@ My email setup in emacs.
 
 ***** notmuch links
 *** Getting patches from email
-
-    #+begin_src rust
-      fn main() {
-          println!("Hello, World!");
-      }
-    #+end_src
