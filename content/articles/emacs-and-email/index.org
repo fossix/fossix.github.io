@@ -1,0 +1,111 @@
+#+title: Email in Emacs
+#+date: 2022-05-28 20:08:38 +0530
+#+categories[]: articles
+#+tags[]: emacs email notmuch
+#+author: santosh
+#+draft: t
+
+My email setup in emacs.
+
+# more
+
+* Fetching email
+  with ~mbsync~
+*** GMail
+    
+    #+begin_src cfg
+      Create Slave
+      SyncState *
+
+      IMAPAccount gmail
+      Host imap.gmail.com
+      User me@gmail.com
+      PassCmd "gpg2 --use-agent --no-tty -d --quiet ~/path/to/passwdfile.gpg"
+      SSLType IMAPS
+      CertificateFile /etc/ssl/certs/ca-bundle.crt
+
+      MaildirStore gmail-local
+      # The trailing "/" is important
+      Path ~/Mail/gmail/
+      Inbox ~/Mail/gmail/INBOX
+      Subfolders Verbatim
+
+      IMAPStore gmail-remote
+      Account gmail
+
+      Channel gmail
+      Far :gmail-remote:
+      Near :gmail-local:
+      Patterns *
+      Create Both
+      SyncState *
+      Sync All
+    #+end_src
+
+    The password file in the config above is encrypted with ~gpg2~. If you have
+    already setup ~gpg~ then encryption is easy:
+
+    : $  echo "MyStr0ngP@ssword" > passwdfile
+    : $ gpg2 --encrypt -r me@gmail.com passwdfile
+
+    Make sure to ~shred~ the file after encryption.
+
+    : shred passwdfile && rm passwdfile
+
+    If you look at the ~echo~ command in the example above, there is a space
+    deliberately kept in the beginning of the line, this will ensure that, that
+    specific command will not be stored in the shell command history if the
+    following is set in the ~bash~ profile.
+
+    : export HISTCONTROL=ignoreboth
+
+*** Fetching Office365
+    The configuration for /office365/ mails is also similar to that of the
+    above. Since new /office365/ use oauth, an additional tool, [[https://github.com/harishkrupo/oauth2ms][~oauth2ms~]] is needed
+    to fetch the oauth token for ~mbsync~.
+*** Systemd service setup
+* Notmuch
+*** Configuration
+*** Intial Tagging
+*** Notmuch dashboard in emacs (notmuch-hello)
+* Email in Emacs
+*** Org-mode integration
+***** Capture
+      #+begin_src emacs-lisp
+        (use-package ol-notmuch)
+        (setq org-capture-templates
+              (append
+               '(("M" "Mail")
+                 ("Mf" "Follow up" entry
+                  (file+headline "TODO" "Mail")
+                  ;; Default deadline of three days, so it shows in our agenda and we
+                  ;; don't miss it.
+                  "* TODO %a :@mail:
+                DEADLINE: %(org-insert-time-stamp (org-read-date nil t \"+2d\"))\n\n %i\n"
+                  :immediate-finish t)
+                 ("Mr" "Read later" entry
+                  (file+headline "TODO" "Mail")
+                  "* TODO %a :@mail:\n\n %i\n" :immediate-finish t))
+               org-capture-templates))
+
+        (defun ss/mail-follow-up()
+          "Capture mail to org mode."
+          (interactive)
+          (org-store-link nil)
+          (org-capture nil "Mf"))
+
+        (defun ss/mail-read-later()
+          "Capture mail to org mode."
+          (interactive)
+          (org-store-link nil)
+          (org-capture nil "Mr"))
+      #+end_src
+
+***** notmuch links
+*** Getting patches from email
+
+    #+begin_src rust
+      fn main() {
+          println!("Hello, World!");
+      }
+    #+end_src
