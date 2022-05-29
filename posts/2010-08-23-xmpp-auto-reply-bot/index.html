@@ -72,66 +72,134 @@ doesn’t matter ;).</p>
 <p>Before using this script, you should have your systems installed with
 <code>IO::Socket::SSL</code> , and <code>AnyEvent::XMPP</code>. You can install it with the following
 commands.</p>
-<pre><code class=language-console>$ sudo cpan IO::Socket::SSL
-$ sudo cpan AnyEvent::XMPP
-</code></pre>
-<p>The following is the code for the auto-reply bot.</p>
-<pre><code class=language-perl>#!/usr/bin/perl
-use strict;
-use utf8;
-use AnyEvent;
-use AnyEvent::XMPP::Client;
-use AnyEvent::XMPP::IM::Message;
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>sudo cpan IO::Socket::SSL
+<span class=gp>$ </span>sudo cpan AnyEvent::XMPP
+</code></pre></td></tr></table>
+</div>
+</div><p>The following is the code for the auto-reply bot.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-perl data-lang=perl><span class=ch>#!/usr/bin/perl</span>
+<span class=k>use</span> <span class=nn>strict</span><span class=p>;</span>
+<span class=k>use</span> <span class=nn>utf8</span><span class=p>;</span>
+<span class=k>use</span> <span class=nn>AnyEvent</span><span class=p>;</span>
+<span class=k>use</span> <span class=nn>AnyEvent::XMPP::Client</span><span class=p>;</span>
+<span class=k>use</span> <span class=nn>AnyEvent::XMPP::IM::Message</span><span class=p>;</span>
 
 
-my $uname = 'your_gmail_id';    # or be jabber, don't forget to change $server to jabber.org
-my $passwd = 'your_password';
-my $server = &quot;talk.google.com&quot;;
-my $j = AnyEvent-&gt;condvar;
-my $cl = AnyEvent::XMPP::Client-&gt;new (debug =&gt; 0);
-$cl-&gt;add_account ($uname,$passwd,$server);
-$cl-&gt;reg_cb (
-   session_ready =&gt; sub {
-    my ($cl, $acc) = @_;
-    $cl-&gt;set_presence(&quot;avaliable&quot;,&quot;Under reply bot\'s control&quot;,10);
-   },
-   disconnect =&gt; sub {
-      my ($cl, $acc, $h, $p, $reas) = @_;
-      print &quot;disconnect ($h:$p): $reas\n&quot;;
-   },
-   error =&gt; sub {
-      my ($cl, $acc, $err) = @_;
-      print &quot;ERROR: &quot; . $err-&gt;string . &quot;\n&quot;;
-   },
-   message =&gt; sub {
-      my ($cl, $acc, $msg) = @_;
-    my ($u,$r) = split(/[\._@]/,$msg-&gt;from);
-     if($msg-&gt;body()=~ /^[\s]*$/){ print $u.&quot; is typing\n&quot;;}
-    else{
-        $r = $msg-&gt;make_reply;
-        my $rep=&amp;sentm($msg-&gt;body,$u);
-        $r-&gt;add_body($rep);
-        $r-&gt;send;
+<span class=k>my</span> <span class=nv>$uname</span> <span class=o>=</span> <span class=s>&#39;your_gmail_id&#39;</span><span class=p>;</span>    <span class=c1># or be jabber, don&#39;t forget to change $server to jabber.org</span>
+<span class=k>my</span> <span class=nv>$passwd</span> <span class=o>=</span> <span class=s>&#39;your_password&#39;</span><span class=p>;</span>
+<span class=k>my</span> <span class=nv>$server</span> <span class=o>=</span> <span class=s>&#34;talk.google.com&#34;</span><span class=p>;</span>
+<span class=k>my</span> <span class=nv>$j</span> <span class=o>=</span> <span class=nn>AnyEvent</span><span class=o>-&gt;</span><span class=n>condvar</span><span class=p>;</span>
+<span class=k>my</span> <span class=nv>$cl</span> <span class=o>=</span> <span class=nn>AnyEvent::XMPP::Client</span><span class=o>-&gt;</span><span class=k>new</span> <span class=p>(</span><span class=n>debug</span> <span class=o>=&gt;</span> <span class=mi>0</span><span class=p>);</span>
+<span class=nv>$cl</span><span class=o>-&gt;</span><span class=n>add_account</span> <span class=p>(</span><span class=nv>$uname</span><span class=p>,</span><span class=nv>$passwd</span><span class=p>,</span><span class=nv>$server</span><span class=p>);</span>
+<span class=nv>$cl</span><span class=o>-&gt;</span><span class=n>reg_cb</span> <span class=p>(</span>
+   <span class=n>session_ready</span> <span class=o>=&gt;</span> <span class=k>sub</span> <span class=p>{</span>
+    <span class=k>my</span> <span class=p>(</span><span class=nv>$cl</span><span class=p>,</span> <span class=nv>$acc</span><span class=p>)</span> <span class=o>=</span> <span class=nv>@_</span><span class=p>;</span>
+    <span class=nv>$cl</span><span class=o>-&gt;</span><span class=n>set_presence</span><span class=p>(</span><span class=s>&#34;avaliable&#34;</span><span class=p>,</span><span class=s>&#34;Under reply bot\&#39;s control&#34;</span><span class=p>,</span><span class=mi>10</span><span class=p>);</span>
+   <span class=p>},</span>
+   <span class=n>disconnect</span> <span class=o>=&gt;</span> <span class=k>sub</span> <span class=p>{</span>
+      <span class=k>my</span> <span class=p>(</span><span class=nv>$cl</span><span class=p>,</span> <span class=nv>$acc</span><span class=p>,</span> <span class=nv>$h</span><span class=p>,</span> <span class=nv>$p</span><span class=p>,</span> <span class=nv>$reas</span><span class=p>)</span> <span class=o>=</span> <span class=nv>@_</span><span class=p>;</span>
+      <span class=k>print</span> <span class=s>&#34;disconnect ($h:$p): $reas\n&#34;</span><span class=p>;</span>
+   <span class=p>},</span>
+   <span class=n>error</span> <span class=o>=&gt;</span> <span class=k>sub</span> <span class=p>{</span>
+      <span class=k>my</span> <span class=p>(</span><span class=nv>$cl</span><span class=p>,</span> <span class=nv>$acc</span><span class=p>,</span> <span class=nv>$err</span><span class=p>)</span> <span class=o>=</span> <span class=nv>@_</span><span class=p>;</span>
+      <span class=k>print</span> <span class=s>&#34;ERROR: &#34;</span> <span class=o>.</span> <span class=nv>$err</span><span class=o>-&gt;</span><span class=n>string</span> <span class=o>.</span> <span class=s>&#34;\n&#34;</span><span class=p>;</span>
+   <span class=p>},</span>
+   <span class=n>message</span> <span class=o>=&gt;</span> <span class=k>sub</span> <span class=p>{</span>
+      <span class=k>my</span> <span class=p>(</span><span class=nv>$cl</span><span class=p>,</span> <span class=nv>$acc</span><span class=p>,</span> <span class=nv>$msg</span><span class=p>)</span> <span class=o>=</span> <span class=nv>@_</span><span class=p>;</span>
+    <span class=k>my</span> <span class=p>(</span><span class=nv>$u</span><span class=p>,</span><span class=nv>$r</span><span class=p>)</span> <span class=o>=</span> <span class=nb>split</span><span class=p>(</span><span class=sr>/[\._@]/</span><span class=p>,</span><span class=nv>$msg</span><span class=o>-&gt;</span><span class=n>from</span><span class=p>);</span>
+     <span class=k>if</span><span class=p>(</span><span class=nv>$msg</span><span class=o>-&gt;</span><span class=n>body</span><span class=p>()</span><span class=o>=~</span><span class=sr> /^[\s]*$/</span><span class=p>){</span> <span class=k>print</span> <span class=nv>$u</span><span class=o>.</span><span class=s>&#34; is typing\n&#34;</span><span class=p>;}</span>
+    <span class=k>else</span><span class=p>{</span>
+        <span class=nv>$r</span> <span class=o>=</span> <span class=nv>$msg</span><span class=o>-&gt;</span><span class=n>make_reply</span><span class=p>;</span>
+        <span class=k>my</span> <span class=nv>$rep</span><span class=o>=&amp;</span><span class=n>sentm</span><span class=p>(</span><span class=nv>$msg</span><span class=o>-&gt;</span><span class=n>body</span><span class=p>,</span><span class=nv>$u</span><span class=p>);</span>
+        <span class=nv>$r</span><span class=o>-&gt;</span><span class=n>add_body</span><span class=p>(</span><span class=nv>$rep</span><span class=p>);</span>
+        <span class=nv>$r</span><span class=o>-&gt;</span><span class=nb>send</span><span class=p>;</span>
 
-    }
-        print &quot;$u says: &quot;.$msg-&gt;body() . &quot;\n&quot;;
-   }
-);
+    <span class=p>}</span>
+        <span class=k>print</span> <span class=s>&#34;$u says: &#34;</span><span class=o>.</span><span class=nv>$msg</span><span class=o>-&gt;</span><span class=n>body</span><span class=p>()</span> <span class=o>.</span> <span class=s>&#34;\n&#34;</span><span class=p>;</span>
+   <span class=p>}</span>
+<span class=p>);</span>
 
-#you can add your own keyword's, need to improve this part!
-sub sentm{
-    my $msg=shift;
-    my $u =shift;
-    my $reply;
-    if($msg=~/([hH]ow)|([hH]i)|([hH]ey)|([Hh]ello)/){return $reply=&quot;$u, Hi.. How are you.. &quot;;}
-    if($msg=~/([Ww]hat)|\?|([Ww]at)|(^did)/){return $reply=&quot;yes but not really $u... :) &quot;;}
-    if($msg=~/([Ww]hy)|([Ww]hen)/){return $reply=&quot;may be in sometime $u.. :)&quot;;}
-    if($msg=~/([Oo]kay)|([oO]k)/){return $reply=&quot;good&quot;;}
-    else {return $reply=&quot;hey $u, I will alert if I meet $ENV{'USER'}&quot;;}
-}
-$cl-&gt;start;
-$j-&gt;wait;
-</code></pre>
+<span class=c1>#you can add your own keyword&#39;s, need to improve this part!</span>
+<span class=k>sub</span> <span class=nf>sentm</span><span class=p>{</span>
+    <span class=k>my</span> <span class=nv>$msg</span><span class=o>=</span><span class=nb>shift</span><span class=p>;</span>
+    <span class=k>my</span> <span class=nv>$u</span> <span class=o>=</span><span class=nb>shift</span><span class=p>;</span>
+    <span class=k>my</span> <span class=nv>$reply</span><span class=p>;</span>
+    <span class=k>if</span><span class=p>(</span><span class=nv>$msg</span><span class=o>=~</span><span class=sr>/([hH]ow)|([hH]i)|([hH]ey)|([Hh]ello)/</span><span class=p>){</span><span class=k>return</span> <span class=nv>$reply</span><span class=o>=</span><span class=s>&#34;$u, Hi.. How are you.. &#34;</span><span class=p>;}</span>
+    <span class=k>if</span><span class=p>(</span><span class=nv>$msg</span><span class=o>=~</span><span class=sr>/([Ww]hat)|\?|([Ww]at)|(^did)/</span><span class=p>){</span><span class=k>return</span> <span class=nv>$reply</span><span class=o>=</span><span class=s>&#34;yes but not really $u... :) &#34;</span><span class=p>;}</span>
+    <span class=k>if</span><span class=p>(</span><span class=nv>$msg</span><span class=o>=~</span><span class=sr>/([Ww]hy)|([Ww]hen)/</span><span class=p>){</span><span class=k>return</span> <span class=nv>$reply</span><span class=o>=</span><span class=s>&#34;may be in sometime $u.. :)&#34;</span><span class=p>;}</span>
+    <span class=k>if</span><span class=p>(</span><span class=nv>$msg</span><span class=o>=~</span><span class=sr>/([Oo]kay)|([oO]k)/</span><span class=p>){</span><span class=k>return</span> <span class=nv>$reply</span><span class=o>=</span><span class=s>&#34;good&#34;</span><span class=p>;}</span>
+    <span class=k>else</span> <span class=p>{</span><span class=k>return</span> <span class=nv>$reply</span><span class=o>=</span><span class=s>&#34;hey $u, I will alert if I meet $ENV{&#39;USER&#39;}&#34;</span><span class=p>;}</span>
+<span class=p>}</span>
+<span class=nv>$cl</span><span class=o>-&gt;</span><span class=n>start</span><span class=p>;</span>
+<span class=nv>$j</span><span class=o>-&gt;</span><span class=nb>wait</span><span class=p>;</span>
+</code></pre></td></tr></table>
+</div>
+</div>
 <hr>
 <div class=float-right>
 <a href=https://fossix.org/tagsgtalk class="badge badge-dark">gtalk</a>

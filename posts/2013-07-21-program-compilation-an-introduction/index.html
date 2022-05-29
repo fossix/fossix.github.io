@@ -70,15 +70,27 @@ Archive
 <li>Linking the object code with libraries</li>
 </ul>
 <p>So the actual compilation process goes like the following:</p>
-<pre><code class=language-console>$ gcc -E prog.c &gt; prog.i # pre-process
-$ gcc -s prog.i      # assemble
-$ as -o prog.o prog.s    # compile
-$ ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 \
-  /usr/lib64/crt1.o \
-  /usr/lib64/crti.o \
-  /usr/lib64/crtn.o -lc prog.o  # link
-</code></pre>
-<p>We will cover each of the process in detail in later sections, but the linker
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>gcc -E prog.c &gt; prog.i <span class=c1># pre-process</span>
+<span class=gp>$ </span>gcc -s prog.i      <span class=c1># assemble</span>
+<span class=gp>$ </span>as -o prog.o prog.s    <span class=c1># compile</span>
+<span class=gp>$ </span>ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 <span class=se>\
+</span><span class=se></span><span class=go>  /usr/lib64/crt1.o \
+</span><span class=go>  /usr/lib64/crti.o \
+</span><span class=go>  /usr/lib64/crtn.o -lc prog.o  # link
+</span></code></pre></td></tr></table>
+</div>
+</div><p>We will cover each of the process in detail in later sections, but the linker
 stage is our focus right now.</p>
 <p>The options to <code>ld</code> specify that our object code should be dynamically linked
 and the dynamic linker to be used is <code>ld-linux-x86-64.so</code>. The rest of the

@@ -70,153 +70,312 @@ API, I was excited and started to write a simple python script to update to
 Twitter. You can find the version 1 of the script in this post.</p>
 <h1 id=how-to-use-clt>How to use clt?</h1>
 <p>You can tweet using the following command:</p>
-<pre><code class=language-console>$ clt [-u username] [-p password] your tweet message here
-</code></pre>
-<p>Note that the username is not required if it is set <code>TWEETUSER</code> environment
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>clt <span class=o>[</span>-u username<span class=o>]</span> <span class=o>[</span>-p password<span class=o>]</span> your tweet message here
+</code></pre></td></tr></table>
+</div>
+</div><p>Note that the username is not required if it is set <code>TWEETUSER</code> environment
 variable. But you can give explicitly if you want to send as a different user.</p>
 <p>The following will get the specified user’s last tweet update.</p>
-<pre><code class=language-console>$ clt [-u username] -l
-</code></pre>
-<p>You can always refer the options using</p>
-<pre><code class=language-console>$ clt --help
-</code></pre>
-<p>The python code for clt is here.</p>
-<pre><code class=language-python>#!/usr/bin/python
-# -*- coding: utf-8 -*-
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>clt <span class=o>[</span>-u username<span class=o>]</span> -l
+</code></pre></td></tr></table>
+</div>
+</div><p>You can always refer the options using</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>clt --help
+</code></pre></td></tr></table>
+</div>
+</div><p>The python code for clt is here.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>  0
+</span><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=ch>#!/usr/bin/python</span>
+<span class=c1># -*- coding: utf-8 -*-</span>
 
-###############################################################################
-#     Twitter from the command line
-#     Copyright (C) 2009 Santosh Sivaraj 
-#
-#     This program is free software; you can redistribute it and/or modify it
-# under the terms of the GNU General Public License as published by the Free
-# Software Foundation; either version 2 of the License, or (at your option) any
-# later version.
-#
-#     This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
-# details.
-#
-#     You should have received a copy of the GNU General Public License along
-# with this program; if not, write to the Free Software Foundation, Inc., 59
-# Temple Place, Suite 330, Boston, MA 02111-1307 USA
-#
-# Command line twitter
-# clt version 1.0
-# Sun Aug 30 2009 - Santosh - Released version 1.0
-###############################################################################
+<span class=c1>###############################################################################</span>
+<span class=c1>#     Twitter from the command line</span>
+<span class=c1>#     Copyright (C) 2009 Santosh Sivaraj </span>
+<span class=c1>#</span>
+<span class=c1>#     This program is free software; you can redistribute it and/or modify it</span>
+<span class=c1># under the terms of the GNU General Public License as published by the Free</span>
+<span class=c1># Software Foundation; either version 2 of the License, or (at your option) any</span>
+<span class=c1># later version.</span>
+<span class=c1>#</span>
+<span class=c1>#     This program is distributed in the hope that it will be useful, but</span>
+<span class=c1># WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or</span>
+<span class=c1># FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more</span>
+<span class=c1># details.</span>
+<span class=c1>#</span>
+<span class=c1>#     You should have received a copy of the GNU General Public License along</span>
+<span class=c1># with this program; if not, write to the Free Software Foundation, Inc., 59</span>
+<span class=c1># Temple Place, Suite 330, Boston, MA 02111-1307 USA</span>
+<span class=c1>#</span>
+<span class=c1># Command line twitter</span>
+<span class=c1># clt version 1.0</span>
+<span class=c1># Sun Aug 30 2009 - Santosh - Released version 1.0</span>
+<span class=c1>###############################################################################</span>
 
-import twitter
-import getpass
-import sys
-import getopt
-import os
+<span class=kn>import</span> <span class=nn>twitter</span>
+<span class=kn>import</span> <span class=nn>getpass</span>
+<span class=kn>import</span> <span class=nn>sys</span>
+<span class=kn>import</span> <span class=nn>getopt</span>
+<span class=kn>import</span> <span class=nn>os</span>
 
-tweetapi = twitter.Api()
+<span class=n>tweetapi</span> <span class=o>=</span> <span class=n>twitter</span><span class=o>.</span><span class=n>Api</span><span class=p>()</span>
 
-VERSION = &quot;1.0&quot;
-authreq = 0 #set as one if we need authentication for any operations
-password = ''
+<span class=n>VERSION</span> <span class=o>=</span> <span class=s2>&#34;1.0&#34;</span>
+<span class=n>authreq</span> <span class=o>=</span> <span class=mi>0</span> <span class=c1>#set as one if we need authentication for any operations</span>
+<span class=n>password</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
 
-def printversion():
-    print &quot;clt (Command line tweeting) 1.0&quot;
-    print &quot;Copyright (C) 2009 Santosh, fossix.org&quot;
-    print &quot;This is free software; see the source for copying conditions. &quot;,
-    print &quot;There is NO \nWarranty; not even for MERCHANTABILITY or FITNESS &quot;,
-    print &quot;FOR A PARTICULAR PURPOSE.&quot;
+<span class=k>def</span> <span class=nf>printversion</span><span class=p>():</span>
+    <span class=nb>print</span> <span class=s2>&#34;clt (Command line tweeting) 1.0&#34;</span>
+    <span class=nb>print</span> <span class=s2>&#34;Copyright (C) 2009 Santosh, fossix.org&#34;</span>
+    <span class=nb>print</span> <span class=s2>&#34;This is free software; see the source for copying conditions. &#34;</span><span class=p>,</span>
+    <span class=nb>print</span> <span class=s2>&#34;There is NO </span><span class=se>\n</span><span class=s2>Warranty; not even for MERCHANTABILITY or FITNESS &#34;</span><span class=p>,</span>
+    <span class=nb>print</span> <span class=s2>&#34;FOR A PARTICULAR PURPOSE.&#34;</span>
 
-def usage():
-    print &quot;What are you doing now:\n&quot;,
-    print &quot;\tclt [-u username] [-p password] tweetmsg&quot;
-    print &quot;Get last tweet update:\n&quot;,
-    print &quot;\tclt [-u username] -l&quot;
-    print &quot;Get recent tweet updates from all friends:\n&quot;,
-    print &quot;\tclt [-u username] -p password]-a&quot;
-    print &quot;clt --version&quot;
-    print &quot;clt --help&quot;
+<span class=k>def</span> <span class=nf>usage</span><span class=p>():</span>
+    <span class=nb>print</span> <span class=s2>&#34;What are you doing now:</span><span class=se>\n</span><span class=s2>&#34;</span><span class=p>,</span>
+    <span class=nb>print</span> <span class=s2>&#34;</span><span class=se>\t</span><span class=s2>clt [-u username] [-p password] tweetmsg&#34;</span>
+    <span class=nb>print</span> <span class=s2>&#34;Get last tweet update:</span><span class=se>\n</span><span class=s2>&#34;</span><span class=p>,</span>
+    <span class=nb>print</span> <span class=s2>&#34;</span><span class=se>\t</span><span class=s2>clt [-u username] -l&#34;</span>
+    <span class=nb>print</span> <span class=s2>&#34;Get recent tweet updates from all friends:</span><span class=se>\n</span><span class=s2>&#34;</span><span class=p>,</span>
+    <span class=nb>print</span> <span class=s2>&#34;</span><span class=se>\t</span><span class=s2>clt [-u username] -p password]-a&#34;</span>
+    <span class=nb>print</span> <span class=s2>&#34;clt --version&#34;</span>
+    <span class=nb>print</span> <span class=s2>&#34;clt --help&#34;</span>
 
-def auth(username):
-    global password, authreq
-    if not username:
-        print &quot;No username supplied or no environment variable 'TWEETUSER'!&quot;
-        print (&quot;Use 'clt --help' for more info&quot;)
-        sys.exit(1)
-    # We will reach here only for operations that need authentication
-    if not password:
-        password = getpass.getpass()
-    p = twitter.Api(username, password)
-    return p
+<span class=k>def</span> <span class=nf>auth</span><span class=p>(</span><span class=n>username</span><span class=p>):</span>
+    <span class=k>global</span> <span class=n>password</span><span class=p>,</span> <span class=n>authreq</span>
+    <span class=k>if</span> <span class=ow>not</span> <span class=n>username</span><span class=p>:</span>
+        <span class=nb>print</span> <span class=s2>&#34;No username supplied or no environment variable &#39;TWEETUSER&#39;!&#34;</span>
+        <span class=nb>print</span> <span class=p>(</span><span class=s2>&#34;Use &#39;clt --help&#39; for more info&#34;</span><span class=p>)</span>
+        <span class=n>sys</span><span class=o>.</span><span class=n>exit</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+    <span class=c1># We will reach here only for operations that need authentication</span>
+    <span class=k>if</span> <span class=ow>not</span> <span class=n>password</span><span class=p>:</span>
+        <span class=n>password</span> <span class=o>=</span> <span class=n>getpass</span><span class=o>.</span><span class=n>getpass</span><span class=p>()</span>
+    <span class=n>p</span> <span class=o>=</span> <span class=n>twitter</span><span class=o>.</span><span class=n>Api</span><span class=p>(</span><span class=n>username</span><span class=p>,</span> <span class=n>password</span><span class=p>)</span>
+    <span class=k>return</span> <span class=n>p</span>
 
-def fall(username):
-    a = auth(username)
-    if not a:
-        print &quot;Invalid password or username&quot;
-        sys.exit(1)
+<span class=k>def</span> <span class=nf>fall</span><span class=p>(</span><span class=n>username</span><span class=p>):</span>
+    <span class=n>a</span> <span class=o>=</span> <span class=n>auth</span><span class=p>(</span><span class=n>username</span><span class=p>)</span>
+    <span class=k>if</span> <span class=ow>not</span> <span class=n>a</span><span class=p>:</span>
+        <span class=nb>print</span> <span class=s2>&#34;Invalid password or username&#34;</span>
+        <span class=n>sys</span><span class=o>.</span><span class=n>exit</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
 
-    status = a.GetFriendsTimeline()
-    for s in status:
-        print &quot;{0}: {1}&quot;.format(s.user.name, s.text)
+    <span class=n>status</span> <span class=o>=</span> <span class=n>a</span><span class=o>.</span><span class=n>GetFriendsTimeline</span><span class=p>()</span>
+    <span class=k>for</span> <span class=n>s</span> <span class=ow>in</span> <span class=n>status</span><span class=p>:</span>
+        <span class=nb>print</span> <span class=s2>&#34;</span><span class=si>{0}</span><span class=s2>: </span><span class=si>{1}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>s</span><span class=o>.</span><span class=n>user</span><span class=o>.</span><span class=n>name</span><span class=p>,</span> <span class=n>s</span><span class=o>.</span><span class=n>text</span><span class=p>)</span>
 
-def main(argv):
-    global password, authreq
-    username = os.environ.get(&quot;TWEETUSER&quot;)
-    otheropts = 0
-    last = 0 #last status message
-    getall = 0
+<span class=k>def</span> <span class=nf>main</span><span class=p>(</span><span class=n>argv</span><span class=p>):</span>
+    <span class=k>global</span> <span class=n>password</span><span class=p>,</span> <span class=n>authreq</span>
+    <span class=n>username</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>environ</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&#34;TWEETUSER&#34;</span><span class=p>)</span>
+    <span class=n>otheropts</span> <span class=o>=</span> <span class=mi>0</span>
+    <span class=n>last</span> <span class=o>=</span> <span class=mi>0</span> <span class=c1>#last status message</span>
+    <span class=n>getall</span> <span class=o>=</span> <span class=mi>0</span>
 
-    try:
-        opts, args = getopt.getopt(argv, &quot;u:p:la&quot;, [&quot;help&quot;, &quot;version&quot;])
-    except getopt.GetoptError:
-        usage()
-        sys.exit(2)
+    <span class=k>try</span><span class=p>:</span>
+        <span class=n>opts</span><span class=p>,</span> <span class=n>args</span> <span class=o>=</span> <span class=n>getopt</span><span class=o>.</span><span class=n>getopt</span><span class=p>(</span><span class=n>argv</span><span class=p>,</span> <span class=s2>&#34;u:p:la&#34;</span><span class=p>,</span> <span class=p>[</span><span class=s2>&#34;help&#34;</span><span class=p>,</span> <span class=s2>&#34;version&#34;</span><span class=p>])</span>
+    <span class=k>except</span> <span class=n>getopt</span><span class=o>.</span><span class=n>GetoptError</span><span class=p>:</span>
+        <span class=n>usage</span><span class=p>()</span>
+        <span class=n>sys</span><span class=o>.</span><span class=n>exit</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
 
-# Parse all the command line arguments
-    for opt, arg in opts:
-        if opt == &quot;--help&quot;:
-            usage()
-            sys.exit();
-    if opt == &quot;--version&quot;:
-        printversion()
-            sys.exit()
-        elif opt == '-u':
-            username = arg
-        elif opt == '-p':
-            password = arg
-        elif opt == '-l':
-            last = 1
-    elif opt == '-a':
-            getall = 1
+<span class=c1># Parse all the command line arguments</span>
+    <span class=k>for</span> <span class=n>opt</span><span class=p>,</span> <span class=n>arg</span> <span class=ow>in</span> <span class=n>opts</span><span class=p>:</span>
+        <span class=k>if</span> <span class=n>opt</span> <span class=o>==</span> <span class=s2>&#34;--help&#34;</span><span class=p>:</span>
+            <span class=n>usage</span><span class=p>()</span>
+            <span class=n>sys</span><span class=o>.</span><span class=n>exit</span><span class=p>();</span>
+    <span class=k>if</span> <span class=n>opt</span> <span class=o>==</span> <span class=s2>&#34;--version&#34;</span><span class=p>:</span>
+        <span class=n>printversion</span><span class=p>()</span>
+            <span class=n>sys</span><span class=o>.</span><span class=n>exit</span><span class=p>()</span>
+        <span class=k>elif</span> <span class=n>opt</span> <span class=o>==</span> <span class=s1>&#39;-u&#39;</span><span class=p>:</span>
+            <span class=n>username</span> <span class=o>=</span> <span class=n>arg</span>
+        <span class=k>elif</span> <span class=n>opt</span> <span class=o>==</span> <span class=s1>&#39;-p&#39;</span><span class=p>:</span>
+            <span class=n>password</span> <span class=o>=</span> <span class=n>arg</span>
+        <span class=k>elif</span> <span class=n>opt</span> <span class=o>==</span> <span class=s1>&#39;-l&#39;</span><span class=p>:</span>
+            <span class=n>last</span> <span class=o>=</span> <span class=mi>1</span>
+    <span class=k>elif</span> <span class=n>opt</span> <span class=o>==</span> <span class=s1>&#39;-a&#39;</span><span class=p>:</span>
+            <span class=n>getall</span> <span class=o>=</span> <span class=mi>1</span>
 
-    tweet = &quot; &quot;.join(args)
-    if tweet != '':
-        authreq = 1;
+    <span class=n>tweet</span> <span class=o>=</span> <span class=s2>&#34; &#34;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>args</span><span class=p>)</span>
+    <span class=k>if</span> <span class=n>tweet</span> <span class=o>!=</span> <span class=s1>&#39;&#39;</span><span class=p>:</span>
+        <span class=n>authreq</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span>
 
-    if getall == 1:
-        fall(username)
-        sys.exit();
+    <span class=k>if</span> <span class=n>getall</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
+        <span class=n>fall</span><span class=p>(</span><span class=n>username</span><span class=p>)</span>
+        <span class=n>sys</span><span class=o>.</span><span class=n>exit</span><span class=p>();</span>
 
-    if last == 1:
-        laststat = tweetapi.GetUserTimeline(username, count = 1)
-        for l in laststat:
-            print l.text
-        sys.exit()
+    <span class=k>if</span> <span class=n>last</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
+        <span class=n>laststat</span> <span class=o>=</span> <span class=n>tweetapi</span><span class=o>.</span><span class=n>GetUserTimeline</span><span class=p>(</span><span class=n>username</span><span class=p>,</span> <span class=n>count</span> <span class=o>=</span> <span class=mi>1</span><span class=p>)</span>
+        <span class=k>for</span> <span class=n>l</span> <span class=ow>in</span> <span class=n>laststat</span><span class=p>:</span>
+            <span class=nb>print</span> <span class=n>l</span><span class=o>.</span><span class=n>text</span>
+        <span class=n>sys</span><span class=o>.</span><span class=n>exit</span><span class=p>()</span>
 
-    p = auth(username)
+    <span class=n>p</span> <span class=o>=</span> <span class=n>auth</span><span class=p>(</span><span class=n>username</span><span class=p>)</span>
 
-    # perform all authentication required operations here
-        # --------- other operations -----------#
+    <span class=c1># perform all authentication required operations here</span>
+        <span class=c1># --------- other operations -----------#</span>
 
-    # Reach here only to post tweets, else return early.
-    if tweet == '':
-        print &quot;Tweet what?&quot;
-        sys.exit(1)
+    <span class=c1># Reach here only to post tweets, else return early.</span>
+    <span class=k>if</span> <span class=n>tweet</span> <span class=o>==</span> <span class=s1>&#39;&#39;</span><span class=p>:</span>
+        <span class=nb>print</span> <span class=s2>&#34;Tweet what?&#34;</span>
+        <span class=n>sys</span><span class=o>.</span><span class=n>exit</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
 
-    p.PostUpdate(tweet)
+    <span class=n>p</span><span class=o>.</span><span class=n>PostUpdate</span><span class=p>(</span><span class=n>tweet</span><span class=p>)</span>
 
-if __name__ == &quot;__main__&quot;:
-    main(sys.argv[1:])
-</code></pre>
+<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+    <span class=n>main</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>:])</span>
+</code></pre></td></tr></table>
+</div>
+</div>
 <hr>
 <div class=float-right>
 <a href=https://fossix.org/tagscli class="badge badge-dark">CLI</a>

@@ -76,7 +76,7 @@ at:
 <p>The following are specific to HAProxy:</p>
 <p>The URL specific forwards to backend server can be done using ACLs. There are
 directives to match an url: path_beg , path_end etc.</p>
-<pre><code>Frontend main *:80
+<pre tabindex=0><code>Frontend main *:80
            Acl  url_app1  path_beg  /app1
            Acl  url_app2  path_beg  /app2
            Use_backend   app1_backend  if  url_app1
@@ -89,9 +89,8 @@ directives to match an url: path_beg , path_end etc.</p>
            Balance    roundrobin
            Server     app1    127.0.0.1:5003    check
            Server     app2    127.0.0.1:5004    check
-</code></pre>
-<p>Specific to Nginx:</p>
-<pre><code>server {
+</code></pre><p>Specific to Nginx:</p>
+<pre tabindex=0><code>server {
     listen 80;
     # ... other stuff
 
@@ -117,8 +116,7 @@ directives to match an url: path_beg , path_end etc.</p>
     }
 
 }
-</code></pre>
-<p><em>Sticky sessions:</em> application-specific cookie There are two ways a server can be
+</code></pre><p><em>Sticky sessions:</em> application-specific cookie There are two ways a server can be
 identified when requests are routed through HAProxy, Cookie Insert method
 :Loadbalancer will add a Set-Cookie Header with a server name as its value. So
 when the client sends back the response with the cookie HAProxy knows which back
@@ -134,7 +132,7 @@ server name. <code>cookie JSESSION_ID</code> prefix</p>
 <p>For Nginx: In case of Nginx, the redirection can be specific to host running an
 application instance. In this way the session is maintained. A sample
 configuration may look like this:</p>
-<pre><code>server {
+<pre tabindex=0><code>server {
     ...
     set $upstream &quot;default-app-Server&quot;;
     if ($http_cookie ~ &quot;Host=([\w-]+)&quot;) {

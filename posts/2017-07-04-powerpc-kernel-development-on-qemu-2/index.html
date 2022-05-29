@@ -74,12 +74,21 @@ also need a more full fledged distribution to do more. A few usecases might be</
 installed with distro image. But that will not work, since we the <code>initrd</code>
 should have the required modules to mount filesystems and other
 functionalities. So our tiny <code>initrd</code> won&rsquo;t be of any help here.</p>
-<pre><code class=language-console>$ qemu-system-ppc64 -M pseries -m 2048 -smp cores=2 -nodefaults \
- -nographic -serial pty -monitor stdio -drive file=ppc.img,if=virtio \
- -s -net nic,model=virtio -net user,hostfwd=tcp::2222-:22 \
- -kernel vmlinux -initrd initrd.img -append &quot;root=/dev/vda5&quot;
-</code></pre>
-<p>The alternative is to compile the kernel and install it from inside the qemu
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>qemu-system-ppc64 -M pseries -m <span class=m>2048</span> -smp <span class=nv>cores</span><span class=o>=</span><span class=m>2</span> -nodefaults <span class=se>\
+</span><span class=se></span><span class=go> -nographic -serial pty -monitor stdio -drive file=ppc.img,if=virtio \
+</span><span class=go> -s -net nic,model=virtio -net user,hostfwd=tcp::2222-:22 \
+</span><span class=go> -kernel vmlinux -initrd initrd.img -append &#34;root=/dev/vda5&#34;
+</span></code></pre></td></tr></table>
+</div>
+</div><p>The alternative is to compile the kernel and install it from inside the qemu
 instance itself. If you had read the
 previous
 <a href=http://www.fossix.org/articles/powerpc-kernel-development-on-qemu/>article</a>,
@@ -94,53 +103,106 @@ guest. Now we can work on the kernel from two different machines, based on what
 we need.</p>
 <h2 id=nfs-setup>NFS Setup</h2>
 <p>On host:</p>
-<pre><code class=language-console>$ sudo echo &quot;/path/to/kernel/source  *(rw,sync,no_root_squash,insecure) &gt;&gt; /etc/exports
-$ sudo systemctl restart nfs
-</code></pre>
-<p>On guest:</p>
-<pre><code class=language-console>$ showmount -e 10.0.2.2 # host ip address
-$ mount 10.0.2.2:/path/to/kernel/source /local-mount
-</code></pre>
-<p><strong>Remember to stop nfs on host when done</strong>, since we are allowing all machines to
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>sudo <span class=nb>echo</span> <span class=s2>&#34;/path/to/kernel/source  *(rw,sync,no_root_squash,insecure) &gt;&gt; /etc/exports
+</span><span class=s2></span><span class=gp>$ </span>sudo systemctl restart nfs
+</code></pre></td></tr></table>
+</div>
+</div><p>On guest:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>showmount -e 10.0.2.2 <span class=c1># host ip address</span>
+<span class=gp>$ </span>mount 10.0.2.2:/path/to/kernel/source /local-mount
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>Remember to stop nfs on host when done</strong>, since we are allowing all machines to
 access the mount point. To restrict to a particular machine (the guest), give
 its IP address in place of <code>*</code> in <code>/etc/exports</code>.</p>
 <p>Now, we can configure the kernel with the distro&rsquo;s config.</p>
 <h2 id=compiling-and-installing-the-kernel>Compiling and installing the kernel</h2>
-<pre><code class=language-console>$ # on the guest
-$ make oldconfig
-</code></pre>
-<p>We can also continue with compiling the kernel, but it will be terribly slow. So
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=c1># on the guest</span>
+<span class=gp>$ </span>make oldconfig
+</code></pre></td></tr></table>
+</div>
+</div><p>We can also continue with compiling the kernel, but it will be terribly slow. So
 we start cross compiling in the host.</p>
-<pre><code class=language-console>$ # on the host
-$ cd /path/to/kernel/source
-$ export ARCH=powerpc
-$ export CROSS_COMPILE=powerpc64-linux-gnu-
-$ make -j4
-</code></pre>
-<p>We can also do the kernel and modules installation from the host. For this, we
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=c1># on the host</span>
+<span class=gp>$ </span><span class=nb>cd</span> /path/to/kernel/source
+<span class=gp>$ </span><span class=nb>export</span> <span class=nv>ARCH</span><span class=o>=</span>powerpc
+<span class=gp>$ </span><span class=nb>export</span> <span class=nv>CROSS_COMPILE</span><span class=o>=</span>powerpc64-linux-gnu-
+<span class=gp>$ </span>make -j4
+</code></pre></td></tr></table>
+</div>
+</div><p>We can also do the kernel and modules installation from the host. For this, we
 need to mount the guest filesystem in the host. This depends on the type of disk
 image we used, and whether we have separate partitions for each.</p>
 <p>This can be found with help of two commands, <code>fdisk</code> and <code>file</code>. The following
 are from my setup of how I have the images.</p>
-<pre><code class=language-console>$ # On host
-$ file ppc.img
-ppc.img: DOS/MBR boot sector; partition 1 : ID=0x41, active, start-CHS (0x4,4,1), end-CHS (0x14,19,2), startsector 2048, 8192 sectors; partition 2 : ID=0x83, start-CHS (0x14,20,1), end-CHS (0x3ff,254,2), startsector 10240, 2097152 sectors; partition 3 : ID=0x82, start-CHS (0x3ff,254,2), end-CHS (0x3ff,254,2), startsector 2107392, 4388864 sectors; partition 4 : ID=0x5, start-CHS (0x3ff,254,2), end-CHS (0x3ff,254,2), startsector 6496256, 77389824 sectors
-$ fdisk -l ppc.img
-Disk ppc.img: 40 GiB, 42949672960 bytes, 83886080 sectors
-Units: sectors of 1 * 512 = 512 bytes
-Sector size (logical/physical): 512 bytes / 512 bytes
-I/O size (minimum/optimal): 512 bytes / 512 bytes
-Disklabel type: dos
-Disk identifier: 0x100065c2
-
-Device     Boot   Start      End  Sectors  Size Id Type
-ppc.img1   *       2048    10239     8192    4M 41 PPC PReP Boot
-ppc.img2          10240  2107391  2097152    1G 83 Linux
-ppc.img3        2107392  6496255  4388864  2.1G 82 Linux swap / Solaris
-ppc.img4        6496256 83886079 77389824 36.9G  5 Extended
-ppc.img5        6498304 37955583 31457280   15G 83 Linux
-</code></pre>
-<p>Using this information, we can mount the boot partition. From the above commands
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=c1># On host</span>
+<span class=gp>$ </span>file ppc.img
+<span class=go>ppc.img: DOS/MBR boot sector; partition 1 : ID=0x41, active, start-CHS (0x4,4,1), end-CHS (0x14,19,2), startsector 2048, 8192 sectors; partition 2 : ID=0x83, start-CHS (0x14,20,1), end-CHS (0x3ff,254,2), startsector 10240, 2097152 sectors; partition 3 : ID=0x82, start-CHS (0x3ff,254,2), end-CHS (0x3ff,254,2), startsector 2107392, 4388864 sectors; partition 4 : ID=0x5, start-CHS (0x3ff,254,2), end-CHS (0x3ff,254,2), startsector 6496256, 77389824 sectors
+</span><span class=go></span><span class=gp>$ </span>fdisk -l ppc.img
+<span class=go>Disk ppc.img: 40 GiB, 42949672960 bytes, 83886080 sectors
+</span><span class=go>Units: sectors of 1 * 512 = 512 bytes
+</span><span class=go>Sector size (logical/physical): 512 bytes / 512 bytes
+</span><span class=go>I/O size (minimum/optimal): 512 bytes / 512 bytes
+</span><span class=go>Disklabel type: dos
+</span><span class=go>Disk identifier: 0x100065c2
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>Device     Boot   Start      End  Sectors  Size Id Type
+</span><span class=go>ppc.img1   *       2048    10239     8192    4M 41 PPC PReP Boot
+</span><span class=go>ppc.img2          10240  2107391  2097152    1G 83 Linux
+</span><span class=go>ppc.img3        2107392  6496255  4388864  2.1G 82 Linux swap / Solaris
+</span><span class=go>ppc.img4        6496256 83886079 77389824 36.9G  5 Extended
+</span><span class=go>ppc.img5        6498304 37955583 31457280   15G 83 Linux
+</span></code></pre></td></tr></table>
+</div>
+</div><p>Using this information, we can mount the boot partition. From the above commands
 we can see two important information, one is the sector size (512 bytes, which
 is standard size in the linux kernel so far). The other is the sector start of
 the boot partition (ppc.img2, 10240). How do you know this is boot? Use <code>df -h</code>
@@ -148,34 +210,67 @@ in the guest to find out which is the <code>/boot</code> partition.</p>
 <p>We will use the <code>offset</code> option to mount to specify the <code>/boot</code> partition. In
 this case, the start sector is 10240, so the byte offset will be 5242880
 (10240 * 512).</p>
-<pre><code class=language-console>$ mount -o loop,offset=5242880 ppc.img guest-boot
-$ mount -o loop,offset=3327131648 ppc.img guest-root
-</code></pre>
-<p>Once we have successfully mounted the partition, use the <code>INSTALL_PATH</code> and
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>mount -o loop,offset<span class=o>=</span><span class=m>5242880</span> ppc.img guest-boot
+<span class=gp>$ </span>mount -o loop,offset<span class=o>=</span><span class=m>3327131648</span> ppc.img guest-root
+</code></pre></td></tr></table>
+</div>
+</div><p>Once we have successfully mounted the partition, use the <code>INSTALL_PATH</code> and
 <code>INSTALL_MOD_PATH</code> environment variables to install the kernel and the modules
 in the right place.</p>
-<pre><code class=language-console>$ export INSTALL_PATH=/path/to/guest-boot
-$ export INSTALL_MOD_PATH=/path/to/guest-root
-$ make modules_install
-$ make install
-</code></pre>
-<p>But now, we have one last problem, the installation won&rsquo;t create the <code>initramfs</code>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=nb>export</span> <span class=nv>INSTALL_PATH</span><span class=o>=</span>/path/to/guest-boot
+<span class=gp>$ </span><span class=nb>export</span> <span class=nv>INSTALL_MOD_PATH</span><span class=o>=</span>/path/to/guest-root
+<span class=gp>$ </span>make modules_install
+<span class=gp>$ </span>make install
+</code></pre></td></tr></table>
+</div>
+</div><p>But now, we have one last problem, the installation won&rsquo;t create the <code>initramfs</code>
 for the guest, only the kernel image will be copied to the partition. So, we
 will have to create the <code>initramfs</code> for the new kernel, edit the grub config
 file etc.</p>
 <p>So we will create the <code>initramfs</code> from the guest.</p>
-<pre><code class=language-console>$ # guest
-$ mkinitrd /boot/initramfs-&lt;kernel-version&gt;.img &lt;kernel-version&gt;
-$ grub2-mkconfig -o /boot/grub2/grub.cfg
-</code></pre>
-<p>Now we can either boot directly as usual, or give the kernel and initramfs in
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span><span class=c1># guest</span>
+<span class=gp>$ </span>mkinitrd /boot/initramfs-&lt;kernel-version&gt;.img &lt;kernel-version&gt;
+<span class=gp>$ </span>grub2-mkconfig -o /boot/grub2/grub.cfg
+</code></pre></td></tr></table>
+</div>
+</div><p>Now we can either boot directly as usual, or give the kernel and initramfs in
 the command line.</p>
-<pre><code class=language-console>$ qemu-system-ppc64 -M pseries -m 2048 -smp cores=2 -nodefaults -nographic \
- -serial pty -monitor stdio -drive file=ppc.img,if=virtio -s \
- -net nic,model=virtio -net user,hostfwd=tcp::2222-:22 -kernel vmlinux \
- -initrd initramfs-&lt;kernel-version&gt;.img -append &quot;root=/dev/vda5&quot;
-</code></pre>
-<p>In the above command, while specifying the boot arguments, <code>root=/dev/vda4</code>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>qemu-system-ppc64 -M pseries -m <span class=m>2048</span> -smp <span class=nv>cores</span><span class=o>=</span><span class=m>2</span> -nodefaults -nographic <span class=se>\
+</span><span class=se></span><span class=go> -serial pty -monitor stdio -drive file=ppc.img,if=virtio -s \
+</span><span class=go> -net nic,model=virtio -net user,hostfwd=tcp::2222-:22 -kernel vmlinux \
+</span><span class=go> -initrd initramfs-&lt;kernel-version&gt;.img -append &#34;root=/dev/vda5&#34;
+</span></code></pre></td></tr></table>
+</div>
+</div><p>In the above command, while specifying the boot arguments, <code>root=/dev/vda4</code>
 should be replaced by where ever your rootfs resides in the disk image.</p>
 <p>Moving forward, we can edit source and cross compile on the host, boot and do
 some advanced tests on the guest.</p>

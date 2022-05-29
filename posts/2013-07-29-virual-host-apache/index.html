@@ -71,44 +71,74 @@ website.</p>
 <p>I configured the apache2 for the additional virtual host using this Debian
 link. But my new URL was not working. When we restart apache2 or reload, we get
 warning on <code>NameVirtualHost *:80</code>.</p>
-<pre><code class=language-console>$ sudo /etc/init.d/apache2 reload
-* Reloading web server config apache2
-[Sat Jul 27 00:27:37 2013] [warn] NameVirtualHost *:80 has no VirtualHosts
-</code></pre>
-<p>Solution : remove/comment <code>#NameVirtualHost *:80</code> from <code>/etc/apache2/ports.conf</code></p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>sudo /etc/init.d/apache2 reload
+<span class=go>* Reloading web server config apache2
+</span><span class=go>[Sat Jul 27 00:27:37 2013] [warn] NameVirtualHost *:80 has no VirtualHosts
+</span></code></pre></td></tr></table>
+</div>
+</div><p>Solution : remove/comment <code>#NameVirtualHost *:80</code> from <code>/etc/apache2/ports.conf</code></p>
 <p>Hint: grep for <code>NameVirtualHost *</code> and confirm that all the entries in the
 apache2 folder are similar.</p>
 <p>And the virtual host configuration works fine as below but the URL is not
 working.</p>
-<pre><code class=language-console>$ apache2ctl -S
-VirtualHost configuration:
-wildcard NameVirtualHosts and _default_ servers:
-*:80                   is a NameVirtualHost
-default server preetam-box (/etc/apache2/sites-enabled/000-default:1)
-port 80 namevhost preetam-box (/etc/apache2/sites-enabled/000-default:1)
-port 80 namevhost drupal722 (/etc/apache2/sites-enabled/drupal722:1)
-port 80 namevhost preetamsite (/etc/apache2/sites-enabled/preetamsite:1)
-Syntax OK
-$ source /etc/apache2/envvars ; /usr/sbin/apache2 -S
-VirtualHost configuration:
-wildcard NameVirtualHosts and _default_ servers:
-*:80                   is a NameVirtualHost
-default server preetam-box (/etc/apache2/sites-enabled/000-default:1)
-port 80 namevhost preetam-box (/etc/apache2/sites-enabled/000-default:1)
-port 80 namevhost drupal722 (/etc/apache2/sites-enabled/drupal722:1)
-port 80 namevhost preetamsite (/etc/apache2/sites-enabled/preetamsite:1)
-Syntax OK
-</code></pre>
-<p>Now these are OK.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>apache2ctl -S
+<span class=go>VirtualHost configuration:
+</span><span class=go>wildcard NameVirtualHosts and _default_ servers:
+</span><span class=go>*:80                   is a NameVirtualHost
+</span><span class=go>default server preetam-box (/etc/apache2/sites-enabled/000-default:1)
+</span><span class=go>port 80 namevhost preetam-box (/etc/apache2/sites-enabled/000-default:1)
+</span><span class=go>port 80 namevhost drupal722 (/etc/apache2/sites-enabled/drupal722:1)
+</span><span class=go>port 80 namevhost preetamsite (/etc/apache2/sites-enabled/preetamsite:1)
+</span><span class=go>Syntax OK
+</span><span class=go></span><span class=gp>$ </span><span class=nb>source</span> /etc/apache2/envvars <span class=p>;</span> /usr/sbin/apache2 -S
+<span class=go>VirtualHost configuration:
+</span><span class=go>wildcard NameVirtualHosts and _default_ servers:
+</span><span class=go>*:80                   is a NameVirtualHost
+</span><span class=go>default server preetam-box (/etc/apache2/sites-enabled/000-default:1)
+</span><span class=go>port 80 namevhost preetam-box (/etc/apache2/sites-enabled/000-default:1)
+</span><span class=go>port 80 namevhost drupal722 (/etc/apache2/sites-enabled/drupal722:1)
+</span><span class=go>port 80 namevhost preetamsite (/etc/apache2/sites-enabled/preetamsite:1)
+</span><span class=go>Syntax OK
+</span></code></pre></td></tr></table>
+</div>
+</div><p>Now these are OK.</p>
 <h1 id=solution>Solution</h1>
 <p>The problem is that the DNS is not getting resolved and to get this working we
 need to edit <code>/etc/hosts</code> and add our new website.</p>
-<pre><code>127.0.0.1   localhost
+<pre tabindex=0><code>127.0.0.1   localhost
 127.0.0.1   drupal722
 127.0.0.1   preetamsite    # &lt;== new entry here
 127.0.1.1   ubuntu
-</code></pre>
-<p>this lets the DNS to route our URL to <code>apache2</code></p>
+</code></pre><p>this lets the DNS to route our URL to <code>apache2</code></p>
 <h1 id=conclusion>Conclusion</h1>
 <p>Have patience with Google and ask right questions. I wasted my 4 hours of time
 and found this. Was it worth it? it was :)</p>

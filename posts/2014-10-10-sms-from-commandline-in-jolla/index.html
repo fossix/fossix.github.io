@@ -71,93 +71,183 @@ your UI (Sailfish people are not boring you know!).</p>
 <p>The following script was entirely written in Emacs from over the SSH, and even
 for such a huge editor, Jolla was not at all slow, and didn’t heat up, nor it
 lagged in any case. Awesome!</p>
-<pre><code class=language-bash># sendsms phonenumber|firstname|lastname &quot;Message Text&quot; type
-# type is mobile by default
-# If not unique numbers are found, script will prompt for a choice
-# the message if sent successfully, it will add into the message UI also
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># sendsms phonenumber|firstname|lastname &#34;Message Text&#34; type</span>
+<span class=c1># type is mobile by default</span>
+<span class=c1># If not unique numbers are found, script will prompt for a choice</span>
+<span class=c1># the message if sent successfully, it will add into the message UI also</span>
 
-[ $# -lt 2 ] &amp;&amp; echo &quot;Usage&quot; &amp;&amp; exit 1
+<span class=o>[</span> <span class=nv>$#</span> -lt <span class=m>2</span> <span class=o>]</span> <span class=o>&amp;&amp;</span> <span class=nb>echo</span> <span class=s2>&#34;Usage&#34;</span> <span class=o>&amp;&amp;</span> <span class=nb>exit</span> <span class=m>1</span>
 
-# just pick up the first word (if fullname has been given)
-contact=`echo $1 | cut -f1 -d&quot; &quot; | tr '[a-z]' '[A-Z]'`
-message=$2
+<span class=c1># just pick up the first word (if fullname has been given)</span>
+<span class=nv>contact</span><span class=o>=</span><span class=sb>`</span><span class=nb>echo</span> <span class=nv>$1</span> <span class=p>|</span> cut -f1 -d<span class=s2>&#34; &#34;</span> <span class=p>|</span> tr <span class=s1>&#39;[a-z]&#39;</span> <span class=s1>&#39;[A-Z]&#39;</span><span class=sb>`</span>
+<span class=nv>message</span><span class=o>=</span><span class=nv>$2</span>
 
-if [ $# -gt 2 ]; then
-    type=`echo $3 | cut -f1 -d&quot; &quot; | tr '[a-z]' '[A-Z]'`
-else
-    type=&quot;MOBILE&quot;
-fi
+<span class=k>if</span> <span class=o>[</span> <span class=nv>$#</span> -gt <span class=m>2</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+    <span class=nv>type</span><span class=o>=</span><span class=sb>`</span><span class=nb>echo</span> <span class=nv>$3</span> <span class=p>|</span> cut -f1 -d<span class=s2>&#34; &#34;</span> <span class=p>|</span> tr <span class=s1>&#39;[a-z]&#39;</span> <span class=s1>&#39;[A-Z]&#39;</span><span class=sb>`</span>
+<span class=k>else</span>
+    <span class=nv>type</span><span class=o>=</span><span class=s2>&#34;MOBILE&#34;</span>
+<span class=k>fi</span>
 
-phonenumber=`sqlite3 /home/nemo/.local/share/system/privileged/Contacts/qtcontacts-sqlite/contacts.db &quot;select phoneNumber from phonenumbers where contactId in (select ContactId from contacts where upper(firstname)='$contact' or upper(lastname)='$contact') and upper(subTypes)='$type' group by phoneNumber&quot;`
+<span class=nv>phonenumber</span><span class=o>=</span><span class=sb>`</span>sqlite3 /home/nemo/.local/share/system/privileged/Contacts/qtcontacts-sqlite/contacts.db <span class=s2>&#34;select phoneNumber from phonenumbers where contactId in (select ContactId from contacts where upper(firstname)=&#39;</span><span class=nv>$contact</span><span class=s2>&#39; or upper(lastname)=&#39;</span><span class=nv>$contact</span><span class=s2>&#39;) and upper(subTypes)=&#39;</span><span class=nv>$type</span><span class=s2>&#39; group by phoneNumber&#34;</span><span class=sb>`</span>
 
-count=`wc -w &lt;&lt;&lt; $phonenumber`
+<span class=nv>count</span><span class=o>=</span><span class=sb>`</span>wc -w <span class=o>&lt;&lt;&lt;</span> <span class=nv>$phonenumber</span><span class=sb>`</span>
 
-if [ $count -gt 1 ]; then
-    phonenumbers=($phonenumber)
-    echo &quot;Found multiple phone numbers for name $contact&quot;
-    echo &quot;Select phone number to send message&quot;
-    c=1;
-    for i in ${phonenumbers[@]} ; do
-    echo $c: $i
-    c=$((c+1))
-    done
-    read -p &quot;Enter choice (any other to quit): &quot; choice
+<span class=k>if</span> <span class=o>[</span> <span class=nv>$count</span> -gt <span class=m>1</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+    <span class=nv>phonenumbers</span><span class=o>=(</span><span class=nv>$phonenumber</span><span class=o>)</span>
+    <span class=nb>echo</span> <span class=s2>&#34;Found multiple phone numbers for name </span><span class=nv>$contact</span><span class=s2>&#34;</span>
+    <span class=nb>echo</span> <span class=s2>&#34;Select phone number to send message&#34;</span>
+    <span class=nv>c</span><span class=o>=</span>1<span class=p>;</span>
+    <span class=k>for</span> i in <span class=si>${</span><span class=nv>phonenumbers</span><span class=p>[@]</span><span class=si>}</span> <span class=p>;</span> <span class=k>do</span>
+    <span class=nb>echo</span> <span class=nv>$c</span>: <span class=nv>$i</span>
+    <span class=nv>c</span><span class=o>=</span><span class=k>$((</span>c+1<span class=k>))</span>
+    <span class=k>done</span>
+    <span class=nb>read</span> -p <span class=s2>&#34;Enter choice (any other to quit): &#34;</span> choice
 
-    if [ -n $choice ]; then
-    ! [[ $choice =~ &quot;^[0-9]+$&quot; ]] &amp;&amp; exit 0
-    [ $choice -gt $count ] &amp;&amp; exit 0
-    else
-    # empty?
-    exit 0
-    fi
+    <span class=k>if</span> <span class=o>[</span> -n <span class=nv>$choice</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+    ! <span class=o>[[</span> <span class=nv>$choice</span> <span class=o>=</span>~ <span class=s2>&#34;^[0-9]+</span>$<span class=s2>&#34;</span> <span class=o>]]</span> <span class=o>&amp;&amp;</span> <span class=nb>exit</span> <span class=m>0</span>
+    <span class=o>[</span> <span class=nv>$choice</span> -gt <span class=nv>$count</span> <span class=o>]</span> <span class=o>&amp;&amp;</span> <span class=nb>exit</span> <span class=m>0</span>
+    <span class=k>else</span>
+    <span class=c1># empty?</span>
+    <span class=nb>exit</span> <span class=m>0</span>
+    <span class=k>fi</span>
 
-    [ $choice -eq 0 ] &amp;&amp; exit 0
+    <span class=o>[</span> <span class=nv>$choice</span> -eq <span class=m>0</span> <span class=o>]</span> <span class=o>&amp;&amp;</span> <span class=nb>exit</span> <span class=m>0</span>
 
-    choice=$((choice-1))
-    phonenumber=${phonenumbers[$choice]}
-fi
+    <span class=nv>choice</span><span class=o>=</span><span class=k>$((</span>choice-1<span class=k>))</span>
+    <span class=nv>phonenumber</span><span class=o>=</span><span class=si>${</span><span class=nv>phonenumbers</span><span class=p>[</span><span class=nv>$choice</span><span class=p>]</span><span class=si>}</span>
+<span class=k>fi</span>
 
-echo &quot;Sending message to $contact ($phonenumber)&quot;
+<span class=nb>echo</span> <span class=s2>&#34;Sending message to </span><span class=nv>$contact</span><span class=s2> (</span><span class=nv>$phonenumber</span><span class=s2>)&#34;</span>
 
-# strip zeroes and + etc from
-phonenumber=`sed -e 's/^0//g' &lt;&lt;&lt;$phonenumber`
-echo $phonenumber
-groupid=`sqlite3 /home/nemo/.local/share/commhistory/commhistory.db &quot;select max(groupId) from Events where groupId in (select id from Groups where remoteUids like '%$phonenumber')&quot;`
-echo $groupid
-if [ -z $groupid ]; then
-    su - nemo -c &quot;commhistory-tool add -newgroup '' '$phonenumber'&quot;
-    groupid=`sqlite3 /home/nemo/.local/share/commhistory/commhistory.db &quot;select max(groupId) from Events where groupId in (select id from Groups where remoteUids like '%$phonenumber')&quot;`
-    if [ -z $groupid ]; then
-    echo &quot;error adding group&quot;
-    exit 1
-    fi
-fi
+<span class=c1># strip zeroes and + etc from</span>
+<span class=nv>phonenumber</span><span class=o>=</span><span class=sb>`</span>sed -e <span class=s1>&#39;s/^0//g&#39;</span> <span class=o>&lt;&lt;&lt;</span><span class=nv>$phonenumber</span><span class=sb>`</span>
+<span class=nb>echo</span> <span class=nv>$phonenumber</span>
+<span class=nv>groupid</span><span class=o>=</span><span class=sb>`</span>sqlite3 /home/nemo/.local/share/commhistory/commhistory.db <span class=s2>&#34;select max(groupId) from Events where groupId in (select id from Groups where remoteUids like &#39;%</span><span class=nv>$phonenumber</span><span class=s2>&#39;)&#34;</span><span class=sb>`</span>
+<span class=nb>echo</span> <span class=nv>$groupid</span>
+<span class=k>if</span> <span class=o>[</span> -z <span class=nv>$groupid</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+    su - nemo -c <span class=s2>&#34;commhistory-tool add -newgroup &#39;&#39; &#39;</span><span class=nv>$phonenumber</span><span class=s2>&#39;&#34;</span>
+    <span class=nv>groupid</span><span class=o>=</span><span class=sb>`</span>sqlite3 /home/nemo/.local/share/commhistory/commhistory.db <span class=s2>&#34;select max(groupId) from Events where groupId in (select id from Groups where remoteUids like &#39;%</span><span class=nv>$phonenumber</span><span class=s2>&#39;)&#34;</span><span class=sb>`</span>
+    <span class=k>if</span> <span class=o>[</span> -z <span class=nv>$groupid</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+    <span class=nb>echo</span> <span class=s2>&#34;error adding group&#34;</span>
+    <span class=nb>exit</span> <span class=m>1</span>
+    <span class=k>fi</span>
+<span class=k>fi</span>
 
-su - nemo -c &quot;commhistory-tool add -group $groupid -text '$message' -out -sms '' '$phonenumber'&quot;
+su - nemo -c <span class=s2>&#34;commhistory-tool add -group </span><span class=nv>$groupid</span><span class=s2> -text &#39;</span><span class=nv>$message</span><span class=s2>&#39; -out -sms &#39;&#39; &#39;</span><span class=nv>$phonenumber</span><span class=s2>&#39;&#34;</span>
 
-dbus-send --system --print-reply --dest=org.ofono /ril_0 org.ofono.MessageManager.SendMessage string:&quot;$phonenumber&quot; string:&quot;$message&quot;
-if [ $? -eq 0 ]; then
-    echo &quot;Message sent&quot;
-fi
-</code></pre>
-<p>There are some hacks, with <code>su -c</code> etc, because we cannot access history DB as
+dbus-send --system --print-reply --dest<span class=o>=</span>org.ofono /ril_0 org.ofono.MessageManager.SendMessage string:<span class=s2>&#34;</span><span class=nv>$phonenumber</span><span class=s2>&#34;</span> string:<span class=s2>&#34;</span><span class=nv>$message</span><span class=s2>&#34;</span>
+<span class=k>if</span> <span class=o>[</span> <span class=nv>$?</span> -eq <span class=m>0</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+    <span class=nb>echo</span> <span class=s2>&#34;Message sent&#34;</span>
+<span class=k>fi</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>There are some hacks, with <code>su -c</code> etc, because we cannot access history DB as
 root user, and we cannot access the phonebook and contacts DB as nemo :-(</p>
 <p>The basic usage is (you have to run as root, there is no other choice as far as
 I have learnt)</p>
-<pre><code class=language-console>$ sendsms Santosh &quot;A test message&quot;
-Sending message to SANTOSH (xxxxxxxxxx)
-xxxxxxxxxx
-
-[W] CommHistoryDatabase::open:301 - Opened commhistory database: &quot;/home/nemo/.local/share/commhistory/commhistory.db&quot;
-Added group 59
-[D] Catcher::eventsCommittedSlot:71 - void Catcher::eventsCommittedSlot(QList&lt;CommHistory::Event&gt;, bool)
-[W] CommHistoryDatabase::open:301 - Opened commhistory database: &quot;/home/nemo/.local/share/commhistory/commhistory.db&quot;
-[D] Catcher::eventsCommittedSlot:71 - void Catcher::eventsCommittedSlot(QList&lt;CommHistory::Event&gt;, bool)
-method return sender=:1.7 -&gt; dest=:1.2929 reply_serial=2
-   object path &quot;/ril_0/message_A6FB1FE1D5C5920F9F5572355DA9A200C85D1112&quot;
-Message sent
-</code></pre>
-<p>If there are multiple phone number present, it will as you to choose one. Try
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>sendsms Santosh <span class=s2>&#34;A test message&#34;</span>
+<span class=go>Sending message to SANTOSH (xxxxxxxxxx)
+</span><span class=go>xxxxxxxxxx
+</span><span class=go></span><span class=err>
+</span><span class=err></span><span class=go>[W] CommHistoryDatabase::open:301 - Opened commhistory database: &#34;/home/nemo/.local/share/commhistory/commhistory.db&#34;
+</span><span class=go>Added group 59
+</span><span class=go>[D] Catcher::eventsCommittedSlot:71 - void Catcher::eventsCommittedSlot(QList&lt;CommHistory::Event&gt;, bool)
+</span><span class=go>[W] CommHistoryDatabase::open:301 - Opened commhistory database: &#34;/home/nemo/.local/share/commhistory/commhistory.db&#34;
+</span><span class=go>[D] Catcher::eventsCommittedSlot:71 - void Catcher::eventsCommittedSlot(QList&lt;CommHistory::Event&gt;, bool)
+</span><span class=go>method return sender=:1.7 -&gt; dest=:1.2929 reply_serial=2
+</span><span class=go>   object path &#34;/ril_0/message_A6FB1FE1D5C5920F9F5572355DA9A200C85D1112&#34;
+</span><span class=go>Message sent
+</span></code></pre></td></tr></table>
+</div>
+</div><p>If there are multiple phone number present, it will as you to choose one. Try
 sending an SMS to yourself and see the Easter egg in action!!</p>
 <hr>
 <div class=float-right>

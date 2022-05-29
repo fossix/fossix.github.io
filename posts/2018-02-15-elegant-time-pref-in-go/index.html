@@ -64,25 +64,49 @@ Archive
 <hr>
 <p>I often write debug logs with this below piece of code to print how much time a
 function took</p>
-<pre><code class=language-go>func upload() {
-	start := time.Now()
-	// processing
-	fmt.Println(&quot;uploaded in %s secs&quot;, time.Now().Sub(start))
-}
-</code></pre>
-<p>thats two lines, plus I should always remember to write that last line of code,
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=kd>func</span> <span class=nf>upload</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>start</span> <span class=o>:=</span> <span class=nx>time</span><span class=p>.</span><span class=nf>Now</span><span class=p>()</span>
+	<span class=c1>// processing
+</span><span class=c1></span>	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;uploaded in %s secs&#34;</span><span class=p>,</span> <span class=nx>time</span><span class=p>.</span><span class=nf>Now</span><span class=p>().</span><span class=nf>Sub</span><span class=p>(</span><span class=nx>start</span><span class=p>))</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>thats two lines, plus I should always remember to write that last line of code,
 With Golang&rsquo;s deferred function it just one line</p>
-<pre><code class=language-go>func totalTime(t time.Time) {
-	fmt.Print(time.Now().Sub(t))
-}
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=kd>func</span> <span class=nf>totalTime</span><span class=p>(</span><span class=nx>t</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Time</span><span class=p>)</span> <span class=p>{</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Print</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nf>Now</span><span class=p>().</span><span class=nf>Sub</span><span class=p>(</span><span class=nx>t</span><span class=p>))</span>
+<span class=p>}</span>
 
-func main() {
-	defer totalTime(time.Now())
-	time.Sleep(1*time.Second)
-	fmt.Println(&quot;Hello, playground&quot;)
-}
-</code></pre>
-<p>Here we use the fact of deferred function that arguments are evaluated first and
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=k>defer</span> <span class=nf>totalTime</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nf>Now</span><span class=p>())</span>
+	<span class=nx>time</span><span class=p>.</span><span class=nf>Sleep</span><span class=p>(</span><span class=mi>1</span><span class=o>*</span><span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;Hello, playground&#34;</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Here we use the fact of deferred function that arguments are evaluated first and
 the function is called after return of callee.</p>
 <hr>
 <div class=float-right>

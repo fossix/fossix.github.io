@@ -63,27 +63,57 @@ Archive
 </div>
 <hr>
 <p>Assume this is the production grade program we need to dockerize and run.</p>
-<pre><code class=language-go>package main
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=kn>package</span> <span class=nx>main</span>
 
-import &quot;fmt&quot;
+<span class=kn>import</span> <span class=s>&#34;fmt&#34;</span>
 
-func main() {
-     fmt.Println(&quot;saying hello to the world&quot;)
-}
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+     <span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;saying hello to the world&#34;</span><span class=p>)</span>
+<span class=p>}</span>
 
-</code></pre>
-<pre><code class=language-docker>FROM golang:1.10-alpine as builder
-WORKDIR /go/src/github.com/shabinesh/prog
-COPY main.go  .
-COPY vendor ./vendor
-RUN CGO_ENABLED=0 go build -o main .
-
-FROM alpine:latest 
-RUN apk --no-cache add ca-certificates
-WORKDIR /
-COPY --from=0 /go/src/github.com/shabinesh/prog/main .
-CMD [&quot;./main&quot;] 
-</code></pre>
+</code></pre></td></tr></table>
+</div>
+</div><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-docker data-lang=docker><span class=k>FROM</span><span class=s> golang:1.10-alpine as builder</span><span class=err>
+</span><span class=err></span><span class=k>WORKDIR</span><span class=s> /go/src/github.com/shabinesh/prog</span><span class=err>
+</span><span class=err></span><span class=k>COPY</span> main.go  .<span class=err>
+</span><span class=err></span><span class=k>COPY</span> vendor ./vendor<span class=err>
+</span><span class=err></span><span class=k>RUN</span> <span class=nv>CGO_ENABLED</span><span class=o>=</span><span class=m>0</span> go build -o main .<span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=k>FROM</span><span class=s> alpine:latest </span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> apk --no-cache add ca-certificates<span class=err>
+</span><span class=err></span><span class=k>WORKDIR</span><span class=s> /</span><span class=err>
+</span><span class=err></span><span class=k>COPY</span> --from<span class=o>=</span><span class=m>0</span> /go/src/github.com/shabinesh/prog/main .<span class=err>
+</span><span class=err></span><span class=k>CMD</span> <span class=p>[</span><span class=s2>&#34;./main&#34;</span><span class=p>]</span> <span class=err>
+</span></code></pre></td></tr></table>
+</div>
+</div>
 <hr>
 <div class=float-right>
 <a href=https://fossix.org/tagsgolang class="badge badge-dark">golang</a>

@@ -73,12 +73,21 @@ color of the dialog which is not used in the application. I selected a color
 background. Set that color transparent using <code>SetLayeredWindowAttributes</code> with the
 <code>LWA_COLORKEY</code> flag.</p>
 <p>The code that makes dialog is:</p>
-<pre><code class=language-cpp>SetBackgroundColor(RGB(1,11,21));
-LONG ExtendedStyle = GetWindowLong(GetSafeHwnd(), GWL_EXSTYLE);
-SetWindowLong(GetSafeHwnd(), GWL_EXSTYLE, ExtendedStyle | WS_EX_LAYERED);
-::SetLayeredWindowAttributes(GetSafeHwnd(), RGB(1,11,21), 0, LWA_COLORKEY);
-</code></pre>
-<p>Paste the above code in the <code>OnInitDialog()</code> function of your dialog class. Use
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=n>SetBackgroundColor</span><span class=p>(</span><span class=n>RGB</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=mi>11</span><span class=p>,</span><span class=mi>21</span><span class=p>));</span>
+<span class=n>LONG</span> <span class=n>ExtendedStyle</span> <span class=o>=</span> <span class=n>GetWindowLong</span><span class=p>(</span><span class=n>GetSafeHwnd</span><span class=p>(),</span> <span class=n>GWL_EXSTYLE</span><span class=p>);</span>
+<span class=n>SetWindowLong</span><span class=p>(</span><span class=n>GetSafeHwnd</span><span class=p>(),</span> <span class=n>GWL_EXSTYLE</span><span class=p>,</span> <span class=n>ExtendedStyle</span> <span class=o>|</span> <span class=n>WS_EX_LAYERED</span><span class=p>);</span>
+<span class=o>::</span><span class=n>SetLayeredWindowAttributes</span><span class=p>(</span><span class=n>GetSafeHwnd</span><span class=p>(),</span> <span class=n>RGB</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=mi>11</span><span class=p>,</span><span class=mi>21</span><span class=p>),</span> <span class=mi>0</span><span class=p>,</span> <span class=n>LWA_COLORKEY</span><span class=p>);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Paste the above code in the <code>OnInitDialog()</code> function of your dialog class. Use
 Visual Studio 2010 and derive your dialog class from the <code>CDialogEx</code> class.</p>
 <hr>
 <div class=float-right>

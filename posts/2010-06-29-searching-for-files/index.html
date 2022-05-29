@@ -64,17 +64,35 @@ Archive
 <hr>
 <p>Nobody is a exception for searching files unless you don’t have a computer. here
 are two commands you must learn if you are a beginner. find command</p>
-<pre><code class=language-console>$ find /path/ -name file_name
-</code></pre>
-<p>example:</p>
-<pre><code class=language-console>$ find . -name &quot;date*&quot;
-</code></pre>
-<p>Notice the ‘.’ which says search in the current directory for files starting
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>find /path/ -name file_name
+</code></pre></td></tr></table>
+</div>
+</div><p>example:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>find . -name <span class=s2>&#34;date*&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Notice the ‘.’ which says search in the current directory for files starting
 with &ldquo;date&rdquo; , you can use your regular expression skill here. And you if you
 want to search for file starting from the root just replace ‘.’ with ‘/’.</p>
-<pre><code class=language-console>$ find / -name file.txt
-</code></pre>
-<p><code>-name</code> option where you will specify your file names, use <code>-iname</code> option for
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>find / -name file.txt
+</code></pre></td></tr></table>
+</div>
+</div><p><code>-name</code> option where you will specify your file names, use <code>-iname</code> option for
 case insensitivity.</p>
 <p>You might also filter the files with their type <code>-type</code> for example</p>
 <p>$ find /home -name file.txt -type f</p>
@@ -83,18 +101,37 @@ looking for directories, or ‘s’ for block files.</p>
 <p>There are two more important option. If you know that your files are buried many
 levels below, without wasting time, you mention the level from where the search
 should begin using <code>-mindepth.</code></p>
-<pre><code class=language-console>$ find / -mindepth 3 -iname file.tex 
-</code></pre>
-<p>Same way -maxdepth says how far you should go searching for the file. <code>locate</code>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>find / -mindepth <span class=m>3</span> -iname file.tex 
+</code></pre></td></tr></table>
+</div>
+</div><p>Same way -maxdepth says how far you should go searching for the file. <code>locate</code>
 command</p>
 <p>locate is a simple and fast searching tool (faster than find). It searches from
 the database of files and folders which it maintains. You can manually update
 the database with</p>
-<pre><code class=language-console>$ updatedb
-</code></pre>
-<p>and locating is as simple as this</p>
-<pre><code class=language-console>$ locate file.txt
-</code></pre>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>updatedb
+</code></pre></td></tr></table>
+</div>
+</div><p>and locating is as simple as this</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>locate file.txt
+</code></pre></td></tr></table>
+</div>
+</div>
 <hr>
 <div class=float-right>
 <a href=https://fossix.org/tagsfind class="badge badge-dark">find</a>

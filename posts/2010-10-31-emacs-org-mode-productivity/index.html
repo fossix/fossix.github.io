@@ -77,51 +77,100 @@ blocked. I use a free git repository server for hosting my files.</p>
 <p>The next thing I did was to customize my .emacs file for tasks, notes, fast note
 taking with remember(New users with org-mode version 6.36 and later should use
 capture) etc. My org-mode specific configurations are below.</p>
-<pre><code class=language-elisp>;;; remember and org-mode
-(org-remember-insinuate)
-(setq org-default-notes-file &quot;~/notes/org/notes&quot;)
-(setq remember-annotation-functions '(org-remember-annotation))
-(setq remember-handler-functions '(org-remember-handler))
-(add-hook 'remember-mode-hook 'org-remember-apply-template)
-(define-key global-map &quot;\C-cr&quot; 'org-remember)
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-elisp data-lang=elisp><span class=c1>;;; remember and org-mode</span>
+<span class=p>(</span><span class=nv>org-remember-insinuate</span><span class=p>)</span>
+<span class=p>(</span><span class=nb>setq</span> <span class=nv>org-default-notes-file</span> <span class=s>&#34;~/notes/org/notes&#34;</span><span class=p>)</span>
+<span class=p>(</span><span class=nb>setq</span> <span class=nv>remember-annotation-functions</span> <span class=o>&#39;</span><span class=p>(</span><span class=nv>org-remember-annotation</span><span class=p>))</span>
+<span class=p>(</span><span class=nb>setq</span> <span class=nv>remember-handler-functions</span> <span class=o>&#39;</span><span class=p>(</span><span class=nv>org-remember-handler</span><span class=p>))</span>
+<span class=p>(</span><span class=nv>add-hook</span> <span class=ss>&#39;remember-mode-hook</span> <span class=ss>&#39;org-remember-apply-template</span><span class=p>)</span>
+<span class=p>(</span><span class=nf>define-key</span> <span class=nv>global-map</span> <span class=s>&#34;\C-cr&#34;</span> <span class=ss>&#39;org-remember</span><span class=p>)</span>
 
-(setq org-agenda-custom-commands
-      '((&quot;w&quot; &quot;Things to be done&quot;
-         ((org-agenda-list nil nil 1)
-          (tags &quot;WORK&quot;)
-          (tags &quot;HOME&quot;)
-          (tags-todo &quot;WAITING&quot;)
-          ))))
+<span class=p>(</span><span class=nb>setq</span> <span class=nv>org-agenda-custom-commands</span>
+      <span class=o>&#39;</span><span class=p>((</span><span class=s>&#34;w&#34;</span> <span class=s>&#34;Things to be done&#34;</span>
+         <span class=p>((</span><span class=nv>org-agenda-list</span> <span class=no>nil</span> <span class=no>nil</span> <span class=mi>1</span><span class=p>)</span>
+          <span class=p>(</span><span class=nv>tags</span> <span class=s>&#34;WORK&#34;</span><span class=p>)</span>
+          <span class=p>(</span><span class=nv>tags</span> <span class=s>&#34;HOME&#34;</span><span class=p>)</span>
+          <span class=p>(</span><span class=nv>tags-todo</span> <span class=s>&#34;WAITING&#34;</span><span class=p>)</span>
+          <span class=p>))))</span>
 
-;; templates for remember
-(setq org-remember-templates
-      '(
-        (&quot;Todo&quot; ?t &quot;* TODO %? %g\n  %i&quot; &quot;~/notes/org/TODO&quot; &quot;Tasks&quot;)
-        (&quot;TO Learn&quot; ?l &quot;* TODO %?\n %i&quot; &quot;~/notes/org/TODO&quot; &quot;To Learn&quot;)
-        (&quot;Random&quot; ?r &quot;* %u %?\n  %i&quot; &quot;~/notes/org/random.org&quot;)
-        (&quot;Notes&quot; ?n &quot;* %u %^{Title} %^g\n %i%?\n %a&quot; &quot;~/notes/org/notes&quot;
-         &quot;Learning Notes&quot;)
-        (&quot;Misc&quot; ?m &quot;* %T %^{Title}\n  %i%?\n  %a&quot; &quot;~/notes/org/notes&quot; &quot;Unfiled&quot;)
-        (&quot;Work&quot; ?w &quot;* %^{Title}\n  %i%?\n  %a&quot; &quot;~/work/notes/jots.org&quot;)))
-</code></pre>
-<h3 id=other-emacs-customisation>Other emacs customisation</h3>
+<span class=c1>;; templates for remember</span>
+<span class=p>(</span><span class=nb>setq</span> <span class=nv>org-remember-templates</span>
+      <span class=o>&#39;</span><span class=p>(</span>
+        <span class=p>(</span><span class=s>&#34;Todo&#34;</span> <span class=sc>?t</span> <span class=s>&#34;* TODO %? %g\n  %i&#34;</span> <span class=s>&#34;~/notes/org/TODO&#34;</span> <span class=s>&#34;Tasks&#34;</span><span class=p>)</span>
+        <span class=p>(</span><span class=s>&#34;TO Learn&#34;</span> <span class=sc>?l</span> <span class=s>&#34;* TODO %?\n %i&#34;</span> <span class=s>&#34;~/notes/org/TODO&#34;</span> <span class=s>&#34;To Learn&#34;</span><span class=p>)</span>
+        <span class=p>(</span><span class=s>&#34;Random&#34;</span> <span class=sc>?r</span> <span class=s>&#34;* %u %?\n  %i&#34;</span> <span class=s>&#34;~/notes/org/random.org&#34;</span><span class=p>)</span>
+        <span class=p>(</span><span class=s>&#34;Notes&#34;</span> <span class=sc>?n</span> <span class=s>&#34;* %u %^{Title} %^g\n %i%?\n %a&#34;</span> <span class=s>&#34;~/notes/org/notes&#34;</span>
+         <span class=s>&#34;Learning Notes&#34;</span><span class=p>)</span>
+        <span class=p>(</span><span class=s>&#34;Misc&#34;</span> <span class=sc>?m</span> <span class=s>&#34;* %T %^{Title}\n  %i%?\n  %a&#34;</span> <span class=s>&#34;~/notes/org/notes&#34;</span> <span class=s>&#34;Unfiled&#34;</span><span class=p>)</span>
+        <span class=p>(</span><span class=s>&#34;Work&#34;</span> <span class=sc>?w</span> <span class=s>&#34;* %^{Title}\n  %i%?\n  %a&#34;</span> <span class=s>&#34;~/work/notes/jots.org&#34;</span><span class=p>)))</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=other-emacs-customisation>Other emacs customisation</h3>
 <p>I used to use Emacs not XEmacs, so I had a habit of closing the window when I
 intended to close the buffer. So I changed the the quit keyboard command to <code>C-x C-\</code> and <code>C-x C-c</code> to kill-buffer. That part of the file is below.</p>
-<pre><code class=language-elisp>;; prompt when quitting Emacs in GUI
-(defun ask-before-closing ()
-  &quot;Ask whether or not to close, and then close if y was pressed&quot;
-  (interactive)
-  (if (y-or-n-p (format &quot;Are you sure you want to exit Emacs? &quot;))
-      (if (&lt; emacs-major-version 22)
-          (save-buffers-kill-terminal)
-        (save-buffers-kill-emacs))
-    (message &quot;Canceled exit&quot;)))
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-elisp data-lang=elisp><span class=c1>;; prompt when quitting Emacs in GUI</span>
+<span class=p>(</span><span class=nb>defun</span> <span class=nv>ask-before-closing</span> <span class=p>()</span>
+  <span class=s>&#34;Ask whether or not to close, and then close if y was pressed&#34;</span>
+  <span class=p>(</span><span class=nb>interactive</span><span class=p>)</span>
+  <span class=p>(</span><span class=nb>if</span> <span class=p>(</span><span class=nv>y-or-n-p</span> <span class=p>(</span><span class=nf>format</span> <span class=s>&#34;Are you sure you want to exit Emacs? &#34;</span><span class=p>))</span>
+      <span class=p>(</span><span class=nb>if</span> <span class=p>(</span><span class=nf>&lt;</span> <span class=nv>emacs-major-version</span> <span class=mi>22</span><span class=p>)</span>
+          <span class=p>(</span><span class=nv>save-buffers-kill-terminal</span><span class=p>)</span>
+        <span class=p>(</span><span class=nv>save-buffers-kill-emacs</span><span class=p>))</span>
+    <span class=p>(</span><span class=nf>message</span> <span class=s>&#34;Canceled exit&#34;</span><span class=p>)))</span>
 
-(when window-system
-  (global-set-key (kbd &quot;C-x C-\\&quot;) 'ask-before-closing)
-  (global-set-key (kbd &quot;C-x C-c&quot;) 'kill-buffer))
-</code></pre>
-<h3 id=ok-how-do-i-use-it>OK how do I use it?</h3>
+<span class=p>(</span><span class=nb>when</span> <span class=nf>window-system</span>
+  <span class=p>(</span><span class=nv>global-set-key</span> <span class=p>(</span><span class=nv>kbd</span> <span class=s>&#34;C-x C-\\&#34;</span><span class=p>)</span> <span class=ss>&#39;ask-before-closing</span><span class=p>)</span>
+  <span class=p>(</span><span class=nv>global-set-key</span> <span class=p>(</span><span class=nv>kbd</span> <span class=s>&#34;C-x C-c&#34;</span><span class=p>)</span> <span class=ss>&#39;kill-buffer</span><span class=p>))</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=ok-how-do-i-use-it>OK how do I use it?</h3>
 <p>How you want to use the org-mode and remember package is up to you. I will just
 give you some ideas about how to start using it, not conceptually, just keyboard
 shortcuts, invocations etc.</p>
@@ -153,10 +202,17 @@ prefer not to close files when searching for another definition. To avoid Emacs
 opening separately for each file, and cscope waiting for the editor to be
 closed, I use <code>emacsclient</code> as my <code>CSCOPE_EDITOR</code>. I wrote a small script like
 the below.</p>
-<pre><code class=language-bash>#!/bin/bash
-emacsclient -a vi -n $*
-</code></pre>
-<p>When Emacs server is not running, I just use <code>vi</code> instead of wasting my time
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=cp>#!/bin/bash
+</span><span class=cp></span>emacsclient -a vi -n <span class=nv>$*</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>When Emacs server is not running, I just use <code>vi</code> instead of wasting my time
 starting the server for small look-ups.</p>
 <p>A very nice tutorial on org-mode is <a href=http://doc.norang.ca/org-mode.html>http://doc.norang.ca/org-mode.html</a>.</p>
 <hr>

@@ -66,46 +66,91 @@ Archive
 buddies who decided to remain invisible (may be you are haunting them
 lately). But its now time for you to be more clever than your pal.</p>
 <p>Before that check if you have installed the python xmpp package.</p>
-<pre><code class=language-python>#!/usr/bin/python -Wignore
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=ch>#!/usr/bin/python -Wignore</span>
 
-import xmpp
-import signal
-import sys
-import getpass
+<span class=kn>import</span> <span class=nn>xmpp</span>
+<span class=kn>import</span> <span class=nn>signal</span>
+<span class=kn>import</span> <span class=nn>sys</span>
+<span class=kn>import</span> <span class=nn>getpass</span>
 
-# catch signals, and exit for Ctrl+C
-def signal_handler(signal, frame):
-        print 'Exiting..'
-        C.UnregisterHandler('presence', PresenceHandler)
-        C.disconnect()
-        sys.exit(0)
+<span class=c1># catch signals, and exit for Ctrl+C</span>
+<span class=k>def</span> <span class=nf>signal_handler</span><span class=p>(</span><span class=n>signal</span><span class=p>,</span> <span class=n>frame</span><span class=p>):</span>
+        <span class=nb>print</span> <span class=s1>&#39;Exiting..&#39;</span>
+        <span class=n>C</span><span class=o>.</span><span class=n>UnregisterHandler</span><span class=p>(</span><span class=s1>&#39;presence&#39;</span><span class=p>,</span> <span class=n>PresenceHandler</span><span class=p>)</span>
+        <span class=n>C</span><span class=o>.</span><span class=n>disconnect</span><span class=p>()</span>
+        <span class=n>sys</span><span class=o>.</span><span class=n>exit</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
 
-signal.signal(signal.SIGINT, signal_handler)
+<span class=n>signal</span><span class=o>.</span><span class=n>signal</span><span class=p>(</span><span class=n>signal</span><span class=o>.</span><span class=n>SIGINT</span><span class=p>,</span> <span class=n>signal_handler</span><span class=p>)</span>
 
-# Google Talk constants
-FROM_GMAIL_ID = raw_input(&quot;Your Email: &quot;)
-GMAIL_PASS = getpass.getpass(&quot;Enter Password:&quot;)
-GTALK_SERVER = &quot;gmail.com&quot;
+<span class=c1># Google Talk constants</span>
+<span class=n>FROM_GMAIL_ID</span> <span class=o>=</span> <span class=n>raw_input</span><span class=p>(</span><span class=s2>&#34;Your Email: &#34;</span><span class=p>)</span>
+<span class=n>GMAIL_PASS</span> <span class=o>=</span> <span class=n>getpass</span><span class=o>.</span><span class=n>getpass</span><span class=p>(</span><span class=s2>&#34;Enter Password:&#34;</span><span class=p>)</span>
+<span class=n>GTALK_SERVER</span> <span class=o>=</span> <span class=s2>&#34;gmail.com&#34;</span>
 
-jid=xmpp.protocol.JID(FROM_GMAIL_ID)
-C=xmpp.Client(jid.getDomain(),debug=[])
+<span class=n>jid</span><span class=o>=</span><span class=n>xmpp</span><span class=o>.</span><span class=n>protocol</span><span class=o>.</span><span class=n>JID</span><span class=p>(</span><span class=n>FROM_GMAIL_ID</span><span class=p>)</span>
+<span class=n>C</span><span class=o>=</span><span class=n>xmpp</span><span class=o>.</span><span class=n>Client</span><span class=p>(</span><span class=n>jid</span><span class=o>.</span><span class=n>getDomain</span><span class=p>(),</span><span class=n>debug</span><span class=o>=</span><span class=p>[])</span>
 
-if not C.connect((GTALK_SERVER,5222)):
-    raise IOError('Can not connect to server.')
-if not C.auth(jid.getNode(),GMAIL_PASS):
-    raise IOError('Can not auth with server.')
+<span class=k>if</span> <span class=ow>not</span> <span class=n>C</span><span class=o>.</span><span class=n>connect</span><span class=p>((</span><span class=n>GTALK_SERVER</span><span class=p>,</span><span class=mi>5222</span><span class=p>)):</span>
+    <span class=k>raise</span> <span class=ne>IOError</span><span class=p>(</span><span class=s1>&#39;Can not connect to server.&#39;</span><span class=p>)</span>
+<span class=k>if</span> <span class=ow>not</span> <span class=n>C</span><span class=o>.</span><span class=n>auth</span><span class=p>(</span><span class=n>jid</span><span class=o>.</span><span class=n>getNode</span><span class=p>(),</span><span class=n>GMAIL_PASS</span><span class=p>):</span>
+    <span class=k>raise</span> <span class=ne>IOError</span><span class=p>(</span><span class=s1>&#39;Can not auth with server.&#39;</span><span class=p>)</span>
 
-C.sendInitPresence(requestRoster=1)
+<span class=n>C</span><span class=o>.</span><span class=n>sendInitPresence</span><span class=p>(</span><span class=n>requestRoster</span><span class=o>=</span><span class=mi>1</span><span class=p>)</span>
 
-def PresenceHandler(con, event):
-    if event.getType() == 'unavailable':
-        print event.getFrom().getStripped()
+<span class=k>def</span> <span class=nf>PresenceHandler</span><span class=p>(</span><span class=n>con</span><span class=p>,</span> <span class=n>event</span><span class=p>):</span>
+    <span class=k>if</span> <span class=n>event</span><span class=o>.</span><span class=n>getType</span><span class=p>()</span> <span class=o>==</span> <span class=s1>&#39;unavailable&#39;</span><span class=p>:</span>
+        <span class=nb>print</span> <span class=n>event</span><span class=o>.</span><span class=n>getFrom</span><span class=p>()</span><span class=o>.</span><span class=n>getStripped</span><span class=p>()</span>
 
-C.RegisterHandler('presence', PresenceHandler)
+<span class=n>C</span><span class=o>.</span><span class=n>RegisterHandler</span><span class=p>(</span><span class=s1>&#39;presence&#39;</span><span class=p>,</span> <span class=n>PresenceHandler</span><span class=p>)</span>
 
-while C.Process(1):
-        pass
-</code></pre>
+<span class=k>while</span> <span class=n>C</span><span class=o>.</span><span class=n>Process</span><span class=p>(</span><span class=mi>1</span><span class=p>):</span>
+        <span class=k>pass</span>
+</code></pre></td></tr></table>
+</div>
+</div>
 <hr>
 <div class=float-right>
 <a href=https://fossix.org/tagsxmpp class="badge badge-dark">xmpp</a>

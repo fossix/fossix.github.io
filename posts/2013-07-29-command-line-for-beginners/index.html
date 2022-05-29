@@ -84,10 +84,9 @@ needs, and scratches your itches to do more ;-)</p>
 somehow bring in all your mails to <code>/var/spool/mail/you</code>. This part is done by
 fetchmail, and opensource, free MTA.</p>
 <p>Here is a dummy configuration:</p>
-<pre><code>poll pop.gmail.com with proto POP3 and options no dns
+<pre tabindex=0><code>poll pop.gmail.com with proto POP3 and options no dns
 user 'somebody@example.com' there with password 'password' is 'password' here  options ssl flush
-</code></pre>
-<p>What this says to fetchmail is that, poll the gmail server with protocol pop3
+</code></pre><p>What this says to fetchmail is that, poll the gmail server with protocol pop3
 for the user <a href=mailto:somebody@example.com>somebody@example.com</a> whose password is &ldquo;password&rdquo;, and do
 everything securely over Secure Socket Layer (SSL).</p>
 <p>Once you change this to your needs and put them into <code>.fetchmailrc</code>, just run
@@ -96,10 +95,17 @@ about new mails in the server. New mails? No rush to check it in the web site,
 just wait, we are almost done.</p>
 <p>Now lets put this fetchmail command in cron so we don’t have to check mail
 manually.</p>
-<pre><code class=language-console>$ crontab -e
-*/10 * * * * fetchmail &gt;/dev/null 2&gt;&amp;1
-</code></pre>
-<p>The redirection to <code>/dev/null</code> is to stop <code>cron</code> sending us mails every 10
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>crontab -e
+<span class=go>*/10 * * * * fetchmail &gt;/dev/null 2&gt;&amp;1
+</span></code></pre></td></tr></table>
+</div>
+</div><p>The redirection to <code>/dev/null</code> is to stop <code>cron</code> sending us mails every 10
 minutes.</p>
 <p>After the first run, check your mail with <code>mail</code> command. If you can see new
 mails from your ISP. If you still get errors, then</p>
@@ -127,7 +133,7 @@ we should learn some more configurations, and this is for procmail.</p>
 file containing all the mails you have received. Now you want then to be
 filtered out and put into separate files. This is where <code>procmail</code> comes in. The
 below configuration is for <code>.procmailrc</code></p>
-<pre><code>LINEBUF=4096
+<pre tabindex=0><code>LINEBUF=4096
 VERBOSE=off
 MAILDIR=$HOME/Mail
 DEFAULT=$MAILDIR/INBOX
@@ -136,11 +142,10 @@ SENDMAIL=/usr/sbin/sendmail
 PMDIR=$HOME/.procmail
 LOGFILE=$PMDIR/log
 INCLUDERC=$PMDIR/rc.maillists
-</code></pre>
-<p>In the above I have used a directory called Mail to hold all my mails. My mail
+</code></pre><p>In the above I have used a directory called Mail to hold all my mails. My mail
 filter rules are present in <code>rc.maillists</code> file inside <code>.procmail</code> directory in my
 home. So the <code>.procmail/rc.maillists</code> file contains the following filter.</p>
-<pre><code>:0:
+<pre tabindex=0><code>:0:
 * ^TO_ilugc@ae.iitm.ac.in
 lug
 
@@ -159,8 +164,7 @@ programming
 :0:
 * ^TO_linux-c-programming@vger.kernel.org
 programming
-</code></pre>
-<p>I have created some rules which puts mails form specific mailing lists to its
+</code></pre><p>I have created some rules which puts mails form specific mailing lists to its
 own file in my Mail directory. The DEFAULT variable makes sure that procmail
 puts all the rest of the mails in the INBOX file. For more information on the
 procmail rules see <a href=http://www.procmail.org/>http://www.procmail.org/</a> or the

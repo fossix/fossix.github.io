@@ -65,28 +65,53 @@ Archive
 <p>As you would have noticed the beginning of the document, it was told the
 explanation will be based on the program we had written earlier in this
 series. The program was compiled using the command</p>
-<pre><code class=language-console>$ cc sample-source.c -lm
-</code></pre>
-<p>As you have probably noticed, we are linking the program with the math
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>cc sample-source.c -lm
+</code></pre></td></tr></table>
+</div>
+</div><p>As you have probably noticed, we are linking the program with the math
 library. This was done intentionally to explain the dynamic loader. Any file can
 be identified using the file command. Running file on the <code>a.out</code> executable gives
 us some information on the type of executable.</p>
-<pre><code class=language-console>$ file a.out
-a.out: ELF 64-bit LSB executable, x86-64, version 1 
-(SYSV), dynamically linked (uses shared libs), for
-GNU/Linux 2.6.32, not stripped
-</code></pre>
-<p>The description shows that the executable compiled is a <code>ELF</code> (Executable and
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>file a.out
+<span class=go>a.out: ELF 64-bit LSB executable, x86-64, version 1 
+</span><span class=go>(SYSV), dynamically linked (uses shared libs), for
+</span><span class=go>GNU/Linux 2.6.32, not stripped
+</span></code></pre></td></tr></table>
+</div>
+</div><p>The description shows that the executable compiled is a <code>ELF</code> (Executable and
 Linkable Format) type executable for a 64 bit machine and used shared
 libraries. To find out what are all the shared libraries that went into making
 the ELF executable can be found using the <code>ldd</code> program.</p>
-<pre><code class=language-console>$ ldd a.out
-linux-vdso.so.1 =&gt;  (0x00007fff1d368000)
-libm.so.6 =&gt; /lib64/libm.so.6 (0x0000003cede00000)
-libc.so.6 =&gt; /lib64/libc.so.6 (0x0000003cece00000)
-/lib64/ld-linux-x86-64.so.2 (0x0000003ceca00000)
-</code></pre>
-<p>The output shows that our tiny executable uses the services of four different
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=gp>$ </span>ldd a.out
+<span class=go>linux-vdso.so.1 =&gt;  (0x00007fff1d368000)
+</span><span class=go>libm.so.6 =&gt; /lib64/libm.so.6 (0x0000003cede00000)
+</span><span class=go>libc.so.6 =&gt; /lib64/libc.so.6 (0x0000003cece00000)
+</span><span class=go>/lib64/ld-linux-x86-64.so.2 (0x0000003ceca00000)
+</span></code></pre></td></tr></table>
+</div>
+</div><p>The output shows that our tiny executable uses the services of four different
 shared libraries. {The <code>linux-vdso.so</code> library will be explained elsewhere in this
 series). The <code>libm.so</code> is the match library that we linked in while compiling out
 program code. The next is the standard C library. The last library is the

@@ -95,13 +95,23 @@ for job control in shells. There is also another kind of ID called the session
 ID. All processes in the same group will, generally be in the same session ID
 unless the process calls <code>setsid()</code> system call. The current process ID and its
 parent process ID can be found using the ps command.</p>
-<pre><code class=language-console>ps -e
-$ ps -f
-UID        PID  PPID  C STIME TTY          TIME CMD
-santosh   3939 15592  0 Apr17 pts/3    00:00:03 bash
-santosh  25841  3939  0 07:17 pts/3    00:00:00 ps -f
-</code></pre>
-<p>The parent process of all commands executed in a shell is the shell itself. So
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-console data-lang=console><span class=go>ps -e
+</span><span class=go></span><span class=gp>$ </span>ps -f
+<span class=go>UID        PID  PPID  C STIME TTY          TIME CMD
+</span><span class=go>santosh   3939 15592  0 Apr17 pts/3    00:00:03 bash
+</span><span class=go>santosh  25841  3939  0 07:17 pts/3    00:00:00 ps -f
+</span></code></pre></td></tr></table>
+</div>
+</div><p>The parent process of all commands executed in a shell is the shell itself. So
 far, our to be process, the code written above, has not yet come into our big
 picture.</p>
 <hr>

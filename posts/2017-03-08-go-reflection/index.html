@@ -67,42 +67,78 @@ Archive
 understanding of Go&rsquo;s <code>interface{}</code> is required before proceeding.</p>
 <p>Consider a hypothetical requirement to build a validation for structures. In
 usual case I would prefer a <code>if-else</code> statement.</p>
-<pre><code class=language-go>type Employee struct {
-	Name    string `json:&quot;name&quot;`
-	Address string `json:&quot;address&quot;`
-	Age     int    `json:&quot;age&quot;`
-}
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=kd>type</span> <span class=nx>Employee</span> <span class=kd>struct</span> <span class=p>{</span>
+	<span class=nx>Name</span>    <span class=kt>string</span> <span class=s>`json:&#34;name&#34;`</span>
+	<span class=nx>Address</span> <span class=kt>string</span> <span class=s>`json:&#34;address&#34;`</span>
+	<span class=nx>Age</span>     <span class=kt>int</span>    <span class=s>`json:&#34;age&#34;`</span>
+<span class=p>}</span>
 
-var e Employee
-err := json.Unmarshal(data, &amp;e)
+<span class=kd>var</span> <span class=nx>e</span> <span class=nx>Employee</span>
+<span class=nx>err</span> <span class=o>:=</span> <span class=nx>json</span><span class=p>.</span><span class=nf>Unmarshal</span><span class=p>(</span><span class=nx>data</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>e</span><span class=p>)</span>
 
-// validate each field
+<span class=c1>// validate each field
+</span><span class=c1></span>
+<span class=k>if</span> <span class=nx>e</span><span class=p>.</span><span class=nx>Name</span> <span class=o>==</span> <span class=s>&#34;&#34;</span> <span class=p>{</span>
+    <span class=nx>log</span><span class=p>.</span><span class=nf>Fatal</span><span class=p>(</span><span class=s>&#34;Name cannot be empty&#34;</span><span class=p>)</span>
+<span class=p>}</span>
 
-if e.Name == &quot;&quot; {
-    log.Fatal(&quot;Name cannot be empty&quot;)
-}
-
-if e.Age &lt; 18 {
-    log.Fatal(&quot;Should be atleast 18 years old&quot;)
-}
-...
-</code></pre>
-<p>This is prefectly fine until the only resource in you web application is
+<span class=k>if</span> <span class=nx>e</span><span class=p>.</span><span class=nx>Age</span> <span class=p>&lt;</span> <span class=mi>18</span> <span class=p>{</span>
+    <span class=nx>log</span><span class=p>.</span><span class=nf>Fatal</span><span class=p>(</span><span class=s>&#34;Should be atleast 18 years old&#34;</span><span class=p>)</span>
+<span class=p>}</span>
+<span class=o>...</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>This is prefectly fine until the only resource in you web application is
 Employee. Life is never made so simple even you wish it could be, If there are
 many such struct, aka json contracts that need to be validated a simpler
 approach is beneficial. Fortunately, Go&rsquo;s standard library comes with a package
 <code>reflect</code>, we need a generic validator for all common actions.</p>
 <p>So our hypothetical validator will implement a <code>validator()</code> function. Which
 takes in a interface{} and spews out a interface{} and errors if necessary.</p>
-<pre><code class=language-go>func main() {
-	e := Employee{Name: &quot;Sab&quot;, Address: &quot;here&quot;, Age: 13}
-    fmt.Println(validator(e))
-}
-func validator(e interface{}) []error {
-    /* Convert the interface to reflection object -&gt; do some processing -&gt; convert it back to interface{} */
-}
-</code></pre>
-<p>So the meat of the validator function is to convert the interface to a
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>e</span> <span class=o>:=</span> <span class=nx>Employee</span><span class=p>{</span><span class=nx>Name</span><span class=p>:</span> <span class=s>&#34;Sab&#34;</span><span class=p>,</span> <span class=nx>Address</span><span class=p>:</span> <span class=s>&#34;here&#34;</span><span class=p>,</span> <span class=nx>Age</span><span class=p>:</span> <span class=mi>13</span><span class=p>}</span>
+    <span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nf>validator</span><span class=p>(</span><span class=nx>e</span><span class=p>))</span>
+<span class=p>}</span>
+<span class=kd>func</span> <span class=nf>validator</span><span class=p>(</span><span class=nx>e</span> <span class=kd>interface</span><span class=p>{})</span> <span class=p>[]</span><span class=kt>error</span> <span class=p>{</span>
+    <span class=cm>/* Convert the interface to reflection object -&gt; do some processing -&gt; convert it back to interface{} */</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>So the meat of the validator function is to convert the interface to a
 validation object and verify validity of data. since I don&rsquo;t know what is the
 type of the input; here comes
 <a href=https://en.wikipedia.org/wiki/Reflection_(computer_programming)>reflection</a>.</p>
@@ -112,90 +148,178 @@ two kinds of reflection objects: <code>Type</code> & <code>Value</code>; functio
 the Go&rsquo;s type.</p>
 <p>First, Our challenge will be to go over each field in the struct. This can be
 done with the following:</p>
-<pre><code class=language-go>func validator(e interface{}) []error {
-	v := reflect.TypeOf(e) // returns reflect.Type 
-	for i := 0; i &lt; v.NumField(); i++ {
-		fmt.Println(v.Field(i).Name, v.Field(i).Type.Kind())
-	}
-    return nil
-}
-</code></pre>
-<p>Here <code>Field()</code> method of the Type object return a <code>StructField</code> instance, which
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=kd>func</span> <span class=nf>validator</span><span class=p>(</span><span class=nx>e</span> <span class=kd>interface</span><span class=p>{})</span> <span class=p>[]</span><span class=kt>error</span> <span class=p>{</span>
+	<span class=nx>v</span> <span class=o>:=</span> <span class=nx>reflect</span><span class=p>.</span><span class=nf>TypeOf</span><span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=c1>// returns reflect.Type 
+</span><span class=c1></span>	<span class=k>for</span> <span class=nx>i</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>i</span> <span class=p>&lt;</span> <span class=nx>v</span><span class=p>.</span><span class=nf>NumField</span><span class=p>();</span> <span class=nx>i</span><span class=o>++</span> <span class=p>{</span>
+		<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=nx>v</span><span class=p>.</span><span class=nf>Field</span><span class=p>(</span><span class=nx>i</span><span class=p>).</span><span class=nx>Name</span><span class=p>,</span> <span class=nx>v</span><span class=p>.</span><span class=nf>Field</span><span class=p>(</span><span class=nx>i</span><span class=p>).</span><span class=nx>Type</span><span class=p>.</span><span class=nf>Kind</span><span class=p>())</span>
+	<span class=p>}</span>
+    <span class=k>return</span> <span class=kc>nil</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Here <code>Field()</code> method of the Type object return a <code>StructField</code> instance, which
 in turn has a reference to the Type of the field. Now that our first part of our
 problem is complete, second part of the problem is to identify what kind of
 validation should be applied to what kind of data. In our case we will need a
 string validator and number validator. We can use a custom struct tag which will
 give inputs to our validator.</p>
-<pre><code class=language-go>type Employee struct {
-	Name    string `json:&quot;name&quot; validate:&quot;string,min=1,max=0&quot;`
-	Address string `json:&quot;address&quot; validate:&quot;string,min=1,max=0&quot;`
-	Age     int    `json:&quot;age&quot; validate:&quot;number,min=1,max=0&quot;`
-}
-</code></pre>
-<p>And our validators will be:</p>
-<pre><code class=language-go>type stringValidator struct {
-	MaxLength int
-	MinLength int
-}
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>0
+</span><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=kd>type</span> <span class=nx>Employee</span> <span class=kd>struct</span> <span class=p>{</span>
+	<span class=nx>Name</span>    <span class=kt>string</span> <span class=s>`json:&#34;name&#34; validate:&#34;string,min=1,max=0&#34;`</span>
+	<span class=nx>Address</span> <span class=kt>string</span> <span class=s>`json:&#34;address&#34; validate:&#34;string,min=1,max=0&#34;`</span>
+	<span class=nx>Age</span>     <span class=kt>int</span>    <span class=s>`json:&#34;age&#34; validate:&#34;number,min=1,max=0&#34;`</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>And our validators will be:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=kd>type</span> <span class=nx>stringValidator</span> <span class=kd>struct</span> <span class=p>{</span>
+	<span class=nx>MaxLength</span> <span class=kt>int</span>
+	<span class=nx>MinLength</span> <span class=kt>int</span>
+<span class=p>}</span>
 
-func (s stringValidator) validate(x reflect.Value) error {
-	v := x.Interface().(string)
-	if len(v) &gt; s.MaxLength {
-		return errors.New(&quot;exceeds max length&quot;)
-	}
-	if len(v) &lt; s.MinLength {
-		return errors.New(&quot;Can be this small&quot;)
-	}
-	return nil
-}
+<span class=kd>func</span> <span class=p>(</span><span class=nx>s</span> <span class=nx>stringValidator</span><span class=p>)</span> <span class=nf>validate</span><span class=p>(</span><span class=nx>x</span> <span class=nx>reflect</span><span class=p>.</span><span class=nx>Value</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
+	<span class=nx>v</span> <span class=o>:=</span> <span class=nx>x</span><span class=p>.</span><span class=nf>Interface</span><span class=p>().(</span><span class=kt>string</span><span class=p>)</span>
+	<span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=nx>v</span><span class=p>)</span> <span class=p>&gt;</span> <span class=nx>s</span><span class=p>.</span><span class=nx>MaxLength</span> <span class=p>{</span>
+		<span class=k>return</span> <span class=nx>errors</span><span class=p>.</span><span class=nf>New</span><span class=p>(</span><span class=s>&#34;exceeds max length&#34;</span><span class=p>)</span>
+	<span class=p>}</span>
+	<span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=nx>v</span><span class=p>)</span> <span class=p>&lt;</span> <span class=nx>s</span><span class=p>.</span><span class=nx>MinLength</span> <span class=p>{</span>
+		<span class=k>return</span> <span class=nx>errors</span><span class=p>.</span><span class=nf>New</span><span class=p>(</span><span class=s>&#34;Can be this small&#34;</span><span class=p>)</span>
+	<span class=p>}</span>
+	<span class=k>return</span> <span class=kc>nil</span>
+<span class=p>}</span>
 
-type numberValidator struct {
-	Max int
-	Min int
-}
+<span class=kd>type</span> <span class=nx>numberValidator</span> <span class=kd>struct</span> <span class=p>{</span>
+	<span class=nx>Max</span> <span class=kt>int</span>
+	<span class=nx>Min</span> <span class=kt>int</span>
+<span class=p>}</span>
 
-func (s numberValidator) validate(x reflect.Value) error {
-	v := x.Interface().(int)
-	if v &gt; s.Max {
-		return errors.New(&quot;exceeds max value&quot;)
-	}
-	if v &lt; s.Min {
-		return errors.New(&quot;Can be this small&quot;)
-	}
-	return nil
-}
-</code></pre>
-<p><code>v</code> here is converted back to <code>interface{}</code> type so that it can be converted
+<span class=kd>func</span> <span class=p>(</span><span class=nx>s</span> <span class=nx>numberValidator</span><span class=p>)</span> <span class=nf>validate</span><span class=p>(</span><span class=nx>x</span> <span class=nx>reflect</span><span class=p>.</span><span class=nx>Value</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
+	<span class=nx>v</span> <span class=o>:=</span> <span class=nx>x</span><span class=p>.</span><span class=nf>Interface</span><span class=p>().(</span><span class=kt>int</span><span class=p>)</span>
+	<span class=k>if</span> <span class=nx>v</span> <span class=p>&gt;</span> <span class=nx>s</span><span class=p>.</span><span class=nx>Max</span> <span class=p>{</span>
+		<span class=k>return</span> <span class=nx>errors</span><span class=p>.</span><span class=nf>New</span><span class=p>(</span><span class=s>&#34;exceeds max value&#34;</span><span class=p>)</span>
+	<span class=p>}</span>
+	<span class=k>if</span> <span class=nx>v</span> <span class=p>&lt;</span> <span class=nx>s</span><span class=p>.</span><span class=nx>Min</span> <span class=p>{</span>
+		<span class=k>return</span> <span class=nx>errors</span><span class=p>.</span><span class=nf>New</span><span class=p>(</span><span class=s>&#34;Can be this small&#34;</span><span class=p>)</span>
+	<span class=p>}</span>
+	<span class=k>return</span> <span class=kc>nil</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>v</code> here is converted back to <code>interface{}</code> type so that it can be converted
 back to it real underlying type. To select one of these validators, our
 validator function should use the validate tag&rsquo;s type information. Our validator
 function should be extended as following.</p>
-<pre><code class=language-go>func validator(e interface{}) []error {
-	v := reflect.ValueOf(e)
-	t := v.Type()
-	errs := make([]error, 0, t.NumField())
-	for i := 0; i &lt; t.NumField(); i++ {
-		tag := strings.SplitN(t.Field(i).Tag.Get(&quot;validate&quot;), &quot;,&quot;, 2)
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=kd>func</span> <span class=nf>validator</span><span class=p>(</span><span class=nx>e</span> <span class=kd>interface</span><span class=p>{})</span> <span class=p>[]</span><span class=kt>error</span> <span class=p>{</span>
+	<span class=nx>v</span> <span class=o>:=</span> <span class=nx>reflect</span><span class=p>.</span><span class=nf>ValueOf</span><span class=p>(</span><span class=nx>e</span><span class=p>)</span>
+	<span class=nx>t</span> <span class=o>:=</span> <span class=nx>v</span><span class=p>.</span><span class=nf>Type</span><span class=p>()</span>
+	<span class=nx>errs</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>([]</span><span class=kt>error</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=nx>t</span><span class=p>.</span><span class=nf>NumField</span><span class=p>())</span>
+	<span class=k>for</span> <span class=nx>i</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>i</span> <span class=p>&lt;</span> <span class=nx>t</span><span class=p>.</span><span class=nf>NumField</span><span class=p>();</span> <span class=nx>i</span><span class=o>++</span> <span class=p>{</span>
+		<span class=nx>tag</span> <span class=o>:=</span> <span class=nx>strings</span><span class=p>.</span><span class=nf>SplitN</span><span class=p>(</span><span class=nx>t</span><span class=p>.</span><span class=nf>Field</span><span class=p>(</span><span class=nx>i</span><span class=p>).</span><span class=nx>Tag</span><span class=p>.</span><span class=nf>Get</span><span class=p>(</span><span class=s>&#34;validate&#34;</span><span class=p>),</span> <span class=s>&#34;,&#34;</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
 
-		switch tag[0] {
-		case &quot;number&quot;:
-			x := numberValidator{}
-			fmt.Sscanf(tag[1], &quot;min=%d,max=%d&quot;, &amp;x.Min, &amp;x.Max)
-			e := x.validate(v.Field(i))
-			errs = append(errs, e)
-			break
-		case &quot;string&quot;:
-			x := stringValidator{}
-			fmt.Sscanf(tag[1], &quot;min=%d,max=%d&quot;, &amp;x.MinLength, &amp;x.MaxLength)
-			e := x.validate(v.Field(i))
-			errs = append(errs, e)
-			break
-		}
-		return errs
-	}
-	return nil
-}
-</code></pre>
-<p>Tip: Read this <a href=https://blog.golang.org/laws-of-reflection>https://blog.golang.org/laws-of-reflection</a></p>
+		<span class=k>switch</span> <span class=nx>tag</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=p>{</span>
+		<span class=k>case</span> <span class=s>&#34;number&#34;</span><span class=p>:</span>
+			<span class=nx>x</span> <span class=o>:=</span> <span class=nx>numberValidator</span><span class=p>{}</span>
+			<span class=nx>fmt</span><span class=p>.</span><span class=nf>Sscanf</span><span class=p>(</span><span class=nx>tag</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=s>&#34;min=%d,max=%d&#34;</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>x</span><span class=p>.</span><span class=nx>Min</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>x</span><span class=p>.</span><span class=nx>Max</span><span class=p>)</span>
+			<span class=nx>e</span> <span class=o>:=</span> <span class=nx>x</span><span class=p>.</span><span class=nf>validate</span><span class=p>(</span><span class=nx>v</span><span class=p>.</span><span class=nf>Field</span><span class=p>(</span><span class=nx>i</span><span class=p>))</span>
+			<span class=nx>errs</span> <span class=p>=</span> <span class=nb>append</span><span class=p>(</span><span class=nx>errs</span><span class=p>,</span> <span class=nx>e</span><span class=p>)</span>
+			<span class=k>break</span>
+		<span class=k>case</span> <span class=s>&#34;string&#34;</span><span class=p>:</span>
+			<span class=nx>x</span> <span class=o>:=</span> <span class=nx>stringValidator</span><span class=p>{}</span>
+			<span class=nx>fmt</span><span class=p>.</span><span class=nf>Sscanf</span><span class=p>(</span><span class=nx>tag</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=s>&#34;min=%d,max=%d&#34;</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>x</span><span class=p>.</span><span class=nx>MinLength</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>x</span><span class=p>.</span><span class=nx>MaxLength</span><span class=p>)</span>
+			<span class=nx>e</span> <span class=o>:=</span> <span class=nx>x</span><span class=p>.</span><span class=nf>validate</span><span class=p>(</span><span class=nx>v</span><span class=p>.</span><span class=nf>Field</span><span class=p>(</span><span class=nx>i</span><span class=p>))</span>
+			<span class=nx>errs</span> <span class=p>=</span> <span class=nb>append</span><span class=p>(</span><span class=nx>errs</span><span class=p>,</span> <span class=nx>e</span><span class=p>)</span>
+			<span class=k>break</span>
+		<span class=p>}</span>
+		<span class=k>return</span> <span class=nx>errs</span>
+	<span class=p>}</span>
+	<span class=k>return</span> <span class=kc>nil</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Tip: Read this <a href=https://blog.golang.org/laws-of-reflection>https://blog.golang.org/laws-of-reflection</a></p>
 <hr>
 <div class=float-right>
 <a href=https://fossix.org/tagsgolang class="badge badge-dark">golang</a>

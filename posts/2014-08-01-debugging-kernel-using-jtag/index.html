@@ -63,28 +63,24 @@ Archive
 </div>
 <hr>
 <p>Build a kernel with symbols.</p>
-<pre><code>make menuconfig
+<pre tabindex=0><code>make menuconfig
  -&gt; kernel hacking 
        -&gt; Select Compile the kernel with debug info.
-</code></pre>
-<p>This will create a elf image (vmlinux) with can be understood by the
+</code></pre><p>This will create a elf image (vmlinux) with can be understood by the
 <code>trace32</code>. The best choice is to use a uncompressed kernel. ake the following
 changes to <code>cmm</code> files.</p>
 <p>Remove the aborts. Aborts are normal after mmu is initalized, so if you let the
 Debugger break for aborts, you will be aborting for ever. So remove the aborts</p>
-<pre><code>TrOnchip.Set.PABORT OFF
+<pre tabindex=0><code>TrOnchip.Set.PABORT OFF
 TrOnchip.Set.DABORT OFF
-</code></pre>
-<p>For adding the Linux menu in <code>Trace32</code>, the following lines will help. The cmm
+</code></pre><p>For adding the Linux menu in <code>Trace32</code>, the following lines will help. The cmm
 files for these are already available in the latest version of the <code>Trace32</code>.</p>
-<pre><code>TASK.CONFIG linux
+<pre tabindex=0><code>TASK.CONFIG linux
 MENU.ReProgram linux
-</code></pre>
-<h1 id=load-the-kernel-into-your-regular-load-location>Load the kernel into your regular load location</h1>
+</code></pre><h1 id=load-the-kernel-into-your-regular-load-location>Load the kernel into your regular load location</h1>
 <p>Using the following command</p>
-<pre><code>data.load.elf c:\vmlinux /strippart 4 /gnu /sourcepath y:\kernel
-</code></pre>
-<p>For source code debugging you need to give the <code>/strippart</code>. If you are directly
+<pre tabindex=0><code>data.load.elf c:\vmlinux /strippart 4 /gnu /sourcepath y:\kernel
+</code></pre><p>For source code debugging you need to give the <code>/strippart</code>. If you are directly
 running <code>Trace32</code> in linux and giving the path to your actual kernel image, then
 it is not needed. But, most often our Trace32 environment is in windows. So we
 need to give how many paths to the stripped from the elf path.</p>

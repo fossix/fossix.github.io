@@ -63,46 +63,89 @@ Archive
 </div>
 <hr>
 <h2 id=deadlock>Deadlock</h2>
-<pre><code class=language-go>package main
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 0
+</span><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=kn>package</span> <span class=nx>main</span>
 
-import (
-	&quot;fmt&quot;
-	&quot;sync&quot;
-	&quot;time&quot;
-)
+<span class=kn>import</span> <span class=p>(</span>
+	<span class=s>&#34;fmt&#34;</span>
+	<span class=s>&#34;sync&#34;</span>
+	<span class=s>&#34;time&#34;</span>
+<span class=p>)</span>
 
-type value struct {
-	mu sync.Mutex
-	v  int
-}
+<span class=kd>type</span> <span class=nx>value</span> <span class=kd>struct</span> <span class=p>{</span>
+	<span class=nx>mu</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>Mutex</span>
+	<span class=nx>v</span>  <span class=kt>int</span>
+<span class=p>}</span>
 
-var wg sync.WaitGroup
+<span class=kd>var</span> <span class=nx>wg</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
 
-func print(i, j *value) {
-	defer wg.Done()
-	i.mu.Lock()
-	defer i.mu.Unlock()
+<span class=kd>func</span> <span class=nb>print</span><span class=p>(</span><span class=nx>i</span><span class=p>,</span> <span class=nx>j</span> <span class=o>*</span><span class=nx>value</span><span class=p>)</span> <span class=p>{</span>
+	<span class=k>defer</span> <span class=nx>wg</span><span class=p>.</span><span class=nf>Done</span><span class=p>()</span>
+	<span class=nx>i</span><span class=p>.</span><span class=nx>mu</span><span class=p>.</span><span class=nf>Lock</span><span class=p>()</span>
+	<span class=k>defer</span> <span class=nx>i</span><span class=p>.</span><span class=nx>mu</span><span class=p>.</span><span class=nf>Unlock</span><span class=p>()</span>
 
-	time.Sleep(2 * time.Second)
+	<span class=nx>time</span><span class=p>.</span><span class=nf>Sleep</span><span class=p>(</span><span class=mi>2</span> <span class=o>*</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
 
-	j.mu.Lock()
-	defer j.mu.Unlock()
+	<span class=nx>j</span><span class=p>.</span><span class=nx>mu</span><span class=p>.</span><span class=nf>Lock</span><span class=p>()</span>
+	<span class=k>defer</span> <span class=nx>j</span><span class=p>.</span><span class=nx>mu</span><span class=p>.</span><span class=nf>Unlock</span><span class=p>()</span>
 
-	fmt.Print(i.v + j.v)
-}
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Print</span><span class=p>(</span><span class=nx>i</span><span class=p>.</span><span class=nx>v</span> <span class=o>+</span> <span class=nx>j</span><span class=p>.</span><span class=nx>v</span><span class=p>)</span>
+<span class=p>}</span>
 
-func main() {
-	a := &amp;value{v: 1}
-	b := &amp;value{v: 2}
-	var wg sync.WaitGroup
-	wg.Add(2)
-	go print(a, b)
-	go print(b, a)
-	wg.Wait()
-	fmt.Println(&quot;reached here?&quot;)
-}
-</code></pre>
-<p>Are they meeting coffman conditions:</p>
+<span class=kd>func</span> <span class=nf>main</span><span class=p>()</span> <span class=p>{</span>
+	<span class=nx>a</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>value</span><span class=p>{</span><span class=nx>v</span><span class=p>:</span> <span class=mi>1</span><span class=p>}</span>
+	<span class=nx>b</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>value</span><span class=p>{</span><span class=nx>v</span><span class=p>:</span> <span class=mi>2</span><span class=p>}</span>
+	<span class=kd>var</span> <span class=nx>wg</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+	<span class=nx>wg</span><span class=p>.</span><span class=nf>Add</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+	<span class=k>go</span> <span class=nb>print</span><span class=p>(</span><span class=nx>a</span><span class=p>,</span> <span class=nx>b</span><span class=p>)</span>
+	<span class=k>go</span> <span class=nb>print</span><span class=p>(</span><span class=nx>b</span><span class=p>,</span> <span class=nx>a</span><span class=p>)</span>
+	<span class=nx>wg</span><span class=p>.</span><span class=nf>Wait</span><span class=p>()</span>
+	<span class=nx>fmt</span><span class=p>.</span><span class=nf>Println</span><span class=p>(</span><span class=s>&#34;reached here?&#34;</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Are they meeting coffman conditions:</p>
 <ul>
 <li>Mutual exclusion: data access is synchronized with mutexes, atleast one resource is held in non shareable mode.</li>
 <li>Hold & wait, a process already hold a resource and waiting for additional resource.</li>
